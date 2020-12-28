@@ -68,7 +68,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         setContentView(binding.getRoot());
         database=AppDatabase.getDatabaseInstance(this);
 
-        assignPackedOrderToZoneViewModel= ViewModelProviders.of(this)
+        assignPackedOrderToZoneViewModel = ViewModelProviders.of(this)
                 .get(AssignPackedOrderToZoneViewModel.class);
 
         GETDriverID();
