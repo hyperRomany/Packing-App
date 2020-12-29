@@ -11,13 +11,20 @@ public class TrackingnumbersListDB {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
-
+    @ColumnInfo(name = "OrderNumber")
+    @SerializedName("OrderNumber")
+    private String OrderNumber;
 
     @ColumnInfo(name = "TrackingNumber")
     @SerializedName("TrackingNumber")
     private String TrackingNumber;
 
     public TrackingnumbersListDB() {
+    }
+
+    public TrackingnumbersListDB(String orderNumber, String trackingNumber) {
+        OrderNumber = orderNumber;
+        TrackingNumber = trackingNumber;
     }
 
     public TrackingnumbersListDB(String trackingNumber) {
@@ -30,6 +37,14 @@ public class TrackingnumbersListDB {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    public String getOrderNumber() {
+        return OrderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        OrderNumber = orderNumber;
     }
 
     public String getTrackingNumber() {

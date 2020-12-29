@@ -130,4 +130,6 @@ public class ResponseGetOrderData {
     public void setStatus(String status) {
         Status = status;
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.example.packingapp.Database;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
 import com.example.packingapp.model.DriverModules.DriverPackages_Header_DB;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
+import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.ModulesIDS;
 import com.example.packingapp.model.PackedPackageItemsModule;
@@ -64,6 +65,10 @@ public interface UserDao {
      @Insert(onConflict = OnConflictStrategy.REPLACE)
      void insertOrderItems(List<ItemsOrderDataDBDetails> itemsOrderDataDBDetails);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertOrderItem(ItemsOrderDataDBDetails itemsOrderDataDBDetails);
+
+
     @Query("SELECT * FROM OrderDataModuleDBHeader")
     Observable<OrderDataModuleDBHeader> getHeader();
 
@@ -72,6 +77,10 @@ public interface UserDao {
 
     @Query("SELECT * FROM OrderDataModuleDBHeader where Order_number =:Order_number")
     OrderDataModuleDBHeader getordernumberData(String Order_number);
+
+
+    @Query("SELECT * FROM itemsOrderDataDBDetails where Order_number =:Order_number")
+    List<ItemsOrderDataDBDetails> CheckordernumberData_inlast(String Order_number);
 
     @Query("SELECT * FROM itemsOrderDataDBDetails")
     List<ItemsOrderDataDBDetails> getDetailsTrackingnumberToUpload();
@@ -98,14 +107,18 @@ public interface UserDao {
     @Query("DELETE FROM TrackingnumbersListDB")
     void deleteAllTrckingNumber();
 
+
+    @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned")
+    void deleteAllOrderItems_scanned();
+
     @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber =:tracking")
     Observable<List<ItemsOrderDataDBDetails>> getAllItem(String tracking);
 
     @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber is null or TrackingNumber =''")
     List<ItemsOrderDataDBDetails> getAllItemsWithoutTrackingnumber();
 
-    @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber is not null or TrackingNumber !=''")
-    List<ItemsOrderDataDBDetails> CheckItemsWithTrackingnumber();
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber is not null or TrackingNumber !=''")
+    List<ItemsOrderDataDBDetails_Scanned> CheckItemsWithTrackingnumber();
 
     @Delete
     void deleteOrder(OrderDataModuleDBHeader mUser);
@@ -113,11 +126,17 @@ public interface UserDao {
     @Query("SELECT * FROM itemsOrderDataDBDetails where sku =:barcode")
     List<ItemsOrderDataDBDetails> getItem(String barcode);
 
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where sku =:barcode")
+    List<ItemsOrderDataDBDetails_Scanned> getItem_scanned(String barcode);
+
+    @Query("SELECT sum(quantity) FROM ItemsOrderDataDBDetails_Scanned where sku =:barcode")
+    float getSumofScannedqty(String barcode);
+
     @Query("SELECT * FROM itemsOrderDataDBDetails where  sku LIKE :barcode")
     List<ItemsOrderDataDBDetails> getItem_scales(String barcode);
 
-    @Query("SELECT * FROM TrackingnumbersListDB where TrackingNumber is not null ORDER BY TrackingNumber DESC LIMIT 1")
-    TrackingnumbersListDB getLastTrackingnumber();
+    @Query("SELECT * FROM TrackingnumbersListDB where TrackingNumber is not null and OrderNumber=:Ordernumber ORDER BY TrackingNumber DESC LIMIT 1")
+    TrackingnumbersListDB getLastTrackingnumber(String Ordernumber);
 
 //    @Query("UPDATE itemsOrderDataDBDetails SET TrackingNumber =:tracking where (SELECT * FROM itemsOrderDataDBDetails ORDER BY TrackingNumber DESC LIMIT 1)")
 //    ItemsOrderDataDBDetails updatetrackingnumber(String tracking);
@@ -125,16 +144,19 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void Insertrackingnumber(TrackingnumbersListDB trackingnumbersListDB);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void InsertItemsDetails_scanned(ItemsOrderDataDBDetails_Scanned i);
+
     @Query("UPDATE itemsOrderDataDBDetails SET TrackingNumber = :tracking WHERE  sku in (:items) ")
      void updatetrackingnumberforListOfItems(String tracking , List<String> items);
 
     @Query("UPDATE itemsOrderDataDBDetails SET TrackingNumber = :tracking WHERE  sku in (:items) ")
     void DeleteTrackingNumberFromDetailstable_using_sku(String tracking , List<String> items);
 
-    @Query("SELECT DISTINCT TrackingNumber FROM itemsOrderDataDBDetails where TrackingNumber is not null or TrackingNumber !=''")
-    List<PackedPackageModule> getAllPckages();
+    @Query("SELECT DISTINCT TrackingNumber FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber is not null or TrackingNumber !=''")
+    List<PackedPackageModule> getAllPckages_scanned();
 
-    @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber =:TrackingNumber")
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber =:TrackingNumber")
     List<PackedPackageItemsModule> getItemsOfTrackingNumber(String TrackingNumber);
 
     @Query("SELECT sku FROM itemsOrderDataDBDetails where TrackingNumber =:TrackingNumber")
@@ -251,7 +273,5 @@ public interface UserDao {
 
     @Query("SELECT * FROM TrackingnumbersListDB")
     List<TrackingnumbersListDB> countShipment();
-
-
 
 }

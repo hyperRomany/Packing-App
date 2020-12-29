@@ -14,6 +14,7 @@ import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignItemsToPackageBinding;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
+import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 import com.example.packingapp.model.Product;
 import com.example.packingapp.model.TrackingnumbersListDB;
 
@@ -29,7 +30,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
     ItemAdapter itemAdapter;
     Product product;
     AppDatabase database;
-    String AddNewPackageORAddForExistPackage="";
+    String AddNewPackageORAddForExistPackage="" ,OrderNumber="";
     List<String> ListOfBarcodesToAssign;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
         ListOfBarcodesToAssign=new ArrayList<>();
         if (getIntent().getExtras() !=null) {
             AddNewPackageORAddForExistPackage = getIntent().getExtras().getString("AddNewPackageORAddForExistPackage");
+            OrderNumber=getIntent().getExtras().getString("OrderNumber");
         }else {
             Toast.makeText(this, "AddNewPackageORAddForExistPackage is null", Toast.LENGTH_SHORT).show();
         }
@@ -78,33 +80,55 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                List <ItemsOrderDataDBDetails> Adapterlist = itemAdapter.ReturnListOfAdapter();
+                List <ItemsOrderDataDBDetails_Scanned> Adapterlist = itemAdapter.ReturnListOfAdapter();
 
                 if (Adapterlist.size() >0 && ListOfBarcodesToAssign.size() >0) {
                     if (AddNewPackageORAddForExistPackage.equalsIgnoreCase("New")) {
 //                    Log.e(TAG, "onClick: " + database.userDao().getLastTrackingnumber().getTrackingNumber());
-                        if (database.userDao().getLastTrackingnumber() == null) {
-                            Log.e(TAG, "onClick:ordernum  " + database.userDao().getOrderNumber() + "-01");
-                            String Trackingnumber = database.userDao().getOrderNumber() + "-01";
-                            database.userDao().Insertrackingnumber(new TrackingnumbersListDB(database.userDao().getOrderNumber() + "-01"));
-                            database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                        if (database.userDao().getLastTrackingnumber(OrderNumber) == null) {
+                            Log.e(TAG, "onClick:ordernum  " + OrderNumber + "-01");
+                            String Trackingnumber = OrderNumber + "-01";
+                            database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, OrderNumber + "-01"));
+                          //  database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                            for (int i=0;i<Adapterlist.size();i++) {
+                                ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
+                                        Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
+                                Log.e(TAG, "onClick:insert getScanned_quantity1: "+Adapterlist.get(i).getQuantity() );
+                                database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
+                            }
                         } else {
-                            String LastTrackingNumber = database.userDao().getLastTrackingnumber().getTrackingNumber();
+                            String LastTrackingNumber = database.userDao().getLastTrackingnumber(OrderNumber).getTrackingNumber();
                             Log.e(TAG, "onClick:else " + LastTrackingNumber.substring(LastTrackingNumber.indexOf("-") + 1));
                             int num = Integer.valueOf(LastTrackingNumber.substring(LastTrackingNumber.indexOf("-") + 1));
                             ++num;
                             Log.e(TAG, "onClick:else+1  " + num);
                             String Trackingnumber;
                             if (num < 10) {
-                                Trackingnumber = database.userDao().getOrderNumber() + "-0" + num;
-                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(Trackingnumber));
-                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                Trackingnumber = OrderNumber + "-0" + num;
+                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, Trackingnumber));
+//                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                for (int i=0;i<Adapterlist.size();i++) {
+                                    ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
+                                            Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
+                                    Log.e(TAG, "onClick:insert getScanned_quantity2: "+Adapterlist.get(i).getQuantity() );
+
+                                    database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
+
+                                }
                             } else {
-                                Trackingnumber = database.userDao().getOrderNumber() + "-" + num;
-                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(Trackingnumber));
-                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                Trackingnumber = OrderNumber + "-" + num;
+                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, Trackingnumber));
+//                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                for (int i=0;i<Adapterlist.size();i++) {
+                                    ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
+                                            Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
+                                    Log.e(TAG, "onClick:insert getScanned_quantity3: "+Adapterlist.get(i).getQuantity() );
 
-
+                                    database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
+                                }
                             }
                             Log.e(TAG, "onClick:Gen  " + Trackingnumber);
 
@@ -130,6 +154,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
     }
 
     private void SearchOfBarcode() {
+        float adapterQTY=0,QTY=0;
+        int postion=-1;
         if (!binding.editBarcode.getText().toString().isEmpty()) {
             List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList =new ArrayList<>();
            /* String KQTY,GQTY,TotalQTYFor23 , BarcodeFor23  , Depart;
@@ -149,25 +175,90 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                 Calculatcheckdigitforscales(binding.editBarcode.getText().toString().substring(0,7)+"00000");
 
             }else {*/
+            //TODO need to add search with order nuber for if there is repeated barcode in orders (pending orders)
                 itemsOrderDataDBDetailsList = database.userDao().getItem(binding.editBarcode.getText().toString());
 //                    product = new Product("laptop", "5");
         //    }
             if (itemsOrderDataDBDetailsList.size() >0 ) {
-                List<ItemsOrderDataDBDetails> Adapterlist = itemAdapter.ReturnListOfAdapter();
+                List<ItemsOrderDataDBDetails_Scanned> Adapterlist = itemAdapter.ReturnListOfAdapter();
                 List<String> listClone = new ArrayList<>();
+                //TODO Hint>>> listClone is take barcode and store it in it for if it added it before in adpter list
+                // for (ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetailsSE_sca_adap : Adapterlist) {
 
-                for (ItemsOrderDataDBDetails itemsOrderDataDBDetailsSE : Adapterlist) {
+                List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList_scanned =new ArrayList<>();
+                itemsOrderDataDBDetailsList_scanned = database.userDao().getItem_scanned(binding.editBarcode.getText().toString());
+                float SumofScannedqty= database.userDao().getSumofScannedqty(binding.editBarcode.getText().toString());
+
+                for (int i=0 ;i<Adapterlist.size() ;i++){
                     //matches("(?i)"+binding.editBarcode.getText().toString()+".*")
-                    if (itemsOrderDataDBDetailsSE.getSku().toString().equalsIgnoreCase(binding.editBarcode.getText().toString())) {
-                        listClone.add(itemsOrderDataDBDetailsSE.getSku());
+                    if (Adapterlist.get(i).getSku().toString().equalsIgnoreCase(binding.editBarcode.getText().toString())) {
+                        listClone.add(Adapterlist.get(i).getSku());
+                        adapterQTY=Adapterlist.get(i).getQuantity();
+                        Log.e(TAG, "SearchOfBarcode:sca_adap "+Adapterlist.get(i).getSku() );
+                        Log.e(TAG, "SearchOfBarcode:adapterQTY "+adapterQTY );
+                        // delete it from here
+//                        postion=i;
+                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() > (SumofScannedqty+adapterQTY)){
+                            Adapterlist.remove(i);
+                        }
+
                     }
                 }
-                System.out.println(listClone.size());
-                System.out.println(binding.editBarcode.getText().toString());
+
+
+
+               /* if (itemsOrderDataDBDetailsList_scanned.size() ==0){
+                    QTY=1;
+                }else*/
+               // if (itemsOrderDataDBDetailsList_scanned.size() >0){
+                Log.e(TAG, "SearchOfBarcode:getQuantity "+itemsOrderDataDBDetailsList.get(0).getQuantity() );
+                Log.e(TAG, "SearchOfBarcode:SumofScannedqty "+SumofScannedqty );
+                    if (itemsOrderDataDBDetailsList.get(0).getQuantity() > (SumofScannedqty+adapterQTY)){
+                       // if (adapterQTY>0){
+                          QTY=adapterQTY+0.2f;
+//                        QTY=adapterQTY+1;
+                        ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                = new ItemsOrderDataDBDetails_Scanned(OrderNumber,itemsOrderDataDBDetailsList.get(0).getName(),
+                                itemsOrderDataDBDetailsList.get(0).getPrice(),
+                                QTY,itemsOrderDataDBDetailsList.get(0).getSku(),itemsOrderDataDBDetailsList.get(0).getUnite());
+                        Log.e(TAG, "SearchOfBarcode:QTY "+QTY );
+//                        if (Adapterlist.size()>0) {
+//                            Adapterlist.remove(postion);
+//                        }
+                        itemAdapter.fillAdapterData(itemsOrderDataDBDetails_scanned);
+
+                        ListOfBarcodesToAssign.add(binding.editBarcode.getText().toString());
+                     //   }
+                     //   QTY= itemsOrderDataDBDetailsList.get(0).getQuantity()+1 ;
+                        binding.editBarcode.setText("");
+                        binding.editBarcode.requestFocus();
+                    }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() == (SumofScannedqty+adapterQTY)){
+                        binding.editBarcode.setError("تم أضافه الكميه المطلبه");
+                        binding.editBarcode.setText("");
+                        binding.editBarcode.requestFocus();
+                        Log.e(TAG, "SearchOfBarcode: setError : this is more than required " );
+                    }
+               // }
+
+
+                        /* ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(0).getName(),Adapterlist.get(0).getPrice(),
+                                Adapterlist.get(0).getQuantity(),Adapterlist.get(0).getSku(),Adapterlist.get(0).getUnite(),ListOfBarcodesToAssign.get(0));
+                        database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);*/
+//                binding.editBarcode.setText("");
+//                binding.editBarcode.requestFocus();
+
                 //Log.e(TAG, "onClick: ", "" + binding.editBarcode.getText().toString() );
-                if (listClone.size() == 0 && itemsOrderDataDBDetailsList.get(0).getTrackingNumber() ==null ) {
+                /*if (listClone.size() == 0 && itemsOrderDataDBDetailsList.get(0).getTrackingNumber() ==null ) {
                     itemAdapter.fillAdapterData(itemsOrderDataDBDetailsList.get(0));
                     ListOfBarcodesToAssign.add(binding.editBarcode.getText().toString());
+
+                    ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(0).getName(),Adapterlist.get(0).getPrice(),
+                            Adapterlist.get(0).getQuantity(),Adapterlist.get(0).getSku(),Adapterlist.get(0).getUnite(),ListOfBarcodesToAssign.get(0));
+                    database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
+
+
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
                 } else {
@@ -175,7 +266,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
 
-                }
+                }*/
 
             }else {
                 Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.enter_valid_barcode), Toast.LENGTH_SHORT).show();

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.packingapp.R;
-import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
+import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 
 import java.util.ArrayList;
 
@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder>{
     private static final String TAG = "ItemAdapter";
-    ArrayList<ItemsOrderDataDBDetails>dataList=new ArrayList<>();
+    ArrayList<ItemsOrderDataDBDetails_Scanned>dataList=new ArrayList<>();
 
-    public void fillAdapterData(ItemsOrderDataDBDetails itemsOrderDataDBDetails) {
+    public void fillAdapterData(ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned) {
         //this.dataList.clear();
-        this.dataList.add(itemsOrderDataDBDetails);
+        this.dataList.add(itemsOrderDataDBDetails_scanned);
         Log.e(TAG, "fillAdapterData: "+  dataList.size());
 
         // this.dataList.add(dataList);
@@ -66,7 +66,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder>{
             item_qty=itemView.findViewById(R.id.item_qty);
         }
     }
-    public ArrayList<ItemsOrderDataDBDetails> ReturnListOfAdapter(){
+    public ArrayList<ItemsOrderDataDBDetails_Scanned> ReturnListOfAdapter(){
         return dataList;
     }
 }

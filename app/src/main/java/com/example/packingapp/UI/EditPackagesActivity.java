@@ -88,7 +88,7 @@ public class EditPackagesActivity extends AppCompatActivity {
     public void CreateORUpdateRecycleView(){
         Po_Item_For_Recycly = new ArrayList<>();
 
-        Po_Item_For_Recycly=database.userDao().getAllPckages();
+        Po_Item_For_Recycly=database.userDao().getAllPckages_scanned();
         packedPackagesAdapter = new PackedPackagesAdapter(Po_Item_For_Recycly);
 
         binding.recycleItemsView.setHasFixedSize(true);

@@ -6,8 +6,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "ItemsOrderDataDBDetails")
-public class ItemsOrderDataDBDetails {
+@Entity(tableName = "ItemsOrderDataDBDetails_Scanned")
+public class ItemsOrderDataDBDetails_Scanned {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
@@ -45,8 +45,12 @@ public class ItemsOrderDataDBDetails {
     @SerializedName("TrackingNumber")
     private String TrackingNumber;
 
-    public ItemsOrderDataDBDetails(String order_number, String name, float price, float quantity, String sku, String unite) {
-        Order_number = order_number;
+    public ItemsOrderDataDBDetails_Scanned() {
+    }
+
+    public ItemsOrderDataDBDetails_Scanned(String OrderNumber , String name, float price,
+                                           float quantity, String sku, String unite) {
+        this.Order_number = OrderNumber;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -54,7 +58,9 @@ public class ItemsOrderDataDBDetails {
         this.unite = unite;
     }
 
-    public ItemsOrderDataDBDetails(String name, float price, float quantity, String sku, String unite, String trackingNumber) {
+    public ItemsOrderDataDBDetails_Scanned(String order_number, String name, float price, float quantity,
+                                           String sku, String unite, String trackingNumber) {
+        Order_number = order_number;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -63,7 +69,7 @@ public class ItemsOrderDataDBDetails {
         TrackingNumber = trackingNumber;
     }
 
-    public ItemsOrderDataDBDetails(String name, String sku, float price, float quantity, String unite) {
+    public ItemsOrderDataDBDetails_Scanned(String name, String sku, float price, float quantity, String unite) {
         this.name = name;
         this.sku = sku;
         this.price = price;
