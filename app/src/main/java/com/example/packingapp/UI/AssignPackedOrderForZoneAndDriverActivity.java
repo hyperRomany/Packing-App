@@ -214,7 +214,6 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                         || keyEvent.getAction() == KeyEvent.KEYCODE_DPAD_CENTER){
                     LoadingNewPurchaseOrderDriver();
                 }
-
                 return false;
             }
         });
@@ -312,7 +311,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                             //TODO Print RunTime sheet -- get data for list of order (recievePackedORDER_NO_Distinctlist)
                            // List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
-                            assignPackedOrderToZoneViewModel.SheetData(recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO());
+
+                            assignPackedOrderToZoneViewModel.SheetData(database.userDao().getUserData_MU().getUser_id()
+                                    , recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO());
                             assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
                                 @Override
                                 public void onChanged(Response response) {
@@ -519,7 +520,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     database.userDao().insertRecievePacked(new RecievePackedModule(
                             recievePackedlist.get(0).getORDER_NO(), recievePackedlist.get(0).getNO_OF_PACKAGES(),
                             trackingnumber1,
-                            Zone1 /*,recievePackedlist.get(0).getCUSTOMER_NAME(),recievePackedlist.get(0).
+                            Zone1
+                            /*,recievePackedlist.get(0).getCUSTOMER_NAME(),recievePackedlist.get(0).
                             getADDRESS_CITY(),recievePackedlist.get(0).getITEM_PRICE(),recievePackedlist.get(0).
                             getOUTBOUND_DELIVERY()*/));
                     binding.editTrackingnumberZone.setText("");
@@ -673,6 +675,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                         orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
                         DriverID
                 );
+
             }
            // Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : "+orderDataModuleDBHeaderkist.get(0).getZone() );
 

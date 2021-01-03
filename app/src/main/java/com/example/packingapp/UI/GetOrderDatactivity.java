@@ -1,17 +1,19 @@
 package com.example.packingapp.UI;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.packingapp.Adapter.OrdersnumberAdapter;
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityGetOrderDataBinding;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
@@ -23,28 +25,32 @@ import com.example.packingapp.viewmodel.GetOrderDataViewModel;
 
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class GetOrderDatactivity extends AppCompatActivity {
     ActivityGetOrderDataBinding binding;
     GetOrderDataViewModel getOrderDataViewModel;
     private static final String TAG = "GetOrderDatactivity";
     AppDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityGetOrderDataBinding.inflate(getLayoutInflater());
+        binding = ActivityGetOrderDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        database=AppDatabase.getDatabaseInstance(this);
+        database = AppDatabase.getDatabaseInstance(this);
 
-        getOrderDataViewModel= ViewModelProviders.of(this).get(GetOrderDataViewModel.class);
+        getOrderDataViewModel = ViewModelProviders.of(this).get(GetOrderDataViewModel.class);
 
         binding.editMagentoorder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_GO
                         || actionId == EditorInfo.IME_ACTION_NEXT
                         || actionId == EditorInfo.IME_ACTION_DONE
@@ -52,7 +58,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         || keyEvent == null
                         || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER
                         || keyEvent.getAction() == KeyEvent.KEYCODE_NUMPAD_ENTER
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_DPAD_CENTER){
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_DPAD_CENTER) {
                     LoadNewPurchaseOrder();
                 }
                 return false;
@@ -83,11 +89,11 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 new Observer<ResponseGetOrderData>() {
                     @Override
                     public void onChanged(ResponseGetOrderData responseGetOrderData) {
-                        Log.e(TAG, "onChanged: "+responseGetOrderData.getStatus() );
+                        Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
                         if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
                             ActionAfterGetData(responseGetOrderData);
-                        }else {
-                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status)+responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -95,10 +101,10 @@ public class GetOrderDatactivity extends AppCompatActivity {
         getOrderDataViewModel.mutableLiveDataError.observe(GetOrderDatactivity.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.e(TAG, "onChanged:mutableLiveD  "+s );
+                Log.e(TAG, "onChanged:mutableLiveD  " + s);
                 if (s.contains("HTTP 400")) {
                     Toast.makeText(GetOrderDatactivity.this, String.format("%s", getString(R.string.order_not_found)), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -114,12 +120,12 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     if (itemsOrderDataDBDetailsList.size() > 0) {
                         Intent i = new Intent(getApplicationContext(), AssignItemToPackagesActivity.class);
                         i.putExtra("AddNewPackageORAddForExistPackage", "New");
-                        i.putExtra("OrderNumber",binding.editMagentoorder.getText().toString());
+                        i.putExtra("OrderNumber", binding.editMagentoorder.getText().toString());
                         startActivity(i);
                     } else {
                         Toast.makeText(GetOrderDatactivity.this, "لايوجد أمر بيع سابق", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     binding.editMagentoorder.setError(getResources().getString(R.string.enter));
                     binding.editMagentoorder.requestFocus();
                 }
@@ -127,21 +133,54 @@ public class GetOrderDatactivity extends AppCompatActivity {
         });
 
         binding.btnPrintAwb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                                                   @Override
+                                                   public void onClick(View v) {
 
-                UploadHeader();
+                                                       LayoutInflater li = LayoutInflater.from(GetOrderDatactivity.this);
+                                                       View promptsView = li.inflate(R.layout.prompts_showordersnumber, null);
 
-            }
-        });
+                                                       androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(
+                                                               GetOrderDatactivity.this);
+
+                                                       // set prompts.xml to alertdialog builder
+                                                       alertDialogBuilder.setView(promptsView);
+
+                                                       // create alert dialog
+                                                       androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                                                       final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
+                                                               .findViewById(R.id.rv_ordernmber);
+
+                                                       OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getOrdersNumberDB());
+                                                       Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
+                                                       rv_ordernumbers.setAdapter(ordersnumberAdapter);
+                                                       rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+                                                       ItemclickforRecycler.addTo(rv_ordernumbers).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+                                                           @Override
+                                                           public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                                                               // promptsView.
+                                                               String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+                                                               UploadHeader(Ordernumber);
+                                                               alertDialog.dismiss();
+
+                                                           }
+                                                       });
+                                                       // show it
+                                                       alertDialog.show();
+
+                                                   }
+                                               }
+        );
 
         binding.btnEditPackages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (database.userDao().CheckItemsWithTrackingnumber().size() > 0){
-                    Intent GoTopackedPackages=new Intent(GetOrderDatactivity.this, EditPackagesActivity.class);
+                if (database.userDao().CheckItemsWithTrackingnumber().size() > 0) {
+                    Intent GoTopackedPackages = new Intent(GetOrderDatactivity.this, EditPackagesActivity.class);
                     startActivity(GoTopackedPackages);
-                }else {
+                } else {
                     Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.noitem), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -151,12 +190,22 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
     private void LoadNewPurchaseOrder() {
         if (!binding.editMagentoorder.getText().toString().isEmpty()) {
-            List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload();
-            if (itemsOrderDataDBDetailsList.size() >0) {
+
+           // List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload();
+            List<OrderDataModuleDBHeader> orderDataModuleDBHeaderlist = database.userDao()
+                    .getHeaderToUpload_list(binding.editMagentoorder.getText().toString());
+
+            if (orderDataModuleDBHeaderlist.size() > 0) {
                 new AlertDialog.Builder(GetOrderDatactivity.this)
                         .setTitle(getString(R.string.will_delete_last_order))
                         .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                // TODO will not delete order data with scane new one and delete will be by order number
+                                database.userDao().deleteAllHeader(binding.editMagentoorder.getText().toString());
+                                database.userDao().deleteAllOrderItems(binding.editMagentoorder.getText().toString());
+                                database.userDao().deleteAllTrckingNumber(binding.editMagentoorder.getText().toString());
+                                database.userDao().deleteAllOrderItems_scanned(binding.editMagentoorder.getText().toString());
+
                                 GETOrderData();
                             }
                         })
@@ -165,25 +214,24 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         }).show();
-            }else {
+            } else {
                 GETOrderData();
             }
 
-        }else {
+        } else {
             binding.editMagentoorder.setError(getResources().getString(R.string.enter));
             binding.editMagentoorder.requestFocus();
 
         }
     }
 
-    private void GETOrderData(){
+    private void GETOrderData() {
         getOrderDataViewModel.fetchdata(binding.editMagentoorder.getText().toString());
     }
 
 
-
     private void ActionAfterGetData(ResponseGetOrderData responseGetOrderData) {
-        OrderDataModuleDBHeader orderDataModuleDBHeader= new OrderDataModuleDBHeader(
+        OrderDataModuleDBHeader orderDataModuleDBHeader = new OrderDataModuleDBHeader(
                 responseGetOrderData.getOrder_number(),
                 responseGetOrderData.getOutBound_delivery(),
                 responseGetOrderData.getCustomer().getName(),
@@ -198,27 +246,21 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 responseGetOrderData.getGrand_total(),
                 responseGetOrderData.getShipping_fees(),
                 responseGetOrderData.getPicker_confirmation_time(),
-                responseGetOrderData.getCurrency(),responseGetOrderData.getOut_From_Loc()
+                responseGetOrderData.getCurrency(), responseGetOrderData.getOut_From_Loc()
         );
-// TODO will not delete order data with scane new one and delete will be by order number
-        database.userDao().deleteAllHeader();
-        database.userDao().deleteAllOrderItems();
-        database.userDao().deleteAllTrckingNumber();
-        database.userDao().deleteAllTrckingNumber();
-        database.userDao().deleteAllOrderItems_scanned();
 
         database.userDao().insertOrderHeader(orderDataModuleDBHeader);
         //  database.userDao().UpdateOutBoundDelievery(binding.editOutbounddelievery.getText().toString(),responseGetOrderData.getOrder_number());
         // TODO Need to insert order number in details table
-        for (int i=0 ; i<responseGetOrderData.getItemsOrderDataDBDetails().size();i++) {
+        for (int i = 0; i < responseGetOrderData.getItemsOrderDataDBDetails().size(); i++) {
             //responseGetOrderData.getOrder_number()
-            ItemsOrderDataDBDetails itemsOrderDataDBDetails=new ItemsOrderDataDBDetails(responseGetOrderData.getOrder_number(),
-                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getName(),responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice(),
-                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getQuantity(),responseGetOrderData.getItemsOrderDataDBDetails().get(i).getSku(),
+            ItemsOrderDataDBDetails itemsOrderDataDBDetails = new ItemsOrderDataDBDetails(responseGetOrderData.getOrder_number(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getName(), responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getQuantity(), responseGetOrderData.getItemsOrderDataDBDetails().get(i).getSku(),
                     responseGetOrderData.getItemsOrderDataDBDetails().get(i).getUnite());
             database.userDao().insertOrderItem(itemsOrderDataDBDetails);
         }
-        Log.e(TAG, "zzz>> currency " +  responseGetOrderData.getItemsOrderDataDBDetails().size());
+        Log.e(TAG, "zzz>> currency " + responseGetOrderData.getItemsOrderDataDBDetails().size());
         Log.e(TAG, "zzz>> items size " + responseGetOrderData.getItemsOrderDataDBDetails().size());
         Log.e(TAG, "zzz>> Qty " + responseGetOrderData.getItemsOrderDataDBDetails().get(0).getQuantity());
         Log.e(TAG, "zzz>> sku " + responseGetOrderData.getItemsOrderDataDBDetails().get(0).getSku());
@@ -229,46 +271,50 @@ public class GetOrderDatactivity extends AppCompatActivity {
 //                        Log.e(TAG, "onChanged: ","cccdd "+ database.userDao().getHeader().get(0).getOrder_number().toString());
 
         Intent i = new Intent(getApplicationContext(), AssignItemToPackagesActivity.class);
-        i.putExtra("AddNewPackageORAddForExistPackage","New");
-        i.putExtra("OrderNumber",responseGetOrderData.getOrder_number());
+        i.putExtra("AddNewPackageORAddForExistPackage", "New");
+        i.putExtra("OrderNumber", responseGetOrderData.getOrder_number());
         startActivity(i);
     }
 
-    private void UploadDetails() {
+    private void UploadDetails(String ordernumberselected) {
         //todo  we need quere to get list if quantity scanned not equaled to required quantity
-        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-            List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload();
+
+        if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
+
+            List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload(ordernumberselected);
             String OrderNumber = database.userDao().getOrderNumber();
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
 
             float SumOfQTY = database.userDao().SumOfQTYFromDetials();
-            Log.e(TAG, "UploadDetails:SumOfQTY "+SumOfQTY );
-            float Shippingfees=orderDataModuleDBHeader.getShipping_fees();
-            Log.e(TAG, "UploadDetails:Shippingfees "+Shippingfees );
-            float ShippingfeesPerItem=Shippingfees/SumOfQTY ;
-            Log.e(TAG, "UploadDetails:ShippingfeesPerItem "+ShippingfeesPerItem );
+            Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
+            float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
+            Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
+            float ShippingfeesPerItem = Shippingfees / SumOfQTY;
+            Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
 
-            getOrderDataViewModel.InsertOrderdataDetails(OrderNumber , itemsOrderDataDBDetailsList , ShippingfeesPerItem );
+            getOrderDataViewModel.InsertOrderdataDetails(OrderNumber, itemsOrderDataDBDetailsList, ShippingfeesPerItem);
 
             getOrderDataViewModel.mutableLiveData_Details.observe(GetOrderDatactivity.this, new Observer<Message>() {
                 @Override
                 public void onChanged(Message message) {
-                    Toast.makeText(GetOrderDatactivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onChanged: "+message.getMessage() );
+                    Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onChanged: " + message.getMessage());
                 }
             });
-        }else {
+        } else {
             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.item_notselected), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void UploadHeader(){
+    public void UploadHeader(String ordernumberselected) {
 //todo  we need quere to get list if quantity scanned not equaled to required quantity
-        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload();
+        Log.e(TAG, "UploadHeader:ordernumberselected "+ordernumberselected );
+        if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
+
+            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
             List<String> NO_OF_PACKAGES =
-                    database.userDao().getNoOfPackagesToUpload(orderDataModuleDBHeader.getOrder_number() +"%");
-            Log.e(TAG, "UploadHeader:NO_OF_P "+NO_OF_PACKAGES.size() );
+                    database.userDao().getNoOfPackagesToUpload(orderDataModuleDBHeader.getOrder_number() + "%");
+            Log.e(TAG, "UploadHeader:NO_OF_P " + NO_OF_PACKAGES.size());
             /*Log.e(TAG, "zzUploadHeader:NO_OF_PAC: "+NO_OF_PACKAGES );
             Log.e(TAG, "zzUploadHeader:OutBo: "+orderDataModuleDBHeader.getOutBound_delivery() );
             Log.e(TAG, "zzUploadHeader:OutBo: "+orderDataModuleDBHeader.getCustomer_name() );
@@ -288,60 +334,60 @@ public class GetOrderDatactivity extends AppCompatActivity {
             Log.e(TAG, "zzUploadHeader:OutBo: "+NO_OF_PACKAGES );
             Log.e(TAG, "zzUploadHeader:OutBo: "+orderDataModuleDBHeader.getOut_From_Loc() );*/
             getOrderDataViewModel.InsertOrderdataHeader(
-                        orderDataModuleDBHeader.getOrder_number(),
-                        orderDataModuleDBHeader.getOutBound_delivery(),
-                        orderDataModuleDBHeader.getCustomer_name(),
-                        orderDataModuleDBHeader.getCustomer_phone(),
-                        orderDataModuleDBHeader.getCustomer_code(),
-                        orderDataModuleDBHeader.getCustomer_address_govern(),
-                        orderDataModuleDBHeader.getCustomer_address_city(),
-                        orderDataModuleDBHeader.getCustomer_address_district(),
-                        orderDataModuleDBHeader.getCustomer_address_detail(),
-                        orderDataModuleDBHeader.getDelivery_date(),
-                        orderDataModuleDBHeader.getDelivery_time(),
-                        orderDataModuleDBHeader.getPicker_confirmation_time(),
-                        orderDataModuleDBHeader.getGrand_total(),
-                        orderDataModuleDBHeader.getCurrency(),
-                        orderDataModuleDBHeader.getShipping_fees(),
-                        String.valueOf(NO_OF_PACKAGES.size()),
-                        orderDataModuleDBHeader.getOut_From_Loc()
+                    orderDataModuleDBHeader.getOrder_number(),
+                    orderDataModuleDBHeader.getOutBound_delivery(),
+                    orderDataModuleDBHeader.getCustomer_name(),
+                    orderDataModuleDBHeader.getCustomer_phone(),
+                    orderDataModuleDBHeader.getCustomer_code(),
+                    orderDataModuleDBHeader.getCustomer_address_govern(),
+                    orderDataModuleDBHeader.getCustomer_address_city(),
+                    orderDataModuleDBHeader.getCustomer_address_district(),
+                    orderDataModuleDBHeader.getCustomer_address_detail(),
+                    orderDataModuleDBHeader.getDelivery_date(),
+                    orderDataModuleDBHeader.getDelivery_time(),
+                    orderDataModuleDBHeader.getPicker_confirmation_time(),
+                    orderDataModuleDBHeader.getGrand_total(),
+                    orderDataModuleDBHeader.getCurrency(),
+                    orderDataModuleDBHeader.getShipping_fees(),
+                    String.valueOf(NO_OF_PACKAGES.size()),
+                    orderDataModuleDBHeader.getOut_From_Loc()
             );
 
             getOrderDataViewModel.mutableLiveData.observe(GetOrderDatactivity.this, new Observer<Message>() {
                 @Override
                 public void onChanged(Message message) {
-                    Toast.makeText(GetOrderDatactivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onChanged: "+message.getMessage() );
+                    Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onChanged: " + message.getMessage());
                     Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.doneforheader), Toast.LENGTH_SHORT).show();
 
-                    UploadDetails();
+                    UploadDetails(ordernumberselected);
                     ViewDialog alert = new ViewDialog();
-                    alert.showDialog(GetOrderDatactivity.this);
-                  //TODO Update status on magento
-                    UpdateStatus();
+                    alert.showDialog(GetOrderDatactivity.this, orderDataModuleDBHeader.getOrder_number());
+                    //TODO Update status on magento
+                    UpdateStatus(ordernumberselected);
 
                 }
             });
-        }else {
+        } else {
             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.item_notselected), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void UpdateStatus(){
+    public void UpdateStatus(String ordernumberselected) {
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload();
-            getOrderDataViewModel.UpdateStatus(
-                    orderDataModuleDBHeader.getOrder_number(),
-                    "packed"
-            );
-            getOrderDataViewModel.mutableLiveData_UpdateStatus.observe(GetOrderDatactivity.this, new Observer<ResponseUpdateStatus>() {
-                @Override
-                public void onChanged(ResponseUpdateStatus message) {
-                    Toast.makeText(GetOrderDatactivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onChanged: "+message.getMessage() );
+        OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
+        getOrderDataViewModel.UpdateStatus(
+                orderDataModuleDBHeader.getOrder_number(),
+                "packed"
+        );
+        getOrderDataViewModel.mutableLiveData_UpdateStatus.observe(GetOrderDatactivity.this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged: " + message.getMessage());
 
-                }
-            });
+            }
+        });
 //        }else {
 //            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
 //        }

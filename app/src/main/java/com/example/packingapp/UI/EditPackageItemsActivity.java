@@ -30,6 +30,7 @@ public class EditPackageItemsActivity extends AppCompatActivity {
     String BarcodeToEditORDelete;
     ActivityEditPackageBinding binding;
     String TrackingNumber="";
+    String ordernumber="";
     private static final String TAG = "EditPackageItemsActivit";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class EditPackageItemsActivity extends AppCompatActivity {
         Intent getData= getIntent();
         if (getData.getExtras().getString("TrackingNumber") != null){
             TrackingNumber = getData.getExtras().getString("TrackingNumber");
+            ordernumber =TrackingNumber.substring(0,TrackingNumber.indexOf("-"));
         }else {
             TrackingNumber="";
         }
@@ -115,7 +117,58 @@ public class EditPackageItemsActivity extends AppCompatActivity {
                                 .setTitle(getString(string.delete_dialoge))
                                 .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        database.userDao().DeleteTrackingNumberForItem(BarcodeToEditORDelete);
+
+                                        int UID_to_delete =database.userDao().GetUID(ordernumber ,TrackingNumber);
+                                        Log.e( TAG, "onClick: UID_to_delete1 " + UID_to_delete );
+
+                                        int UID_to_delete2 =database.userDao().GetUID(ordernumber , TrackingNumber);
+                                        Log.e( TAG, "onClick:UID_to_delete2 "+UID_to_delete2 );
+
+                                        // List<String> sku_to_remove =database.userDao().getskuOfTrackingNumber(ordernumber , TrackingNumber);
+                                       // Log.e(TAG, "onClick:sku_to_remove "+sku_to_remove.size() );
+
+                                        List<String> AfterTrackingNumberDeleted_list=database.userDao().
+                                                GetTrackingNumbersAfterDeleteOne(ordernumber , TrackingNumber);
+                                        Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.size() );
+
+                                        List<Integer> NewTrackingNumber_NUM=database.userDao().
+                                                GetNewTrackingNumbersAfterDeleteOne(ordernumber , TrackingNumber);
+                                        Log.e(TAG, "onClick:NewTrackingNumber_NUM "+NewTrackingNumber_NUM.size() );
+                                        List<String> NewTrackingNumber=new ArrayList<>();
+
+                                        for (int i=0;i<NewTrackingNumber_NUM.size();i++) {
+                                            int num=NewTrackingNumber_NUM.get(i);
+                                            if (num < 10) {
+                                                String Trackingnumber = ordernumber + "-0" + num;
+                                                NewTrackingNumber.add(Trackingnumber);
+                                                Log.e(TAG, "onClick:NewTrackingNumber "+NewTrackingNumber.get(i));
+//                                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(Trackingnumber));
+//                                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(ordernumber , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(ordernumber , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                Log.e(TAG, "onClick:Trackingnumber "+Trackingnumber );
+                                                Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.get(i) );
+                                            } else {
+                                                String Trackingnumber = database.userDao().getOrderNumber() + "-" + num;
+                                                NewTrackingNumber.add(Trackingnumber);
+                                                Log.e(TAG, "onClick:NewTrackingNumber "+NewTrackingNumber.get(i) );
+                                                //TODO can we do update for list after finish using NewTrackingNumber list
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(ordernumber , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(ordernumber , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                Log.e(TAG, "onClick:Trackingnumber "+Trackingnumber );
+                                                Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.get(i) );
+
+//                                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(Trackingnumber));
+//                                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
+                                            }
+                                        }
+
+                                        database.userDao().DeleteTrackingNumberFromtrackingtable_using_uid(ordernumber , UID_to_delete);
+//                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_sku(ordernumber ,  BarcodeToEditORDelete);
+                                        database.userDao().DeleteItemfromScanned(ordernumber , BarcodeToEditORDelete);
+
+                                        CreateORUpdateRecycleView();
+//                                      packedPackagesAdapter.notifyDataSetChanged();
 
                                         CreateORUpdateRecycleView();
                                     }

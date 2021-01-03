@@ -30,8 +30,9 @@ public class EditPackagesActivity extends AppCompatActivity {
 
     private PackedPackagesAdapter packedPackagesAdapter;
     int CountChecked;
-    String TrackingnumberToEditORDelete;
+    String TrackingnumberToEditORDelete,OrdernumberToEditORDelete;
     private static final String TAG = "EditPackagesActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +148,8 @@ public class EditPackagesActivity extends AppCompatActivity {
                     //Log.e("btn_editCheckedif",""+Checked);
                     CountChecked += 1;
                     TrackingnumberToEditORDelete = Trackingnumbers_List.get(i).getTrackingNumber();
-
+                    OrdernumberToEditORDelete=TrackingnumberToEditORDelete.substring(0,  TrackingnumberToEditORDelete.indexOf("-"));
+                    Log.e(TAG, "Delete_PDNEWQTY:OrdernumberToEditORDelete "+OrdernumberToEditORDelete );
                 }
                 if (i == (Trackingnumbers_List.size() - 1)) {
                     if (CountChecked < 1 || CountChecked > 1) {
@@ -159,29 +161,34 @@ public class EditPackagesActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int whichButton) {
 //                                        database.userDao().DeleteTrackingNumber(TrackingnumberToEditORDelete);
 //                                        database.userDao().DeleteTrackingNumberFromtrackingtable(TrackingnumberToEditORDelete);
-                                        int UID_to_delete =database.userDao().GetUID(TrackingnumberToEditORDelete);
-                                        Log.e(TAG, "onClick: UID_to_delete "+UID_to_delete );
-                                        List<String> sku_to_remove =database.userDao().getskuOfTrackingNumber(TrackingnumberToEditORDelete);
+
+                                        int UID_to_delete =database.userDao().GetUID(OrdernumberToEditORDelete ,TrackingnumberToEditORDelete);
+                                        Log.e( TAG, "onClick: UID_to_delete1 " + UID_to_delete );
+
+                                        int UID_to_delete2 =database.userDao().GetUID(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
+                                        Log.e( TAG, "onClick:UID_to_delete2 "+UID_to_delete2 );
+
+                                        List<String> sku_to_remove =database.userDao().getskuOfTrackingNumber(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
                                         Log.e(TAG, "onClick:sku_to_remove "+sku_to_remove.size() );
                                         List<String> AfterTrackingNumberDeleted_list=database.userDao().
-                                                GetTrackingNumbersAfterDeleteOne(TrackingnumberToEditORDelete);
+                                                GetTrackingNumbersAfterDeleteOne(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
                                         Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.size() );
 
                                         List<Integer> NewTrackingNumber_NUM=database.userDao().
-                                                GetNewTrackingNumbersAfterDeleteOne(TrackingnumberToEditORDelete);
+                                                GetNewTrackingNumbersAfterDeleteOne(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
                                         Log.e(TAG, "onClick:NewTrackingNumber_NUM "+NewTrackingNumber_NUM.size() );
                                         List<String> NewTrackingNumber=new ArrayList<>();
 
                                         for (int i=0;i<NewTrackingNumber_NUM.size();i++) {
                                             int num=NewTrackingNumber_NUM.get(i);
                                             if (num < 10) {
-                                                String Trackingnumber = database.userDao().getOrderNumber() + "-0" + num;
+                                                String Trackingnumber = OrdernumberToEditORDelete + "-0" + num;
                                                 NewTrackingNumber.add(Trackingnumber);
                                                 Log.e(TAG, "onClick:NewTrackingNumber "+NewTrackingNumber.get(i));
 //                                                database.userDao().Insertrackingnumber(new TrackingnumbersListDB(Trackingnumber));
 //                                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
-                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
-                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(OrdernumberToEditORDelete , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(OrdernumberToEditORDelete , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
                                                 Log.e(TAG, "onClick:Trackingnumber "+Trackingnumber );
                                                 Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.get(i) );
                                             } else {
@@ -189,8 +196,8 @@ public class EditPackagesActivity extends AppCompatActivity {
                                                 NewTrackingNumber.add(Trackingnumber);
                                                 Log.e(TAG, "onClick:NewTrackingNumber "+NewTrackingNumber.get(i) );
                                                 //TODO can we do update for list after finish using NewTrackingNumber list
-                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
-                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_Details(OrdernumberToEditORDelete , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
+                                                database.userDao().updatetrackingnumberAfterDeleteOne_ListDB(OrdernumberToEditORDelete , Trackingnumber, AfterTrackingNumberDeleted_list.get(i));
                                                 Log.e(TAG, "onClick:Trackingnumber "+Trackingnumber );
                                                 Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.get(i) );
 
@@ -199,10 +206,11 @@ public class EditPackagesActivity extends AppCompatActivity {
                                             }
                                         }
 
-                                        database.userDao().DeleteTrackingNumberFromtrackingtable_using_uid(UID_to_delete);
-                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_sku(null , sku_to_remove);
+                                        database.userDao().DeleteTrackingNumberFromtrackingtable_using_uid(OrdernumberToEditORDelete , UID_to_delete);
+                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_sku(OrdernumberToEditORDelete ,  sku_to_remove);
                                         CreateORUpdateRecycleView();
-//                                        packedPackagesAdapter.notifyDataSetChanged();
+//                                      packedPackagesAdapter.notifyDataSetChanged();
+
                                     }
                                 })
                                 .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {

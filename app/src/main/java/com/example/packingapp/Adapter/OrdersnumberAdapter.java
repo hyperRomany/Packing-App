@@ -1,6 +1,5 @@
 package com.example.packingapp.Adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,41 +8,37 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.packingapp.R;
-import com.example.packingapp.model.PackedPackageItemsModule;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PackedPackageItemsAdapter extends RecyclerView.Adapter<PackedPackageItemsAdapter.MyViewHolder> {
-    private static final String TAG = "PackedPackageItemsAdapt";
-    private List<PackedPackageItemsModule> ItemsList;
-    PackedPackageItemsModule packedPackageItemsModule;
+public class OrdersnumberAdapter extends RecyclerView.Adapter<OrdersnumberAdapter.MyViewHolder> {
 
+    private List<String> ItemsList;
+String ordersnumber;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CheckBox checkBox;
-        public TextView txt_nu , txt_barcode,txt_qty ,txt_description;
+        public TextView txt_nu , txt_tracking_number;
         LinearLayout main_linear_of_item;
         public MyViewHolder(View view) {
             super(view);
             checkBox = view.findViewById(R.id.checkbox_item);
             txt_nu=  view.findViewById(R.id.txt_nu);
-            txt_barcode =  view.findViewById(R.id.txt_barcode);
-            txt_qty=view.findViewById(R.id.txt_qty);
+            txt_tracking_number =  view.findViewById(R.id.txt_tracking_number);
             main_linear_of_item=view.findViewById(R.id.main_linear_of_item);
-            txt_description=view.findViewById(R.id.txt_description);
         }
     }
 
 
-    public PackedPackageItemsAdapter(List<PackedPackageItemsModule> moviesList) {
+    public OrdersnumberAdapter(List<String> moviesList) {
         this.ItemsList = moviesList;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_item_for_packed_package_items, parent, false);
+                .inflate(R.layout.recycle_item_for_packed_packages, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -51,11 +46,11 @@ public class PackedPackageItemsAdapter extends RecyclerView.Adapter<PackedPackag
    // @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        packedPackageItemsModule = ItemsList.get(position);
-         if (packedPackageItemsModule.getChecked_Item() ==null){
-             packedPackageItemsModule.setChecked_Item(false);
+         ordersnumber = ItemsList.get(position);
+        /* if (TrackingnumbersListDB.getChecked_Item() ==null){
+             TrackingnumbersListDB.setChecked_Item(false);
          }
-        if (packedPackageItemsModule.getChecked_Item()){
+        if (TrackingnumbersListDB.getChecked_Item()){
             holder.checkBox.setChecked(true);
   //          holder.main_linear_of_item.setBackgroundColor(R.color.red);
         }else {
@@ -79,14 +74,12 @@ public class PackedPackageItemsAdapter extends RecyclerView.Adapter<PackedPackag
     //                holder.main_linear_of_item.setBackgroundColor(R.color.third_white);
                 }
             }
-        });
+        });*/
 
         holder.checkBox.setVisibility(View.VISIBLE);
         holder.txt_nu.setText(""+(position+1));
-        holder.txt_qty.setText(packedPackageItemsModule.getQuantity());
-        Log.e(TAG, "onBindViewHolder: "+packedPackageItemsModule.getQuantity() );
-        holder.txt_barcode.setText(packedPackageItemsModule.getSku());
-        holder.txt_description.setText(packedPackageItemsModule.getName());
+
+        holder.txt_tracking_number.setText(ordersnumber);
         //android:textIsSelectable="true"
 //        holder.txt_ean11.setTextIsSelectable(true);
 //
@@ -100,9 +93,7 @@ public class PackedPackageItemsAdapter extends RecyclerView.Adapter<PackedPackag
         return ItemsList.size();
     }
 
-    public List<PackedPackageItemsModule> ReturnListOfPackages(){
-
-
+    public List<String> ReturnListOfPackages(){
         return ItemsList;
 
     }

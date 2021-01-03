@@ -81,7 +81,7 @@ public class DriverPackages_Header_DB {
     public DriverPackages_Header_DB() {
     }
 
-    public DriverPackages_Header_DB(String Passcode) {
+    /*public DriverPackages_Header_DB(String Passcode) {
         this.Passcode=Passcode;
     }
 
@@ -108,7 +108,7 @@ public class DriverPackages_Header_DB {
         this.currency = currency;
         this.Out_From_Loc= Out_From_Loc;
     }
-
+*/
     public String getShipping_fees() {
         return shipping_fees;
     }

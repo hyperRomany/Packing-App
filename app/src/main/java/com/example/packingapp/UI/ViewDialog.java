@@ -39,7 +39,7 @@ import java.util.List;
 
 public class ViewDialog {
     private Connection connection;
-
+private  String OrderNumber;
     private RadioButton btRadioButton;
     private EditText macAddressEditText;
     private EditText ipAddressEditText;
@@ -56,8 +56,9 @@ public class ViewDialog {
     Dialog dialog;
     Activity activity;
     byte[] configLabel="".getBytes();
-    public void showDialog(Activity activity){
+    public void showDialog(Activity activity , String OrderNumber){
         this.activity=activity;
+        this.OrderNumber=OrderNumber;
         dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -215,7 +216,8 @@ public class ViewDialog {
                 {
                   configLabel="".getBytes();
                     print.clear();
-                    for (int j=0;j<database.userDao().getDetailsTrackingnumberToUpload().size();j++) {
+                    //database.userDao().getDetailsTrackingnumberToUpload().size()
+                    for (int j=0;j<database.userDao().getDetailsTrackingnumberToUpload_scannedbyordernumber(OrderNumber).size();j++) {
                         if (database.userDao().getTrackingnumberDB().get(i).getTrackingNumber().equals(
                                 database.userDao().getDetailsTrackingnumberToUpload().get(j).getTrackingNumber())) {
                             ItemsOrderDataDBDetails itemsOrderDataDBDetails = new ItemsOrderDataDBDetails(
@@ -229,7 +231,13 @@ public class ViewDialog {
                         }
                     }
 
-                       configLabel = getConfigLabel(print);
+                    // TODO will not delete order data with scane new one and delete will be by order number
+                    database.userDao().deleteAllHeader(OrderNumber);
+                    database.userDao().deleteAllOrderItems(OrderNumber);
+                    database.userDao().deleteAllTrckingNumber(OrderNumber);
+                    database.userDao().deleteAllOrderItems_scanned(OrderNumber);
+
+                    configLabel = getConfigLabel(print);
                         Log.e("label", configLabel.toString());
                         connection.write(configLabel);
                         setStatus("Sending Data", Color.BLUE);
@@ -285,7 +293,7 @@ public class ViewDialog {
             }
             if (printerLanguage == PrinterLanguage.ZPL) {
 
-                    OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload();
+                    OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(OrderNumber);
                     try {
                         String string = DetailsList.get(0).getTrackingNumber();
                         String[] parts = string.split("-");

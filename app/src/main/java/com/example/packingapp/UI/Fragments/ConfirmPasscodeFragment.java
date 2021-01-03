@@ -218,7 +218,7 @@ FragmentConfirmPasscodeBinding binding;
 
     public void UpdateStatus(String status){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload();
+        OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(Orderclicked);
         confirmPasscodeViewModel.UpdateStatus(
                 Orderclicked,
                 status
