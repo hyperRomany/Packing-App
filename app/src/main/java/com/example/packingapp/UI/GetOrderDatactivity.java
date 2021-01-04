@@ -17,6 +17,7 @@ import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityGetOrderDataBinding;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
+import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.GetOrderResponse.ResponseGetOrderData;
 import com.example.packingapp.model.Message;
@@ -163,6 +164,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                                // promptsView.
                                                                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
                                                                UploadHeader(Ordernumber);
+                                                               //UploadDetails(Ordernumber);
+
                                                                alertDialog.dismiss();
 
                                                            }
@@ -281,9 +284,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
 
-            List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload(ordernumberselected);
-            String OrderNumber = database.userDao().getOrderNumber();
-            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
+            List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
+           // String OrderNumber = database.userDao().getOrderNumber();
+            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(ordernumberselected);
 
             float SumOfQTY = database.userDao().SumOfQTYFromDetials();
             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
@@ -292,7 +295,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
             float ShippingfeesPerItem = Shippingfees / SumOfQTY;
             Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
 
-            getOrderDataViewModel.InsertOrderdataDetails(OrderNumber, itemsOrderDataDBDetailsList, ShippingfeesPerItem);
+            getOrderDataViewModel.InsertOrderdataDetails(ordernumberselected, itemsOrderDataDBDetailsList, ShippingfeesPerItem);
 
             getOrderDataViewModel.mutableLiveData_Details.observe(GetOrderDatactivity.this, new Observer<Message>() {
                 @Override

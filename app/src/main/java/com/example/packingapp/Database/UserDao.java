@@ -87,8 +87,8 @@ public interface UserDao {
     @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned Where Order_number =:Order_number")
     List<ItemsOrderDataDBDetails_Scanned> getDetailsTrackingnumberToUpload_scannedbyordernumber(String Order_number);
 
-    @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber=:TrackingNumber")
-    List<ItemsOrderDataDBDetails> getDetailsTrackingnumberToUpload(String TrackingNumber);
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber=:TrackingNumber")
+    List<ItemsOrderDataDBDetails_Scanned> getDetailsTrackingnumberToUpload(String TrackingNumber);
 
     @Query("SELECT * FROM TrackingnumbersListDB")
     List<TrackingnumbersListDB> getTrackingnumberDB();
@@ -96,7 +96,7 @@ public interface UserDao {
     @Query("SELECT distinct(Ordernumber) FROM TrackingnumbersListDB")
     List<String> getOrdersNumberDB();
 
-    @Query("SELECT distinct(TrackingNumber) FROM itemsOrderDataDBDetails where TrackingNumber LIKE :ORDER_NO ")
+    @Query("SELECT distinct(TrackingNumber) FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber LIKE :ORDER_NO ")
     List<String> getNoOfPackagesToUpload(String ORDER_NO);
 
     @Query("SELECT Order_number FROM OrderDataModuleDBHeader")

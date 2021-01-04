@@ -3,7 +3,7 @@ package com.example.packingapp.viewmodel;
 import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
-import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
+import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 import com.example.packingapp.model.GetOrderResponse.ResponseGetOrderData;
 import com.example.packingapp.model.Message;
 import com.example.packingapp.model.ResponseUpdateStatus;
@@ -34,7 +34,7 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("OrderNumber", ORDER_NO);
 
         ApiClient.buildRo().GetOrderData(
-                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO
         )
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,6 +74,7 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("CURRENCY", CURRENCY);
         map.put("SHIPPING_FEES", String.valueOf(SHIPPING_FEES));
         map.put("NO_OF_PACKAGES", NO_OF_PACKAGES);
+        Log.e(TAG, "InsertOrderdataHeader:NO_OF_PACKAGES "+NO_OF_PACKAGES );
         map.put("STORAGE_LOCATION", STORAGE_LOCATION);
         map.put("STATUS", "packed");
 
@@ -92,7 +93,7 @@ public class GetOrderDataViewModel extends ViewModel {
     public static MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
 
     public void InsertOrderdataDetails(String OrderNumber ,
-                                       List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList ,
+                                       List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList ,
                                        float ShippingfeesPerItem ) {
         HashMap<String, String> map = new HashMap<>();
 
@@ -104,7 +105,7 @@ public class GetOrderDataViewModel extends ViewModel {
 //        map.put("ItemsOrderDataDBDetailsList", equipmentJsonArray.toString());
 //        map.put("ORDER_NO", OrderNumber);
         Log.e(TAG, "InsertOrderdataDetails: sss "+ ShippingfeesPerItem );
-
+        Log.e(TAG, "InsertOrderdataDetails: "+itemsOrderDataDBDetailsList.size() );
         for (int i =0;i<itemsOrderDataDBDetailsList.size();i++) {
             //"\u200e"
 
@@ -138,7 +139,7 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )

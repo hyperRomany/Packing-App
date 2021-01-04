@@ -13,9 +13,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -312,8 +315,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             //TODO Print RunTime sheet -- get data for list of order (recievePackedORDER_NO_Distinctlist)
                            // List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
 
-                            assignPackedOrderToZoneViewModel.SheetData(database.userDao().getUserData_MU().getUser_id()
-                                    , recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO());
+                            assignPackedOrderToZoneViewModel.SheetData(recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO());
                             assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
                                 @Override
                                 public void onChanged(Response response) {
@@ -350,9 +352,61 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             public void onClick(View v) {
                 //TODO Call runtime sheet and insert it in localDB
 
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.prompts_runtime_sheet, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                final EditText edit_runtimesheet_idInput = (EditText) promptsView
+                        .findViewById(R.id.edit_smsInput);
+
+                final Button btn_getruntimesheet = (Button) promptsView
+                        .findViewById(R.id.btn_send_sms);
+
+               /* btn_send_sms.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // promptsView.
+
+                        if (!edit_smsInput.getText().toString().isEmpty()) {
+                            Retrieve_Runsheet(edit_smsInput.getText().toString());
+                            alertDialog.dismiss();
+
+                        }else{
+                            if (edit_smsInput.getText().toString().isEmpty()){
+                                edit_smsInput.setError(getResources().getString(R.string.enter_sms_body));
+                            }
+                        }
+                    }
+
+                });*/
+                // show it
+                alertDialog.show();
+
             }
         });
     }
+
+    /*private void Retrieve_Runsheet(String runsheet_id) {
+        assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
+        assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<RecievePackedModule>() {
+            @Override
+            public void onChanged(RecievePackedModule recievePackedModule) {
+//                database.userDao().insertRecievePacked(new RecievePackedModule(
+//                        responseGetOrderData.getORDER_NO(), responseGetOrderData.getNO_OF_PACKAGES(),
+//                        trackingnumber,Zone/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
+//                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY()));
+
+            }
+        });
+    }*/
 
     private void LoadingNewPurchaseOrderDriver() {
         if (!binding.editTrackingnumberDriver.getText().toString().isEmpty()) {
@@ -510,7 +564,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         List<RecievePackedModule>  recievePackedlist =  database.userDao().getRecievePacked_ORDER_NO(OrderNumber);
         if (recievePackedlist.size() == 0) {
-            GETOrderData(trackingnumber1,Zone1);
+            GETOrderData(OrderNumber ,trackingnumber1,Zone1);
            // Toast.makeText(context, "تم", Toast.LENGTH_SHORT).show();
         }else if (recievePackedlist.size() > 0){
             if (database.userDao().getRecievePacked_Tracking_Number(trackingnumber1)
@@ -569,8 +623,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
     }
 //in sorting
-    private void GETOrderData(String trackingnumber ,String Zone ){
-        assignPackedOrderToZoneViewModel.fetchdata(trackingnumber);
+    private void GETOrderData(String OrderNumber , String trackingnumber ,String Zone ){
+        assignPackedOrderToZoneViewModel.fetchdata(OrderNumber);
         assignPackedOrderToZoneViewModel.getOrderDataLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<RecievePackedModule>() {
             @Override
             public void onChanged(RecievePackedModule responseGetOrderData) {
@@ -608,7 +662,6 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             }
         });
     }
-
     private void AfterGetOrderData(RecievePackedModule responseGetOrderData, String trackingnumber ,String Zone) {
         Log.e(TAG, "onChanged: " + responseGetOrderData.getNO_OF_PACKAGES());
 
@@ -766,7 +819,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             List<RecievePackedModule> recievePackedlist=  database.userDao().getRecievePacked_ORDER_NO(OrderNumber);
             if (recievePackedlist.size() == 0){
 
-                GETOrderData(binding.editTrackingnumberDriver.getText().toString(),null);
+                GETOrderData(OrderNumber , binding.editTrackingnumberDriver.getText().toString(),null);
                 Log.e(TAG, "onClick: Ord "+OrderNumber );
                 binding.editTrackingnumberDriver.setText("");
                 binding.editTrackingnumberDriver.setError(null);

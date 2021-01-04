@@ -8,11 +8,12 @@
     android:padding="10dp" >
 
     <EditText
-        android:id="@+id/edit_smsInput"
+        android:id="@+id/edit_runtimesheetidInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_sms_body"
+        android:hint="@string/recall_assign_orders_to_driver"
         android:textSize="@dimen/font_size_for_text_of_app"
+
         android:textColorHint="#DDD">
 
         <requestFocus />
@@ -26,14 +27,13 @@
         android:layout_marginTop="30dp">
 
         <Button
-            android:id="@+id/btn_send_sms"
+            android:id="@+id/btn_get_runsheet"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:text="@string/Send_SMS"
+            android:text="@string/recall_assign_orders_to_driver"
             android:background="@drawable/bg_btn"
             android:textSize="@dimen/font_size_for_button_of_app"
-
             android:textColor="@color/textcolor_btns"/>
         <Button
             android:id="@+id/btn_dismiss"

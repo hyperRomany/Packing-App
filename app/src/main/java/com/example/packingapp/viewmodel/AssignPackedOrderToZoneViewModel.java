@@ -52,7 +52,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         map.put("status", Status);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",ORDER_NO ,
+                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",ORDER_NO ,
                 map
         )
                 .observeOn(AndroidSchedulers.mainThread())
@@ -150,11 +150,10 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         return runTimeSheetData ;
     }
 
-    public void SheetData(String ORDER_NO , String Username) {
+    public void SheetData(String ORDER_NO ) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", ORDER_NO);
-        map.put("Username", Username);
 
         ApiClient.build().ReadRunTimeSheet(map)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -167,5 +166,28 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         });
 
     }
+
+
+    private MutableLiveData<RecievePackedModule> RetrieverunTimeSheetData = new MutableLiveData<>();
+    public MutableLiveData<RecievePackedModule> RetrieveSheetLiveData() {
+        return RetrieverunTimeSheetData ;
+    }
+
+   /* public void RetieveSheetData(String Runsheet_id ){
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("Runsheet_id", Runsheet_id);
+
+        ApiClient.build().RetrieveRunTimeSheet(map)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe((@SuppressLint("CheckResult") Response responseSms) -> {
+                            runTimeSheetData.setValue(responseSms);
+                        }
+                        ,throwable -> {
+                            Log.d("Error_Vof ",throwable.getMessage());
+                        });
+
+    }*/
 
 }
