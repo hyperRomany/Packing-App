@@ -139,4 +139,5 @@
     <string name="will_delete_last_order">سوف يتم حذف أخر عمليه لأمر بيع وتحميله من جديد</string>
     <string name="show_last_assign">تعديل</string>
     <string name="recall_assign_orders_to_driver">أستدعاء</string>
+    <string name="reprinter">اعاده الطباعه</string>
 </resources>

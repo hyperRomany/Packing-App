@@ -7,6 +7,7 @@ import com.example.packingapp.model.Message;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.model.ResponseLogin;
+import com.example.packingapp.model.ReprintAWBModules.ResponseReprintAWB;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.model.ResponseVehicle;
@@ -104,8 +105,15 @@ public interface APIRetrofit {
     @POST("Packing_Api/Ordernumber/Read_ForRunTimeSheet.php")
     Observable<Response> ReadRunTimeSheet(@Body Map<String, String> mobile);
 
+    @POST("Packing_Api/Ordernumber/Read_ForRunTimeSheet.php")
+    Observable<Response> Reprint_awb(@Body Map<String, String> mobile);
+
     @POST("Packing_Api/Ordernumber/Retrieve_ForRunTimeSheet.php")
     Observable<RecievePackedModule> RetrieveRunTimeSheet(@Body Map<String, String> mobile);
 
+    @POST("Packing_Api/Ordernumber/Read_ForAWB.php")
+    Observable<ResponseReprintAWB> Reprint_AWB(@Body Map<String, String> mobile);
 
+    @POST("Packing_Api/Ordernumber/CreateAWBLog.php")
+    Observable<Message> Reprint_AWB_insertlog(@Body Map<String, String> mobile);
 }

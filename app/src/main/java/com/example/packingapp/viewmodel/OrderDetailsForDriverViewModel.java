@@ -90,7 +90,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
         map.put("status", Status);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",ORDER_NO ,
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",ORDER_NO ,
                 map
         )
                 .observeOn(AndroidSchedulers.mainThread())

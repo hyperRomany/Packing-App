@@ -41,7 +41,11 @@ ActivityAdminstratorBinding binding;
                 binding.btnDriver.setVisibility(View.VISIBLE);
             }else if (modulesIDSList.get(i).getModules_ID().equalsIgnoreCase("6")){
                 binding.btnSupervisor.setVisibility(View.VISIBLE);
+            }else if (modulesIDSList.get(i).getModules_ID().equalsIgnoreCase("7")){
+                binding.btnReprint.setVisibility(View.VISIBLE);
             }
+
+
         }
 
         binding.btnPacked.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,13 @@ ActivityAdminstratorBinding binding;
             }
         });
 
+        binding.btnReprint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ReprintActivity.class);
+                startActivity(i);
+            }
+        });
         binding.btnSupervisor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
