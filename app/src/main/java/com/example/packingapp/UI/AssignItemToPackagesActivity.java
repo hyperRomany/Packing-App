@@ -183,7 +183,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     Log.e(TAG, "SearchOfBarcode:TotalQTYFor23 " + Double.valueOf(TotalQTYFor23));
                     if (itemsOrderDataDBDetailsList.size() > 0) {
 
-                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() > (Double.valueOf(TotalQTYFor23))) {
+                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Double.valueOf(TotalQTYFor23))) {
 
                             QTY = Float.valueOf(TotalQTYFor23);
                             Log.e(TAG, "SearchOfBarcode:QTY " + QTY);
@@ -199,7 +199,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             //   QTY= itemsOrderDataDBDetailsList.get(0).getQuantity()+1 ;
                             binding.editBarcode.setText("");
                             binding.editBarcode.requestFocus();
-                        } else if (itemsOrderDataDBDetailsList.get(0).getQuantity() <= (Double.valueOf(TotalQTYFor23))) {
+                        } else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (Double.valueOf(TotalQTYFor23))) {
                             binding.editBarcode.setError("تم أضافه الكميه المطلبه او زياده عن المطلوب");
                             binding.editBarcode.setText("");
                             binding.editBarcode.requestFocus();

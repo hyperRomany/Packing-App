@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
@@ -25,10 +26,11 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
     public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
-    public void fetchdata(String OrderNumber) {
+    public void fetchdata(String OrderNumber ) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", OrderNumber);
+
 
         ApiClient.build().GetOrderNumberAndNumPackage(map)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -150,11 +152,12 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         return runTimeSheetData ;
     }
 
-    public void SheetData(String ORDER_NO ) {
+    public void SheetData(String ORDER_NO ,String DRIVER_ID , String Username  ) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", ORDER_NO);
-
+        map.put("DRIVER_ID", DRIVER_ID);
+        map.put("Username", Username);
         ApiClient.build().ReadRunTimeSheet(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -168,26 +171,26 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
 
-    private MutableLiveData<RecievePackedModule> RetrieverunTimeSheetData = new MutableLiveData<>();
-    public MutableLiveData<RecievePackedModule> RetrieveSheetLiveData() {
+    private MutableLiveData<ResponseFetchRuntimesheetID> RetrieverunTimeSheetData = new MutableLiveData<>();
+    public MutableLiveData<ResponseFetchRuntimesheetID> RetrieveSheetLiveData() {
         return RetrieverunTimeSheetData ;
     }
 
-   /* public void RetieveSheetData(String Runsheet_id ){
+    public void RetieveSheetData(String Runsheet_id ){
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("Runsheet_id", Runsheet_id);
+        map.put("id", Runsheet_id);
 
         ApiClient.build().RetrieveRunTimeSheet(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe((@SuppressLint("CheckResult") Response responseSms) -> {
-                            runTimeSheetData.setValue(responseSms);
+                .subscribe((@SuppressLint("CheckResult") ResponseFetchRuntimesheetID responseSms) -> {
+                            RetrieverunTimeSheetData.setValue(responseSms);
                         }
                         ,throwable -> {
                             Log.d("Error_Vof ",throwable.getMessage());
                         });
 
-    }*/
+    }
 
 }

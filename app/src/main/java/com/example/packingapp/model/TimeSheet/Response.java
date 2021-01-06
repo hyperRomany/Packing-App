@@ -5,9 +5,20 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Response{
-	@SerializedName("records")
+	@SerializedName("id")
+	private String id;
 
+
+	@SerializedName("records")
 	private List<RecordsItem> records;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public void setRecords(List<RecordsItem> records){
 		this.records = records;

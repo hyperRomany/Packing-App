@@ -6,14 +6,14 @@ import java.util.List;
 
 import androidx.room.ColumnInfo;
 
-public class ResponseFetchOrderData {
+public class ResponseFetchRuntimesheetID {
 
     @ColumnInfo(name ="records")
     @SerializedName("records")
     private List<RecievePackedModule> records;
 
 
-    public ResponseFetchOrderData(List<RecievePackedModule> records) {
+    public ResponseFetchRuntimesheetID(List<RecievePackedModule> records) {
         this.records = records;
     }
 

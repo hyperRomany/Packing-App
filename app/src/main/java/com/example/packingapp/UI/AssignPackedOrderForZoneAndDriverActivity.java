@@ -27,6 +27,7 @@ import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignPackedOrderForZoneDriverBinding;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
@@ -315,13 +316,16 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             //TODO Print RunTime sheet -- get data for list of order (recievePackedORDER_NO_Distinctlist)
                            // List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
 
-                            assignPackedOrderToZoneViewModel.SheetData(recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO());
+                            assignPackedOrderToZoneViewModel.SheetData(recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO(),
+                                    Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
+                                    ,database.userDao().getUserData_MU().getUser_id()
+                                    );
                             assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
                                 @Override
                                 public void onChanged(Response response) {
                                     if (response.getRecords().size()>0) {
-                                        PrintRunTimeSheet(response.getRecords());
-
+                                        PrintRunTimeSheet(response.getId() , response.getRecords());
+                                        Log.e(TAG, "onChanged:response.getId() "+response.getId() );
 //                                        for (int i=0;i<response.getRecords().size();i++)
 //                                        {
 ////                                        PrintRunTimeSheet(response.getRecords().get(i).getTRACKING_NO(), response.getRecords().get(i).getCUSTOMER_NAME(),
@@ -365,28 +369,29 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 AlertDialog alertDialog = alertDialogBuilder.create();
 
                 final EditText edit_runtimesheet_idInput = (EditText) promptsView
-                        .findViewById(R.id.edit_smsInput);
+                        .findViewById(R.id.edit_runtimesheetidInput);
 
                 final Button btn_getruntimesheet = (Button) promptsView
-                        .findViewById(R.id.btn_send_sms);
+                        .findViewById(R.id.btn_get_runsheet);
 
-               /* btn_send_sms.setOnClickListener(new View.OnClickListener() {
+                btn_getruntimesheet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // promptsView.
 
-                        if (!edit_smsInput.getText().toString().isEmpty()) {
-                            Retrieve_Runsheet(edit_smsInput.getText().toString());
+                        if (!edit_runtimesheet_idInput.getText().toString().isEmpty()) {
+                            Retrieve_Runsheet(edit_runtimesheet_idInput.getText().toString());
                             alertDialog.dismiss();
 
                         }else{
-                            if (edit_smsInput.getText().toString().isEmpty()){
-                                edit_smsInput.setError(getResources().getString(R.string.enter_sms_body));
+                            if (edit_runtimesheet_idInput.getText().toString().isEmpty()){
+                                edit_runtimesheet_idInput.setError(getResources().getString(R.string.enter_sms_body));
+                                edit_runtimesheet_idInput.requestFocus();
                             }
                         }
                     }
 
-                });*/
+                });
                 // show it
                 alertDialog.show();
 
@@ -394,19 +399,57 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         });
     }
 
-    /*private void Retrieve_Runsheet(String runsheet_id) {
-        assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
-        assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<RecievePackedModule>() {
-            @Override
-            public void onChanged(RecievePackedModule recievePackedModule) {
-//                database.userDao().insertRecievePacked(new RecievePackedModule(
-//                        responseGetOrderData.getORDER_NO(), responseGetOrderData.getNO_OF_PACKAGES(),
-//                        trackingnumber,Zone/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
-//                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY()));
+    private void Retrieve_Runsheet(String runsheet_id) {
 
-            }
-        });
-    }*/
+        List<RecievePackedModule> list=database.userDao().getorderNORecievePackedModule();
+        if (list.size()>0) {
+            new AlertDialog.Builder(AssignPackedOrderForZoneAndDriverActivity.this)
+                    .setTitle(getString(R.string.delete_dialoge))
+                    .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            database.userDao().deleteRecievePackedModule();
+
+                            assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
+                            assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
+                                @Override
+                                public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
+                                    Log.e(TAG, "onChanged:FetchRunt " + responseFetchRuntimesheetID.getRecords().size());
+                                    for (int i = 0; i < responseFetchRuntimesheetID.getRecords().size(); i++) {
+                                        database.userDao().insertRecievePacked(new RecievePackedModule(
+                                                responseFetchRuntimesheetID.getRecords().get(i).getORDER_NO(), responseFetchRuntimesheetID.getRecords().get(i).getNO_OF_PACKAGES(),
+                                                responseFetchRuntimesheetID.getRecords().get(i).getTracking_Number(), "null"/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
+                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY() */));
+
+                                    }
+                                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    })
+                    .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    }).show();
+        }else {
+            assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
+            assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
+                @Override
+                public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
+                    Log.e(TAG, "onChanged:FetchRunt " + responseFetchRuntimesheetID.getRecords().size());
+                    for (int i = 0; i < responseFetchRuntimesheetID.getRecords().size(); i++) {
+                        database.userDao().insertRecievePacked(new RecievePackedModule(
+                                responseFetchRuntimesheetID.getRecords().get(i).getORDER_NO(), responseFetchRuntimesheetID.getRecords().get(i).getNO_OF_PACKAGES(),
+                                responseFetchRuntimesheetID.getRecords().get(i).getTracking_Number(), "null"/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
+                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY() */));
+                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+    }
 
     private void LoadingNewPurchaseOrderDriver() {
         if (!binding.editTrackingnumberDriver.getText().toString().isEmpty()) {
@@ -728,14 +771,13 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                         orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
                         DriverID
                 );
-
             }
            // Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : "+orderDataModuleDBHeaderkist.get(0).getZone() );
 
             //TODO use phone number of customer
             //  String CustomerPhone =items.get(0).getCUSTOMER_PHONE().toString().replace("+2","");
-            String CustomerPhone ="01065286596";
-            SendSMS(CustomerPhone,"Your Order In His Way");
+//            String CustomerPhone ="01065286596";
+//            SendSMS(CustomerPhone,"Your Order In His Way");
 
         }else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
@@ -867,12 +909,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
     //TODO
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void PrintRunTimeSheet(List<RecordsItem> items) {
+    private void PrintRunTimeSheet(String id , List<RecordsItem> items) {
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 0);
-        createPdf(items);
+        createPdf(id , items);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createPdf(List<RecordsItem> items) {
+    private void createPdf(String id , List<RecordsItem> items) {
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -880,10 +922,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         Paint paint = new Paint();
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
         paint.setTextSize(30.0f);
-        PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(2000, 3000, 1).create());
+        PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, 1).create());
         Canvas canvas = page.getCanvas();
         canvas.drawText("إقرار إستلام /Receiving Avowal", 700.0f, 60.0f, paint);
-        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ", 550.0f, 100.0f, paint);
+        canvas.drawText(" رقم  "+id, 700.0f, 60.0f, paint);
+
+        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ", 800.0f, 100.0f, paint);
         canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل", 30.0f, 140.0f, paint);
         canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله", 30.0f, 180.0f, paint);
         canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ", 30.0f, 220.0f, paint);
@@ -893,7 +937,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         paint.setStrokeWidth(2.0f);
         Paint paint2 = paint;
 
-        canvas.drawRect(30.0f, 2600.0f, 1940.0f, 280.0f, paint2);
+        canvas.drawRect(30.0f, 2600.0f, 2940.0f, 280.0f, paint2);
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setStyle(Paint.Style.FILL);
 
