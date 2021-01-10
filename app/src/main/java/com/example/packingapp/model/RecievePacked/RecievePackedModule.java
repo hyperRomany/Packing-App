@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "RecievePackedModule")
 public class RecievePackedModule {
 
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey(autoGenerate = true )
         private int uid;
 
         @ColumnInfo(name ="ORDER_NO")

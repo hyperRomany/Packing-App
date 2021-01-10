@@ -148,15 +148,34 @@ List<String> Reject_Resons_list;
         Reject_Resons_list.add(getResources().getString(R.string.choice_reason));
 
         Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء لمشكلة مع هايبروان");
+        Reject_Resons_list.add("العميل طلب الإلغاء غير متاح في العنوان");
+        Reject_Resons_list.add("عنوان العميل الصحيح خارج نطاق الخدمة");
+        Reject_Resons_list.add("العميل طلب الإلغاء لعدم السماح بفتح الشحنة");
+        Reject_Resons_list.add("العميل طلب التأجيل لمدة خارج النطاق المسموح");
+        Reject_Resons_list.add("سوء الأحوال الجوية / الطريق المؤدي لعنوان العميل");
+        Reject_Resons_list.add("تأخرت عن  ميعاد التسليم");
+        Reject_Resons_list.add("تلف الشحنة أثناء التوصيل");
+        Reject_Resons_list.add("شك في تصرف العميل");
+        Reject_Resons_list.add("التغليف غير مرضي للعميل");
+        Reject_Resons_list.add("توفر المنتج الآن بسعر أقل عن وقت الطلب");
+        Reject_Resons_list.add("تلف الشحنة من المخازن");
+        Reject_Resons_list.add("إلغاء من قبل هايبروان");
+        Reject_Resons_list.add("الشحنة / المنتج خطأ");
+        Reject_Resons_list.add("عطل سيارة/ هاتفي المحمول / ماكينة الدفع");
+        Reject_Resons_list.add("سوء الأحوال الجوية / الطريق المؤدي لعنوان العميل");
+        Reject_Resons_list.add("العميل طلب التأجيل دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب التأجيل لحين حل مشكلة مع هايبروان");
+        Reject_Resons_list.add("العميل يريد الطلب في عنوان في نطاق منطقة أخرى");
+        Reject_Resons_list.add("عنوان العميل غير واضح ولا يرد على الهاتف");
+        Reject_Resons_list.add("العميل طلب تجميع الطلبات");
+        Reject_Resons_list.add("ظرف خاص");
+        Reject_Resons_list.add("تأخرت عن  ميعاد التسليم");
+
+        Reject_Resons_list.add("إعادة تغليف");
+        Reject_Resons_list.add("شك في تصرف العميل");
+        Reject_Resons_list.add("التأجيل من قبل هايبروان");
+        Reject_Resons_list.add("عطل سيارة/ هاتفي المحمول / ماكينة الدفع");
 
     }
 

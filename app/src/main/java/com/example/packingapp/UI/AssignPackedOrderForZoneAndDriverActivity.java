@@ -28,6 +28,7 @@ import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignPackedOrderForZoneDriverBinding;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.RecievePacked.RecievePackedModule_For_selection_loop_for_update;
 import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
 import com.example.packingapp.model.RecordItemDriver;
 import com.example.packingapp.model.ResponseDriver;
@@ -64,13 +65,13 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     AssignPackedOrderToZoneViewModel assignPackedOrderToZoneViewModel;
     AppDatabase database;
     final Context context = this;
-   // String Zone ,trackingnumberIn;
+    String Zone_public ,trackingnumber_public;
     ArrayList<String> Drivers_IDs_list ;
     ArrayList<RecordItemDriver> Drivers_Data_list ;
     ResponseDriver responseDriver;
     String trackingNo="";
     List<String> Response_id_for_runtimesheet_Orders;
-    List<List<RecordsItem>> Response_Recordsitems_list_for_runtimesheet_Orders;
+    List<RecordsItem> Response_Recordsitems_list_for_runtimesheet_Orders;
     List<String> Response_phonenumber_for_runtimesheet_Orders;
     List<Response> Response_list_for_runtimesheet_Orders;
     ArrayAdapter<String> spinnerAdapterDriver;
@@ -99,6 +100,32 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     }
 
     private void ObserveFU() {
+
+
+        assignPackedOrderToZoneViewModel.getOrderDataLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<RecievePackedModule>() {
+            @Override
+            public void onChanged(RecievePackedModule responseGetOrderData) {
+                //|| responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")
+                Log.e(TAG, "onChanged:stat_GETOrderData "+ responseGetOrderData.getSTATUS());
+                ForOberveOfGetOrderData(responseGetOrderData);
+            }
+
+        });
+
+        assignPackedOrderToZoneViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged: "+s );
+
+                if (s.equals("HTTP 503 Service Unavailable")) {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.tracking_number_server), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
         assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
             @Override
             public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
@@ -115,22 +142,21 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         });
 
         assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChanged(Response response) {
                 if (response.getRecords().size() > 0) {
                     Response_list_for_runtimesheet_Orders.add(response);
                     Response_id_for_runtimesheet_Orders.add(response.getId());
-                    Response_Recordsitems_list_for_runtimesheet_Orders.add(response.getRecords());
+                    for (int i=0;i<response.getRecords().size();i++) {
+                        Response_Recordsitems_list_for_runtimesheet_Orders.add(response.getRecords().get(i));
+                    }
                     Response_phonenumber_for_runtimesheet_Orders.add(response.getCUSTOMER_PHONE());
                     Log.e(TAG, "onChanged:response.getId() " + response.getId());
                     Log.e(TAG, "UpdateDriverID_ON_83:Resposize_onChang "+Response_list_for_runtimesheet_Orders.size() );
                     UpdateDriverID_ON_83(Response_list_for_runtimesheet_Orders , Drivers_IDs_list.get( binding.spinerDriverId.getSelectedItemPosition()));
+                    PrintRunTimeSheet(Response_id_for_runtimesheet_Orders.get(0),Response_Recordsitems_list_for_runtimesheet_Orders);
 
-//                                        for (int i=0;i<response.getRecords().size();i++)
-//                                        {
-////                                        PrintRunTimeSheet(response.getRecords().get(i).getTRACKING_NO(), response.getRecords().get(i).getCUSTOMER_NAME(),
-////                                                response.getRecords().get(i).getADDRESS_CITY(), response.getRecords().get(i).getOUTBOUND_DELIVERY(),"كاش", response.getRecords().get(i).getITEM_PRICE());
-//                                        }
                 } else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لا تحتوي علي بيانات", Toast.LENGTH_SHORT).show();
                 }
@@ -194,6 +220,25 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 });
     }
 
+    private void ForOberveOfGetOrderData(RecievePackedModule responseGetOrderData) {
+
+        if (Zone_public != null) {
+            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("in sorting")
+            ) {
+                AfterGetOrderData(responseGetOrderData, trackingnumber_public, Zone_public);
+            } else {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")) {
+                AfterGetOrderData(responseGetOrderData, trackingnumber_public, Zone_public);
+            } else {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
     private void ButtonsClickListnerForAssignToZone() {
         binding.editTrackingnumberZone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -222,7 +267,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         binding.btnShowLastTrackingnumbersZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+                List<RecievePackedModule_For_selection_loop_for_update>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+
                 if (recievePackedORDER_NO_Distinctlist.size()>0) {
                     Intent GoToEditRecievedPackages=new Intent(AssignPackedOrderForZoneAndDriverActivity.this,
                             EditPackagesForRecievingActivity.class);
@@ -263,7 +309,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         binding.btnConfirmAssignOrdersToZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+                List<RecievePackedModule_For_selection_loop_for_update>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                 List<RecievePackedModule>  NOTrecievedPackedORDERlist=  new ArrayList<>();
                 if (recievePackedORDER_NO_Distinctlist.size()>0) {
 //                    for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size();i++){
@@ -277,10 +323,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                     if (database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages().size()==0){
                         //TODO UPDATE STATUS
-                        // Toast.makeText(RecievePackedOrderForSortingActivity.this, String.format("%s",getString(R.string.message_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
-                        UpdateStatus_zone_ON_83("sorted");
-                        UpdateStatus("sorted");
-
+                        // Toast.makeText(RecievePackedOrderForSortingActivity.this, String.format("%s"
+                        // ,getString(R.string.message_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                        List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao()
+                                .GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                        for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
+                            UpdateStatus_zone_ON_83("sorted");
+                            UpdateStatus("sorted");
+                        }
                     }else {
                         Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
                                 getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
@@ -289,6 +339,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
                             getString(R.string.there_is_no_trackednumber_scanned)), Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -347,7 +398,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 binding.btnShowLastTrackingnumbersDriver.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+                        List<RecievePackedModule_For_selection_loop_for_update>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                         if (recievePackedORDER_NO_Distinctlist.size()>0) {
                             Intent GoToEditRecievedPackages=new Intent(AssignPackedOrderForZoneAndDriverActivity.this,
                                     EditPackagesForRecievingActivity.class);
@@ -409,7 +460,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                 //TODO apply validation to spinner driver id
                if (binding.spinerDriverId.getSelectedItemPosition()!=0) {
-                    List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+                    List<RecievePackedModule_For_selection_loop_for_update> recievePackedORDER_NO_Distinctlist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                     List<RecievePackedModule> NOTrecievedPackedORDERlist = new ArrayList<>();
                     if (recievePackedORDER_NO_Distinctlist.size() > 0) {
 //                        for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
@@ -434,11 +485,13 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                            List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                             Log.i(TAG, "onClick:ORDER_NO_Distinctlistsize "+recievePackedORDER_NO_Distinctlist.size() );
                             if (recievePackedORDER_NO_Distinctlist.size() > 0) {
-                                for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
-                                    Log.i(TAG, "onClick:for i "+recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO() );
+                                List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                                for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
+                                    Log.i(TAG, "onClick:for i "+recievePackedORDER_NO_Distinctlist_for_for_loop.get(i) );
                                     if (i>0&& Response_id_for_runtimesheet_Orders.size()>0) {
                                         Log.e(TAG, "onClick: i>0 andsize >0 ");
-                                        assignPackedOrderToZoneViewModel.SheetData(Response_id_for_runtimesheet_Orders.get(0), recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO(),
+                                        assignPackedOrderToZoneViewModel.SheetData(Response_id_for_runtimesheet_Orders.get(0),
+                                                recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO(),
                                                 Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
                                                 , database.userDao().getUserData_MU().getUser_id()
                                         );
@@ -453,9 +506,6 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             }
                         //    }
 
-
-
-                            //  PrintRunTimeSheet(Response_id_for_runtimesheet_Orders.get(0), Response_Recordsitems_list_for_runtimesheet_Orders);
                             Log.e(TAG, "onClick: " + binding.spinerDriverId.getSelectedItemPosition());
                         } else {
                             Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
@@ -702,7 +752,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         List<RecievePackedModule>  recievePackedlist =  database.userDao().getRecievePacked_ORDER_NO(OrderNumber);
         if (recievePackedlist.size() == 0) {
-            GETOrderData(OrderNumber ,trackingnumber1,Zone1);
+            Zone_public=Zone1;
+            trackingnumber_public=trackingnumber1;
+            GETOrderData(OrderNumber );
            // Toast.makeText(context, "تم", Toast.LENGTH_SHORT).show();
         }else if (recievePackedlist.size() > 0){
             if (database.userDao().getRecievePacked_Tracking_Number(trackingnumber1)
@@ -761,44 +813,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
     }
 //in sorting
-    private void GETOrderData(String OrderNumber , String trackingnumber ,String Zone ){
+    private void GETOrderData(String OrderNumber ){
         assignPackedOrderToZoneViewModel.fetchdata(OrderNumber);
-        assignPackedOrderToZoneViewModel.getOrderDataLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<RecievePackedModule>() {
-            @Override
-            public void onChanged(RecievePackedModule responseGetOrderData) {
-                //|| responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")
-                Log.e(TAG, "onChanged:stat_GETOrderData "+ responseGetOrderData.getSTATUS());
-                if (Zone != null) {
-                    if (responseGetOrderData.getSTATUS().equalsIgnoreCase("in sorting")
-                    ) {
-                        AfterGetOrderData(responseGetOrderData, trackingnumber, Zone);
-                    } else {
-                        Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
-                    }
-                }else {
-                    if (responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")) {
-                        AfterGetOrderData(responseGetOrderData, trackingnumber, Zone);
-                    } else {
-                        Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-
-        });
-
-        assignPackedOrderToZoneViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged: "+s );
-
-                if (s.equals("HTTP 503 Service Unavailable")) {
-                      Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.tracking_number_server), Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
     private void AfterGetOrderData(RecievePackedModule responseGetOrderData, String trackingnumber ,String Zone) {
         Log.e(TAG, "onChanged: " + responseGetOrderData.getNO_OF_PACKAGES());
@@ -833,9 +849,10 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
     public void UpdateStatus_zone_ON_83(String Status){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+        List<RecievePackedModule_For_selection_loop_for_update> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
         if (Distinctordernumberslist.size() > 0) {
-            for (int i=0;i<Distinctordernumberslist.size();i++) {
+            List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+            for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateOrderStatus_Zone_ON_83(
                         Distinctordernumberslist.get(i).getORDER_NO(),
                         Distinctordernumberslist.get(i).getZone(), Status
@@ -853,10 +870,11 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
     public void UpdateDriverID_ON_83(List<Response> response_list_for_runtimesheet_Orders2 , String DriverID){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+        List<RecievePackedModule_For_selection_loop_for_update> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
 
         if (Distinctordernumberslist.size() > 0) {
-            for (int i=0;i<Distinctordernumberslist.size();i++) {
+            List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+            for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateOrder_DriverID_ON_83(
                         Distinctordernumberslist.get(i).getORDER_NO(),
                         DriverID
@@ -931,17 +949,16 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     public void UpdateStatus(String Status){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
 
-        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+        List<RecievePackedModule_For_selection_loop_for_update> orderDataModuleDBHeaderkist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
         if (orderDataModuleDBHeaderkist.size() > 0) {
-            for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
+            List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+            for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateStatus(
-                        orderDataModuleDBHeaderkist.get(0).getORDER_NO(),
+                        orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
                         Status
                 );
             }
         }
-
-
     }
 
     private void GETDriverID() {
@@ -966,8 +983,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
             List<RecievePackedModule> recievePackedlist=  database.userDao().getRecievePacked_ORDER_NO(OrderNumber);
             if (recievePackedlist.size() == 0){
-
-                GETOrderData(OrderNumber , binding.editTrackingnumberDriver.getText().toString(),null);
+                Zone_public=null;
+                trackingnumber_public=binding.editTrackingnumberDriver.getText().toString();
+                GETOrderData(OrderNumber );
                 Log.e(TAG, "onClick: Ord "+OrderNumber );
                 binding.editTrackingnumberDriver.setText("");
                 binding.editTrackingnumberDriver.setError(null);
@@ -998,11 +1016,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             binding.editTrackingnumberDriver.requestFocus();
 
         }
-
     }
 
     private void SendSMS(String CustomerPhone ,String SMSBody) {
-
         assignPackedOrderToZoneViewModel.SendSms(CustomerPhone , SMSBody);
     }
 
@@ -1011,10 +1027,90 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     private void PrintRunTimeSheet(String id , List<RecordsItem> items) {
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 0);
         createPdf(id , items);
-
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createPdf(String id , List<RecordsItem> items) {
+    private void createPdf(String id ,List<RecordsItem> items) {
+
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint paint = new Paint();
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+        paint.setTextSize(30.0f);
+        PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(2000, 3000, 1).create());
+        Canvas canvas = page.getCanvas();
+        canvas.drawText("إقرار إستلام /Receiving Avowal", 700.0f, 60.0f, paint);
+        canvas.drawText(" رقم  "+id, 500.0f, 60.0f, paint);
+
+        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ", 550.0f, 100.0f, paint);
+        canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل", 30.0f, 140.0f, paint);
+        canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله", 30.0f, 180.0f, paint);
+        canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ", 30.0f, 220.0f, paint);
+        canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ", 550.0f, 260.0f, paint);
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2.0f);
+        Paint paint2 = paint;
+
+        canvas.drawRect(30.0f, 2600.0f, 1940.0f, 280.0f, paint2);
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setStyle(Paint.Style.FILL);
+
+        canvas.drawText("S/م", 1925.0f, 310.0f, paint);
+        canvas.drawLine(1870.0f, 280.0f, 1870.0f, 2600.0f, paint2);
+        canvas.drawText("outBound", 1830.0f, 310.0f, paint);
+        canvas.drawLine(1690.0f, 280.0f, 1690.0f, 2600.0f, paint2);
+        canvas.drawText("رقم الشحنة", 1500.0f, 310.0f, paint);
+        canvas.drawLine(1150.0f, 280.0f, 1150.0f, 2600.0f, paint2);
+        canvas.drawText("قيمة الشحنة", 1140.0f, 310.0f, paint);
+        canvas.drawLine(997.0f, 280.0f, 997.0f, 2600.0f, paint2);
+        canvas.drawText("طريقة الدفع", 990.0f, 310.0f, paint);
+        canvas.drawLine(850.0f, 280.0f, 850.0f, 2600.0f, paint2);
+        canvas.drawText("إسم العميل", 760.0f, 310.0f, paint);
+        canvas.drawLine(500.0f, 280.0f, 500.0f, 2600.0f, paint2);
+        canvas.drawText("عنوان العميل", 480.0f, 310.0f, paint);
+        canvas.drawLine(300.0f, 280.0f, 300.0f, 2600.0f, paint2);
+        canvas.drawText("ملاحظات", 180.0f, 310.0f, paint);
+
+        //bottom of header row  line
+        canvas.drawLine(30.0f, 330.0f, 1940.0f, 330.0f, paint2);
+
+        canvas.drawText("توقيع المستلم/Receiver sign", 1500.0f, 2700.0f, paint);
+        canvas.drawText("توقيع مسئول أمن المخزن", 1000.0f, 2700.0f, paint);
+
+        canvas.drawText("توقيع منسق التوصيل", 600.0f, 2700.0f, paint);
+        int pos=0;
+        for (int i=0;i<items.size();i++) {
+            canvas.drawText(items.get(i).getADDRESS_CITY(), 480.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getCUSTOMER_NAME(), 760.0f, 390+pos, paint);
+            canvas.drawText("كاش", 950.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 1830.0f, 390+pos, paint);
+            canvas.drawText(String.valueOf(i+1), 1920.0f, 390+pos, paint);
+
+            canvas.drawText(items.get(i).getITEM_PRICE(), 1130.0f, 390+pos, paint);
+
+
+            try {
+                testCODE93(canvas, 1160.0f, 340+pos, items.get(i).getTRACKING_NO());
+                canvas.drawLine(30.0f, 430.0f+pos, 1940.0f, 430.0f+pos, paint2);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            pos+=100;
+        }
+        pdfDocument.finishPage(page);
+        try {
+            pdfDocument.writeTo(new FileOutputStream(new File(Environment.getExternalStorageDirectory(), "/HyperOne.pdf")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        pdfDocument.close();
+
+    }
+
+    /* private void createPdf(String id , List<RecordsItem> items) {
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -1093,7 +1189,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
         pdfDocument.close();
 
-    }
+    }*/
     private static void testCODE93(Canvas canvas , float left, float top,String trackingnumber) throws Exception
     {
         Code93 barcode = new Code93();

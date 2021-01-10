@@ -9,6 +9,7 @@ import com.example.packingapp.model.ModulesIDS;
 import com.example.packingapp.model.PackedPackageItemsModule;
 import com.example.packingapp.model.PackedPackageModule;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.RecievePacked.RecievePackedModule_For_selection_loop_for_update;
 import com.example.packingapp.model.RecievedPackageModule;
 import com.example.packingapp.model.RecordsItem;
 import com.example.packingapp.model.TrackingnumbersListDB;
@@ -256,8 +257,11 @@ public interface UserDao {
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievePackedModule> getorderNORecievePackedModule();
 
-    @Query("SELECT DISTINCT(ORDER_NO) ,NO_OF_PACKAGES , STATUS, DRIVER_ID,Zone ,uid FROM RecievePackedModule")
-    List<RecievePackedModule> GetDistinctordernumbersFromRecievePackedModule();
+    @Query("SELECT DISTINCT(ORDER_NO)   FROM RecievePackedModule")
+    List<String> GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+
+    @Query("SELECT DISTINCT(ORDER_NO) ,NO_OF_PACKAGES , STATUS , DRIVER_ID,Zone  FROM RecievePackedModule")
+    List<RecievePackedModule_For_selection_loop_for_update> GetDistinctordernumbersFromRecievePackedModule();
 
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievedPackageModule> getAllRecievedPackages();
