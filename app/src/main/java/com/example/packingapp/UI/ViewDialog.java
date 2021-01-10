@@ -231,11 +231,6 @@ private  String OrderNumber;
                         }
                     }
 
-                    // TODO will not delete order data with scane new one and delete will be by order number
-                    database.userDao().deleteAllHeader(OrderNumber);
-                    database.userDao().deleteAllOrderItems(OrderNumber);
-                    database.userDao().deleteAllTrckingNumber(OrderNumber);
-                    database.userDao().deleteAllOrderItems_scanned(OrderNumber);
 
                     configLabel = getConfigLabel(print);
                         Log.e("label", configLabel.toString());
@@ -243,6 +238,13 @@ private  String OrderNumber;
                         setStatus("Sending Data", Color.BLUE);
 
                 }
+
+                // TODO will not delete order data with scane new one and delete will be by order number
+                database.userDao().deleteAllHeader(OrderNumber);
+                database.userDao().deleteAllOrderItems(OrderNumber);
+                database.userDao().deleteAllTrckingNumber(OrderNumber);
+                database.userDao().deleteAllOrderItems_scanned(OrderNumber);
+
             } else if (printerStatus.isHeadOpen) {
                 setStatus("Printer Head Open", Color.RED);
             } else if (printerStatus.isPaused) {

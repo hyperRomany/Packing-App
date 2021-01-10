@@ -22,12 +22,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.packingapp.Adapter.OrdersnumberAdapter;
 import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignPackedOrderForZoneDriverBinding;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
 import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
+import com.example.packingapp.model.RecordItemDriver;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
@@ -53,6 +55,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity {
     private static final String TAG = "AssignPackedOrderForZon";
@@ -62,9 +66,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     final Context context = this;
    // String Zone ,trackingnumberIn;
     ArrayList<String> Drivers_IDs_list ;
+    ArrayList<RecordItemDriver> Drivers_Data_list ;
     ResponseDriver responseDriver;
     String trackingNo="";
-
+    List<String> Response_id_for_runtimesheet_Orders;
+    List<List<RecordsItem>> Response_Recordsitems_list_for_runtimesheet_Orders;
+    List<String> Response_phonenumber_for_runtimesheet_Orders;
+    List<Response> Response_list_for_runtimesheet_Orders;
+    ArrayAdapter<String> spinnerAdapterDriver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +83,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         assignPackedOrderToZoneViewModel = ViewModelProviders.of(this)
                 .get(AssignPackedOrderToZoneViewModel.class);
+        Response_list_for_runtimesheet_Orders=new ArrayList<>();
+        Response_id_for_runtimesheet_Orders=new ArrayList<>();
+        Response_Recordsitems_list_for_runtimesheet_Orders=new ArrayList<>();
+        Response_phonenumber_for_runtimesheet_Orders=new ArrayList<>();
+
+        ObserveFU();
 
         GETDriverID();
 
@@ -81,6 +96,102 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         ButtonsClickListnerForAssignToZone();
         ButtonsClickListnerForAssignToDriver();
+    }
+
+    private void ObserveFU() {
+        assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
+            @Override
+            public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
+                Log.e(TAG, "onChanged:FetchRunt " + responseFetchRuntimesheetID.getRecords().size());
+                for (int i = 0; i < responseFetchRuntimesheetID.getRecords().size(); i++) {
+                    database.userDao().insertRecievePacked(new RecievePackedModule(
+                            responseFetchRuntimesheetID.getRecords().get(i).getORDER_NO(), responseFetchRuntimesheetID.getRecords().get(i).getNO_OF_PACKAGES(),
+                            responseFetchRuntimesheetID.getRecords().get(i).getTracking_Number(), "null"/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
+                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY() */));
+
+                }
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
+            @Override
+            public void onChanged(Response response) {
+                if (response.getRecords().size() > 0) {
+                    Response_list_for_runtimesheet_Orders.add(response);
+                    Response_id_for_runtimesheet_Orders.add(response.getId());
+                    Response_Recordsitems_list_for_runtimesheet_Orders.add(response.getRecords());
+                    Response_phonenumber_for_runtimesheet_Orders.add(response.getCUSTOMER_PHONE());
+                    Log.e(TAG, "onChanged:response.getId() " + response.getId());
+                    Log.e(TAG, "UpdateDriverID_ON_83:Resposize_onChang "+Response_list_for_runtimesheet_Orders.size() );
+                    UpdateDriverID_ON_83(Response_list_for_runtimesheet_Orders , Drivers_IDs_list.get( binding.spinerDriverId.getSelectedItemPosition()));
+
+//                                        for (int i=0;i<response.getRecords().size();i++)
+//                                        {
+////                                        PrintRunTimeSheet(response.getRecords().get(i).getTRACKING_NO(), response.getRecords().get(i).getCUSTOMER_NAME(),
+////                                                response.getRecords().get(i).getADDRESS_CITY(), response.getRecords().get(i).getOUTBOUND_DELIVERY(),"كاش", response.getRecords().get(i).getITEM_PRICE());
+//                                        }
+                } else {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لا تحتوي علي بيانات", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus_Zone_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged:update "+message.getMessage() );
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateDriverID_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged:update "+message.getMessage() );
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged:UpdateStatus "+message.getMessage() );
+            }
+        });
+        assignPackedOrderToZoneViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged: "+s );
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.getSmsLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseSms>() {
+            @Override
+            public void onChanged(ResponseSms responseSms) {
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this,
+                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        assignPackedOrderToZoneViewModel.mutableLiveData_ReadDriverIDS.observe(AssignPackedOrderForZoneAndDriverActivity.this
+                , (ResponseDriver responseDriver) -> {
+                    if (Drivers_IDs_list.size() == 0) {
+                        for (int i = 0; i < responseDriver.getRecords().size(); i++) {
+                            if (i == 0)
+                                Drivers_IDs_list.add(getResources().getString(R.string.choice_driver_id));
+
+                            Drivers_IDs_list.add(responseDriver.getRecords().get(i).getDriverID()+"&"+
+                                    responseDriver.getRecords().get(i).getNameArabic());
+                        }
+                        Drivers_Data_list.addAll(responseDriver.getRecords());
+
+                    }
+                    this.responseDriver = responseDriver;
+                    spinnerAdapterDriver.notifyDataSetChanged();
+                });
     }
 
     private void ButtonsClickListnerForAssignToZone() {
@@ -111,7 +222,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         binding.btnShowLastTrackingnumbersZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().getRecievePacked_ORDER_NO_Distinct();
+                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                 if (recievePackedORDER_NO_Distinctlist.size()>0) {
                     Intent GoToEditRecievedPackages=new Intent(AssignPackedOrderForZoneAndDriverActivity.this,
                             EditPackagesForRecievingActivity.class);
@@ -152,19 +263,19 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         binding.btnConfirmAssignOrdersToZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().getRecievePacked_ORDER_NO_Distinct();
+                List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                 List<RecievePackedModule>  NOTrecievedPackedORDERlist=  new ArrayList<>();
                 if (recievePackedORDER_NO_Distinctlist.size()>0) {
-                    for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size();i++){
-                        List<String>  recievePacked_Tracking_Number_countlist=
-                                database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
-                        if (!recievePacked_Tracking_Number_countlist.get(0).
-                                equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())){
-                            NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
-                        }
-                    }
+//                    for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size();i++){
+//                        List<String>  recievePacked_Tracking_Number_countlist=
+//                                database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
+//                        if (!recievePacked_Tracking_Number_countlist.get(0).
+//                                equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())){
+//                            NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
+//                        }
+//                    }
 
-                    if (NOTrecievedPackedORDERlist.size()==0){
+                    if (database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages().size()==0){
                         //TODO UPDATE STATUS
                         // Toast.makeText(RecievePackedOrderForSortingActivity.this, String.format("%s",getString(R.string.message_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
                         UpdateStatus_zone_ON_83("sorted");
@@ -173,6 +284,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     }else {
                         Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
                                 getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                        ShowMissedBarcodesFun();
                     }
                 }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
@@ -235,7 +347,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 binding.btnShowLastTrackingnumbersDriver.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().getRecievePacked_ORDER_NO_Distinct();
+                        List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                         if (recievePackedORDER_NO_Distinctlist.size()>0) {
                             Intent GoToEditRecievedPackages=new Intent(AssignPackedOrderForZoneAndDriverActivity.this,
                                     EditPackagesForRecievingActivity.class);
@@ -276,8 +388,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "onClick:spi "+binding.spinerDriverId.getSelectedItemPosition());
-                Log.e(TAG, "onClick:spic  "+binding.spinerDriverId.getSelectedItem().toString());
+//                Log.e(TAG, "onClick:spi "+binding.spinerDriverId.getSelectedItemPosition());
+//                Log.e(TAG, "onClick:spic  "+binding.spinerDriverId.getSelectedItem().toString());
+                Response_list_for_runtimesheet_Orders.clear();
+                Response_id_for_runtimesheet_Orders.clear();
+                Response_Recordsitems_list_for_runtimesheet_Orders.clear();
+                Response_phonenumber_for_runtimesheet_Orders.clear();
 //                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
 //                browserIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //
@@ -293,50 +409,54 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                 //TODO apply validation to spinner driver id
                if (binding.spinerDriverId.getSelectedItemPosition()!=0) {
-                    List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
+                    List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
                     List<RecievePackedModule> NOTrecievedPackedORDERlist = new ArrayList<>();
                     if (recievePackedORDER_NO_Distinctlist.size() > 0) {
-                        for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
-                            List<String> recievePacked_Tracking_Number_countlist =
-                                    database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
-                            if (!recievePacked_Tracking_Number_countlist.get(0).
-                                    equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())) {
-                                NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
-                            }
-                        }
+//                        for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
+//                            List<String> recievePacked_Tracking_Number_countlist =
+//                                    database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
+//                            if (!recievePacked_Tracking_Number_countlist.get(0).
+//                                    equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())) {
+//                                NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
+//                            }
+//                        }
 
-                        if (NOTrecievedPackedORDERlist.size() == 0) {
+                        if (database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages().size() == 0) {
                             //TODO UPDATE STATUS and print Run time sheet
                             // Toast.makeText(RecievePackedOrderForSortingActivity.this, String.format("%s",getString(R.string.message_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
                             // UpdateStatus_zone_ON_83("sorted");
                             // UpdateStatus("sorted");
-                            Log.e(TAG, "onClick: "+binding.spinerDriverId.getSelectedItemPosition() );
-                            UpdateDriverID_ON_83(Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition()));
+
 
                             //TODO Print RunTime sheet -- get data for list of order (recievePackedORDER_NO_Distinctlist)
-                           // List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
-
-                            assignPackedOrderToZoneViewModel.SheetData(recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO(),
-                                    Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
-                                    ,database.userDao().getUserData_MU().getUser_id()
-                                    );
-                            assignPackedOrderToZoneViewModel.getSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<Response>() {
-                                @Override
-                                public void onChanged(Response response) {
-                                    if (response.getRecords().size()>0) {
-                                        PrintRunTimeSheet(response.getId() , response.getRecords());
-                                        Log.e(TAG, "onChanged:response.getId() "+response.getId() );
-//                                        for (int i=0;i<response.getRecords().size();i++)
-//                                        {
-////                                        PrintRunTimeSheet(response.getRecords().get(i).getTRACKING_NO(), response.getRecords().get(i).getCUSTOMER_NAME(),
-////                                                response.getRecords().get(i).getADDRESS_CITY(), response.getRecords().get(i).getOUTBOUND_DELIVERY(),"كاش", response.getRecords().get(i).getITEM_PRICE());
-//                                        }
+                            // List<RecievePackedModule> recievePackedORDER_NO_Distinctlist = database.userDao().getRecievePacked_ORDER_NO_Distinct();
+                         //   for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
+//                            List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+                            Log.i(TAG, "onClick:ORDER_NO_Distinctlistsize "+recievePackedORDER_NO_Distinctlist.size() );
+                            if (recievePackedORDER_NO_Distinctlist.size() > 0) {
+                                for (int i = 0; i < recievePackedORDER_NO_Distinctlist.size(); i++) {
+                                    Log.i(TAG, "onClick:for i "+recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO() );
+                                    if (i>0&& Response_id_for_runtimesheet_Orders.size()>0) {
+                                        Log.e(TAG, "onClick: i>0 andsize >0 ");
+                                        assignPackedOrderToZoneViewModel.SheetData(Response_id_for_runtimesheet_Orders.get(0), recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO(),
+                                                Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
+                                                , database.userDao().getUserData_MU().getUser_id()
+                                        );
+                                    }else {
+                                        Log.e(TAG, "onClick: else" );
+                                        assignPackedOrderToZoneViewModel.SheetData("getlast",recievePackedORDER_NO_Distinctlist.get(0).getORDER_NO(),
+                                                Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
+                                                , database.userDao().getUserData_MU().getUser_id()
+                                        );
                                     }
-                                    else {Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this,"لا تحتوي علي بيانات",Toast.LENGTH_SHORT).show(); }
-
                                 }
-                            });
+                            }
+                        //    }
 
+
+
+                            //  PrintRunTimeSheet(Response_id_for_runtimesheet_Orders.get(0), Response_Recordsitems_list_for_runtimesheet_Orders);
+                            Log.e(TAG, "onClick: " + binding.spinerDriverId.getSelectedItemPosition());
                         } else {
                             Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
                                     getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
@@ -410,20 +530,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             database.userDao().deleteRecievePackedModule();
 
                             assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
-                            assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
-                                @Override
-                                public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
-                                    Log.e(TAG, "onChanged:FetchRunt " + responseFetchRuntimesheetID.getRecords().size());
-                                    for (int i = 0; i < responseFetchRuntimesheetID.getRecords().size(); i++) {
-                                        database.userDao().insertRecievePacked(new RecievePackedModule(
-                                                responseFetchRuntimesheetID.getRecords().get(i).getORDER_NO(), responseFetchRuntimesheetID.getRecords().get(i).getNO_OF_PACKAGES(),
-                                                responseFetchRuntimesheetID.getRecords().get(i).getTracking_Number(), "null"/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
-                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY() */));
 
-                                    }
-                                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
-                                }
-                            });
 
                         }
                     })
@@ -434,19 +541,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     }).show();
         }else {
             assignPackedOrderToZoneViewModel.RetieveSheetData(runsheet_id);
-            assignPackedOrderToZoneViewModel.RetrieveSheetLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseFetchRuntimesheetID>() {
-                @Override
-                public void onChanged(ResponseFetchRuntimesheetID responseFetchRuntimesheetID) {
-                    Log.e(TAG, "onChanged:FetchRunt " + responseFetchRuntimesheetID.getRecords().size());
-                    for (int i = 0; i < responseFetchRuntimesheetID.getRecords().size(); i++) {
-                        database.userDao().insertRecievePacked(new RecievePackedModule(
-                                responseFetchRuntimesheetID.getRecords().get(i).getORDER_NO(), responseFetchRuntimesheetID.getRecords().get(i).getNO_OF_PACKAGES(),
-                                responseFetchRuntimesheetID.getRecords().get(i).getTracking_Number(), "null"/*,responseGetOrderData.getCUSTOMER_NAME(),responseGetOrderData.getADDRESS_CITY()
-                ,responseGetOrderData.getITEM_PRICE(),responseGetOrderData.getOUTBOUND_DELIVERY() */));
-                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+
         }
 
     }
@@ -738,37 +833,32 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
     public void UpdateStatus_zone_ON_83(String Status){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
-        if (orderDataModuleDBHeaderkist.size() > 0) {
-            for (int i=0;i<orderDataModuleDBHeaderkist.size();i++) {
+        List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+        if (Distinctordernumberslist.size() > 0) {
+            for (int i=0;i<Distinctordernumberslist.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateOrderStatus_Zone_ON_83(
-                        orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
-                        orderDataModuleDBHeaderkist.get(i).getZone(), Status
+                        Distinctordernumberslist.get(i).getORDER_NO(),
+                        Distinctordernumberslist.get(i).getZone(), Status
                 );
-                Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : " + orderDataModuleDBHeaderkist.get(i).getZone());
+             //   Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : " + Distinctordernumberslist.get(i).getZone());
             }
         }else {
             Toast.makeText(context,getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
         }
-        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus_Zone_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:update "+message.getMessage() );
-            }
-        });
+
 //        }else {
 //            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
 //        }
     }
 
-    public void UpdateDriverID_ON_83(String DriverID){
+    public void UpdateDriverID_ON_83(List<Response> response_list_for_runtimesheet_Orders2 , String DriverID){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
-        if (orderDataModuleDBHeaderkist.size() > 0) {
-            for (int i=0;i<orderDataModuleDBHeaderkist.size();i++) {
+        List<RecievePackedModule> Distinctordernumberslist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
+
+        if (Distinctordernumberslist.size() > 0) {
+            for (int i=0;i<Distinctordernumberslist.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateOrder_DriverID_ON_83(
-                        orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
+                        Distinctordernumberslist.get(i).getORDER_NO(),
                         DriverID
                 );
             }
@@ -778,17 +868,61 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             //  String CustomerPhone =items.get(0).getCUSTOMER_PHONE().toString().replace("+2","");
 //            String CustomerPhone ="01065286596";
 //            SendSMS(CustomerPhone,"Your Order In His Way");
+            Log.e(TAG, "UpdateDriverID_ON_83:Resposize "+Response_list_for_runtimesheet_Orders.size() );
+            Log.e(TAG, "UpdateDriverID_ON_83:Resposize2  "+response_list_for_runtimesheet_Orders2.size() );
+            for (int i = 0; i < Response_list_for_runtimesheet_Orders.size(); i++) {
+//                SendSMS(/*Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_PHONE().replace("+2","")*/
+//                        "01065286596"
+//                        , Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()
+//                                +"ستصلك خلال الساعات القادمة مع مندوبنا محمد محمود رقم هاتفه 010140123456 يرجى تحضير مبلغ"
+//                                +Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()
+//                                +Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()+
+//                                " شحنتك رقم"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+"أ/");
 
-        }else {
+//  Log.e(TAG, "UpdateDriverID_ON_83: "+ Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()
+//                    +"ستصلك خلال الساعات القادمة مع مندوبنا محمد محمود رقم هاتفه 010140123456 يرجى تحضير مبلغ"
+//                    +Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()+Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()
+//                    + " شحنتك رقم"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+"أ/");
+
+//                Log.e(TAG, "UpdateDriverID_ON_83: "+Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL() );
+//                Log.e(TAG, "UpdateDriverID_ON_83: "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone() );
+//                Log.e(TAG, "UpdateDriverID_ON_83: "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() );
+//                SendSMS(/*Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_PHONE().replace("+2","")*/
+//                        "01065286596"
+//                        ,Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()+
+//                                " يرجى تحضير مبلغ "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()
+//                                +" رقم هاتفه "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic()
+//                                +"ستصلك خلال الساعات القادمة مع مندوبنا"+Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()
+//                                + " شحنتك رقم"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+"أ/"
+//                );
+//                        Log.e(TAG, "UpdateDriverID_ON_83: "+
+//                        Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()+
+//                                " يرجى تحضير مبلغ "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()
+//                                +"رقم هاتفه "+Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic()
+//                                +"ستصلك خلال الساعات القادمة مع مندوبنا"+Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()
+//                                + " شحنتك رقم"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+"أ/"
+//                        );
+                SendSMS(/*Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_PHONE().replace("+2","")*/
+                        "01065286596"
+                        ,"أ/"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
+                                Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
+                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +" رقم هاتفه "+
+                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
+                                Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()
+                );
+//                Log.e(TAG, "UpdateDriverID_ON_83: "+
+//                        "أ/"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
+//                        Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
+//                        Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +"رقم هاتفه "+
+//                        Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
+//                        Response_list_for_runtimesheet_Orders.get(i).getGRAND_TOTAL()
+//                );
+
+            }
+            }else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
         }
-        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateDriverID_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:update "+message.getMessage() );
-            }
-        });
+
 //        }else {
 //            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
 //        }
@@ -797,7 +931,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     public void UpdateStatus(String Status){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
 
-        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
+        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
         if (orderDataModuleDBHeaderkist.size() > 0) {
             for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
                 assignPackedOrderToZoneViewModel.UpdateStatus(
@@ -806,47 +940,19 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 );
             }
         }
-        assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:UpdateStatus "+message.getMessage() );
-            }
-        });
-        assignPackedOrderToZoneViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged: "+s );
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
 
 
     }
 
     private void GETDriverID() {
         Drivers_IDs_list =new ArrayList<>();
+        Drivers_Data_list=new ArrayList<>();
         assignPackedOrderToZoneViewModel.GetDriversID();
         //TODO TO ASSIGN ID TO SPINNER
-        ArrayAdapter<String> spinnerAdapterDriver=new ArrayAdapter<String>(AssignPackedOrderForZoneAndDriverActivity.this,
+        spinnerAdapterDriver=new ArrayAdapter<String>(AssignPackedOrderForZoneAndDriverActivity.this,
                 android.R.layout.simple_spinner_item,Drivers_IDs_list);
         spinnerAdapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinerDriverId.setAdapter(spinnerAdapterDriver);
-
-        assignPackedOrderToZoneViewModel.mutableLiveDataRead.observe(AssignPackedOrderForZoneAndDriverActivity.this
-                , (ResponseDriver responseDriver) -> {
-                    if (Drivers_IDs_list.size() == 0) {
-                        for (int i = 0; i < responseDriver.getRecords().size(); i++) {
-                            if (i == 0)
-                                Drivers_IDs_list.add(getResources().getString(R.string.choice_driver_id));
-                            Drivers_IDs_list.add(responseDriver.getRecords().get(i).getDriverID()+"&"+
-                                    responseDriver.getRecords().get(i).getNameArabic());
-                        }
-                    }
-                    this.responseDriver = responseDriver;
-                    spinnerAdapterDriver.notifyDataSetChanged();
-
-                });
     }
 
 
@@ -898,13 +1004,6 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     private void SendSMS(String CustomerPhone ,String SMSBody) {
 
         assignPackedOrderToZoneViewModel.SendSms(CustomerPhone , SMSBody);
-        assignPackedOrderToZoneViewModel.getSmsLiveData().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseSms>() {
-            @Override
-            public void onChanged(ResponseSms responseSms) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this,
-                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     //TODO
@@ -912,6 +1011,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     private void PrintRunTimeSheet(String id , List<RecordsItem> items) {
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 0);
         createPdf(id , items);
+
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPdf(String id , List<RecordsItem> items) {
@@ -1040,4 +1140,42 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         RectF bounds = new RectF(left, top, 0, 0);
         barcode.drawBarcode(canvas, bounds);
     }
+
+    private void ShowMissedBarcodesFun() {
+        LayoutInflater li = LayoutInflater.from(AssignPackedOrderForZoneAndDriverActivity.this);
+        View promptsView = li.inflate(R.layout.prompts_showordersnumber, null);
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(
+                AssignPackedOrderForZoneAndDriverActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
+                .findViewById(R.id.rv_ordernmber);
+
+        OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages());
+        Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
+        rv_ordernumbers.setAdapter(ordersnumberAdapter);
+        rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//        ItemclickforRecycler.addTo(rv_ordernumbers).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                // promptsView.
+//                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+//                UploadHeader(Ordernumber);
+//                //UploadDetails(Ordernumber);
+//
+//                alertDialog.dismiss();
+//
+//            }
+//        });
+        // show it
+        alertDialog.show();
+
+    }
+
 }

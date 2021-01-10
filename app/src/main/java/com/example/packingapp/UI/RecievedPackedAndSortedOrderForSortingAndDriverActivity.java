@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.packingapp.Adapter.OrdersnumberAdapter;
 import com.example.packingapp.Adapter.RecievedPackagesAdapter;
 import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.Helper.Constant;
@@ -100,16 +102,16 @@ String DriverID="";
                 List<RecievePackedModule>  recievePackedORDER_NO_Distinctlist=  database.userDao().getRecievePacked_ORDER_NO_Distinct();
                 List<RecievePackedModule>  NOTrecievedPackedORDERlist=  new ArrayList<>();
                 if (recievePackedORDER_NO_Distinctlist.size()>0) {
-                    for (int i = 0; i<recievePackedORDER_NO_Distinctlist.size();i++){
-                        List<String>  recievePacked_Tracking_Number_countlist=
-                                database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
-                        if (!recievePacked_Tracking_Number_countlist.get(0).
-                                equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())){
-                            NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
-                        }
-                    }
+//                    for (int i = 0; i<recievePackedORDER_NO_Distinctlist.size();i++){
+//                        List<String>  recievePacked_Tracking_Number_countlist=
+//                                database.userDao().getRecievePacked_Tracking_Number_count(recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO());
+//                        if (!recievePacked_Tracking_Number_countlist.get(0).
+//                                equalsIgnoreCase(recievePackedORDER_NO_Distinctlist.get(i).getNO_OF_PACKAGES().toString())){
+//                            NOTrecievedPackedORDERlist.add(recievePackedORDER_NO_Distinctlist.get(i));
+//                        }
+//                    }
 
-                    if (NOTrecievedPackedORDERlist.size()==0){
+                    if (database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages().size()==0){
                         //TODO UPDATE STATUS
                        // Toast.makeText(RecievePackedOrderForSortingActivity.this, String.format("%s",getString(R.string.message_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
                         UpdateStatus_ON_83();
@@ -118,6 +120,7 @@ String DriverID="";
                     }else {
                         Toast.makeText(context, String.format("%s",
                                 getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                        ShowMissedBarcodesFun();
                     }
                 }else {
                     Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, String.format("%s",
@@ -448,6 +451,45 @@ String DriverID="";
 
 
     }
+
+    private void ShowMissedBarcodesFun() {
+        LayoutInflater li = LayoutInflater.from(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+        View promptsView = li.inflate(R.layout.prompts_showordersnumber, null);
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(
+                RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
+                .findViewById(R.id.rv_ordernmber);
+
+        OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages());
+        Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
+        rv_ordernumbers.setAdapter(ordersnumberAdapter);
+        rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//        ItemclickforRecycler.addTo(rv_ordernumbers).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                // promptsView.
+//                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+//                UploadHeader(Ordernumber);
+//                //UploadDetails(Ordernumber);
+//
+//                alertDialog.dismiss();
+//
+//            }
+//        });
+        // show it
+        alertDialog.show();
+
+    }
+
+
     /*
     private void AssignToZone(String trackingnumber1 ,String Zone1){
         String OrderNumber=

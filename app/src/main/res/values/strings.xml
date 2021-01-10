@@ -140,4 +140,10 @@
     <string name="show_last_assign">تعديل</string>
     <string name="recall_assign_orders_to_driver">أستدعاء</string>
     <string name="reprinter">اعاده الطباعه</string>
+    <string name="customer_phone">أسم العميل</string>
+    <string name="customer_address">العنوان</string>
+    <string name="confirm_reschedule">تأكيد التاجيل</string>
+    <string name="enter_reschedule_time">أختر وقت التاجيل</string>
+    <string name="enter_reschedule_time_lesethan11">أختر وقت أقل من 11 مساء</string>
+    <string name="choice_reason">أختر السبب</string>
 </resources>

@@ -78,6 +78,9 @@ public interface APIRetrofit {
     @POST("Packing_Api/Ordernumber/UpdateStatus.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_ON_83(@Field("OrderNumberHeader[0]") String name);
     @FormUrlEncoded
+    @POST("Packing_Api/Ordernumber/UpdateStatusAndRescheduleTime.php")
+    Observable<ResponseUpdateStatus> UpdateOrderStatus_RescheduleTime_ON_83(@Field("OrderNumberHeader[0]") String name);
+    @FormUrlEncoded
     @POST("Packing_Api/Ordernumber/UpdateStatusAndZone.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_Zone_ON_83(@Field("OrderNumberHeader[0]") String name);
 

@@ -1,6 +1,7 @@
 package com.example.packingapp.UI;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.packingapp.Adapter.DriverOrderpackagesAdapter;
@@ -27,8 +30,10 @@ import com.example.packingapp.model.RecievePacked.RecievePackedModule;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.viewmodel.OrderDetailsForDriverViewModel;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -50,11 +55,12 @@ private static final int REQUEST_PHONE_CALL = 1;
     Context context=OrderDetails_forDriverActivity.this;
     List<DriverPackages_Details_DB> driverPackages_details_dbList;
     List<DriverPackages_Details_DB> driverPackages_details_dbList_Reject;
-
     String Orderclicked="";
     AppDatabase database;
     DriverOrderpackagesAdapter driverOrderpackagesAdapter;
     DriverOrderpackagesAdapter driverOrderpackagesAdapter_Reject;
+    int mHOUR ,mMINUTE;
+List<String> Reject_Resons_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,8 @@ private static final int REQUEST_PHONE_CALL = 1;
         CreateORUpdateRecycleView_Reject();
         database= AppDatabase.getDatabaseInstance(this);
 
+        Reject_Resons_list=new ArrayList<>();
+        Reject_Resons_list_fun_add();
         if (getIntent().getExtras() != null){
             Orderclicked=getIntent().getExtras().getString("Orderclicked");
         }
@@ -76,10 +84,13 @@ private static final int REQUEST_PHONE_CALL = 1;
         binding.btnRescheduleDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Reschedule();
+/*
                 UpdateStatus_ON_83();
-                UpdateStatus();
+                UpdateStatus();*/
             }
         });
+
         binding.btnSendPasscodeToConfirmDeleivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +142,22 @@ private static final int REQUEST_PHONE_CALL = 1;
                         totalPriceFUN(driverPackages_respones_details_recycler.getRecords());
                     }
                 });
+    }
+
+    private void Reject_Resons_list_fun_add() {
+        Reject_Resons_list.add(getResources().getString(R.string.choice_reason));
+
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+        Reject_Resons_list.add("العميل طلب الإلغاء دون ذكر أسباب");
+
     }
 
     private void PhoneAndSmsActions() {
@@ -293,8 +320,13 @@ private static final int REQUEST_PHONE_CALL = 1;
                 .findViewById(R.id.txt_tracking_number_reject);
         txt_tracking_number_reject.setText(RejectTrackingNumber);
 
-        final EditText edit_rejectinput = (EditText) promptsView
-                .findViewById(R.id.edit_rejectinput);
+        final SearchableSpinner spiner_rejectinput = (SearchableSpinner) promptsView
+                .findViewById(R.id.spiner_rejectinput);
+        //TODO TO ASSIGN ID TO SPINNER
+        ArrayAdapter<String> spinnerAdapterDriver=new ArrayAdapter<String>(OrderDetails_forDriverActivity.this,
+                android.R.layout.simple_spinner_item,Reject_Resons_list);
+        spinnerAdapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner_rejectinput.setAdapter(spinnerAdapterDriver);
 
         final Button btn_reject = (Button) promptsView
                 .findViewById(R.id.btn_reject);
@@ -304,10 +336,10 @@ private static final int REQUEST_PHONE_CALL = 1;
             public void onClick(View v) {
                 // promptsView.
 
-                if (!edit_rejectinput.getText().toString().isEmpty() ) {
+                if (spiner_rejectinput.getSelectedItemPosition()!=0) {
                     //SendSMS(CustomerPhone, edit_rejectinput.getText().toString());
                     database.userDao().UpdatestatusAndReason_ForTrackingnumber(RejectTrackingNumber,
-                            "Rejected under inspection",edit_rejectinput.getText().toString());
+                            "Rejected under inspection",Reject_Resons_list.get(spiner_rejectinput.getSelectedItemPosition()));
                     driverPackages_details_dbList_Reject.add(driverPackages_details_dbList.get(position));
                     Log.e(TAG, "onClick: "+ driverPackages_details_dbList.size());
                     driverPackages_details_dbList.remove(position);
@@ -319,9 +351,8 @@ private static final int REQUEST_PHONE_CALL = 1;
                     alertDialog.dismiss();
 
                 }else{
-                    if (edit_rejectinput.getText().toString().isEmpty()){
-                        edit_rejectinput.setError(getResources().getString(R.string.enter_sms_body));
-                    }
+                    Toast.makeText(context, getResources().getString(R.string.choice_reason), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -329,21 +360,17 @@ private static final int REQUEST_PHONE_CALL = 1;
         alertDialog.show();
     }
 
-    public void UpdateStatus_ON_83(){
+    public void UpdateStatus_Reschedule_ON_83(String Time){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
-        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
-        if (orderDataModuleDBHeaderkist.size() > 0) {
-            for (int i=0;i<orderDataModuleDBHeaderkist.size();i++) {
-                orderDetailsForDriverViewModel.UpdateStatus_ON_83(
-                        orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
-                        "Reschedule"
-                );
-            }
-        }else {
-            Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
-        }
+                       Log.e(TAG, "UpdateStatus_ON_83: "+Orderclicked);
+                Log.e(TAG, "UpdateStatus_ON_83: "+Time );
+                Log.e(TAG, "UpdateStatus_ON_83: "+"ffff " );
+                orderDetailsForDriverViewModel.UpdateStatus_RescheduleTime_ON_83(
+                        Orderclicked,
 
-        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_ON_83.observe(
+                        "Reschedule" ,Time
+                );
+        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_RescheduleTime_ON_83.observe(
                 OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
                     @Override
                     public void onChanged(ResponseUpdateStatus message) {
@@ -351,9 +378,14 @@ private static final int REQUEST_PHONE_CALL = 1;
                         Log.e(TAG, "onChanged:update "+message.getMessage() );
                     }
                 });
-//        }else {
-//            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
-//        }
+        orderDetailsForDriverViewModel.mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:update "+s );
+                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     public void UpdateStatus(){
@@ -366,6 +398,7 @@ private static final int REQUEST_PHONE_CALL = 1;
                     orderDataModuleDBHeaderkist.get(0).getORDER_NO(),
                     "Reschedule"
             );
+
 
         orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus.observe(OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
@@ -393,4 +426,83 @@ private static final int REQUEST_PHONE_CALL = 1;
 
         binding.txtTotalPrice.setText(String.valueOf(TotalPrice));
     }
+
+    public void Reschedule(){
+
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.prompts_reschedule, null);
+
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        final EditText edit_rescheduleinput = (EditText) promptsView
+                .findViewById(R.id.edit_reschedule);
+//        String timeStamp = new SimpleDateFormat("HH:mm").format(new Date());
+//        edit_rescheduleinput.setText(timeStamp);
+
+        edit_rescheduleinput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO upgrate Api to 24 for this
+                final Calendar c = Calendar.getInstance();
+                mHOUR = c.get(Calendar.HOUR);
+                mMINUTE = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog= new TimePickerDialog(OrderDetails_forDriverActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    if (hourOfDay<23) {
+                        edit_rescheduleinput.setError(null);
+                        edit_rescheduleinput.setText(hourOfDay + ":" + minute);
+                    }else {
+                        edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                    }
+                    }
+                }, mHOUR, mMINUTE ,true);
+                timePickerDialog.show();
+               /* DatePickerDialog datePickerDialog = new DatePickerDialog(OrderDetails_forDriverActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int hour,
+                                                  int minute) {
+                                edit_rescheduleinput.setText(hour+ ":" + minute);
+                            }
+                        }, mHOUR, mMINUTE);
+                datePickerDialog.show();*/
+            }
+        });
+
+
+        final Button btn_reschedule = (Button) promptsView
+                .findViewById(R.id.btn_reschedule);
+        btn_reschedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // promptsView.
+                if (!edit_rescheduleinput.getText().toString().isEmpty() ) {
+                    Log.e(TAG, "onClick:eee "+edit_rescheduleinput.getText().toString() );
+                    UpdateStatus_Reschedule_ON_83(edit_rescheduleinput.getText().toString());
+                   // UpdateStatus();
+                    alertDialog.dismiss();
+
+                }else{
+                    if (edit_rescheduleinput.getText().toString().isEmpty()){
+                        edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time));
+                        edit_rescheduleinput.requestFocus();
+                    }
+                }
+            }
+        });
+        // show it
+        alertDialog.show();
+    }
+
+
 }

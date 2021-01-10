@@ -373,7 +373,45 @@ public class GetOrderDatactivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.item_notselected), Toast.LENGTH_SHORT).show();
+            ShowMissedBarcodesFun(ordernumberselected);
         }
+    }
+
+    private void ShowMissedBarcodesFun(String orderselected) {
+        LayoutInflater li = LayoutInflater.from(GetOrderDatactivity.this);
+        View promptsView = li.inflate(R.layout.prompts_showordersnumber, null);
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(
+                GetOrderDatactivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
+                .findViewById(R.id.rv_ordernmber);
+
+        OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getBarcodesAllItemsNotScannedORLessRequiredQTY(orderselected));
+        Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
+        rv_ordernumbers.setAdapter(ordersnumberAdapter);
+        rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//        ItemclickforRecycler.addTo(rv_ordernumbers).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                // promptsView.
+//                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+//                UploadHeader(Ordernumber);
+//                //UploadDetails(Ordernumber);
+//
+//                alertDialog.dismiss();
+//
+//            }
+//        });
+        // show it
+        alertDialog.show();
+
     }
 
     public void UpdateStatus(String ordernumberselected) {

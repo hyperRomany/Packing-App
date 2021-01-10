@@ -19,7 +19,8 @@ public class DriverOrdersAdapter extends RecyclerView.Adapter<DriverOrdersAdapte
     DriverPackages_Header_DB packages_db;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txt_nu , txt_order_number , txt_phone_number;
+        public TextView txt_nu , txt_order_number , txt_phone_number,
+        txt_customer_name,txt_customer_address;
         LinearLayout main_linear_of_item;
         public MyViewHolder(View view) {
             super(view);
@@ -27,6 +28,9 @@ public class DriverOrdersAdapter extends RecyclerView.Adapter<DriverOrdersAdapte
             txt_order_number =  view.findViewById(R.id.txt_order_number);
             txt_phone_number=view.findViewById(R.id.txt_phone_number);
             main_linear_of_item=view.findViewById(R.id.main_linear_of_item);
+            txt_customer_name=view.findViewById(R.id.txt_customer_name);
+            txt_customer_address=view.findViewById(R.id.txt_customer_address);
+
         }
     }
 
@@ -52,6 +56,10 @@ public class DriverOrdersAdapter extends RecyclerView.Adapter<DriverOrdersAdapte
 
         holder.txt_order_number.setText(packages_db.getOrder_number());
         holder.txt_phone_number.setText(packages_db.getCustomer_phone());
+
+        holder.txt_customer_name.setText(packages_db.getCustomer_name());
+        holder.txt_customer_address.setText(packages_db.getCustomer_address_city());
+
         //android:textIsSelectable="true"
 //        holder.txt_ean11.setTextIsSelectable(true);
 //

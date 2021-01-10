@@ -133,6 +133,22 @@ public interface UserDao {
             "and order2 =:Ordernumber")
     List<ValidationforOrderNumberInPacked> getAllItemsNotScannedORLessRequiredQTY(String Ordernumber);
 
+    //TODO use query to validation
+    @Query("select sku2 from (select order2  , sku2, ifnull(qty2,0) as'sumqty2',ifnull(qty1,0) as 'sumqty1' ,ifnull(qty2,0)-ifnull(qty1,0) as 'diff' from \n" +
+            "(SELECT Order_number as 'order2',sku as'sku2', sum(ifnull(quantity,0))as 'qty2' from ItemsOrderDataDBDetails\n" +
+            "group by sku\n" +
+            ")as b\n" +
+            "left outer join \n" +
+            "(\n" +
+            "SELECT Order_number as 'order1' ,sku as 'sku1', sum(ifnull(quantity,0))as 'qty1' from ItemsOrderDataDBDetails_Scanned \n" +
+            "group by sku\n" +
+            ")as a \n" +
+            "on ( order2 = order1 and sku1 = sku2)\n" +
+            "where sumqty2 <> sumqty1\n" +
+            "and order2 =:Ordernumber )")
+    List<String> getBarcodesAllItemsNotScannedORLessRequiredQTY(String Ordernumber);
+
+
     @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber is not null or TrackingNumber !=''")
     List<ItemsOrderDataDBDetails_Scanned> CheckItemsWithTrackingnumber();
 
@@ -240,6 +256,9 @@ public interface UserDao {
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievePackedModule> getorderNORecievePackedModule();
 
+    @Query("SELECT DISTINCT(ORDER_NO) ,NO_OF_PACKAGES , STATUS, DRIVER_ID,Zone ,uid FROM RecievePackedModule")
+    List<RecievePackedModule> GetDistinctordernumbersFromRecievePackedModule();
+
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievedPackageModule> getAllRecievedPackages();
 
@@ -293,4 +312,8 @@ public interface UserDao {
     @Query("SELECT * FROM TrackingnumbersListDB")
     List<TrackingnumbersListDB> countShipment();
 
+    @Query("select Tracking_Number /*, NO_OF_PACKAGES,CountTrackingnumber*/ from (select ORDER_NO , NO_OF_PACKAGES , Tracking_Number, count(ifnull(Tracking_Number,0)) as CountTrackingnumber from RecievePackedModule \n" +
+            "group by ORDER_NO )\n" +
+            "where  NO_OF_PACKAGES <> CountTrackingnumber")
+    List<String> getTrackingnumber_of_ordersThatNotcompleteAllpackages();
 }

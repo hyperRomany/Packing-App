@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".UI.OrdersOfRuntimeSheetNowForDriverActivity">
 
+    <HorizontalScrollView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
     <include
         android:id="@+id/include_header_of_rv"
         layout="@layout/recycle_item_for_driver_orders_header"
@@ -18,5 +30,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/include_header_of_rv"/>
+    </LinearLayout>
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

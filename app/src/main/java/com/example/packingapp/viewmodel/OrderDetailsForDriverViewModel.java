@@ -29,9 +29,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                        }
                ,throwable -> {
                            Log.d("Error_Vof ",throwable.getMessage());
-
                        });
-
     }
 
     private MutableLiveData<DriverPackages_Respones_Details_recycler> DriverOrderReadyDetailsDataLiveData = new MutableLiveData<>();
@@ -80,6 +78,26 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                         });
     }
 
+    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_RescheduleTime_ON_83 = new MutableLiveData<>();
+    public static MutableLiveData<String> mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError = new MutableLiveData<>();
+
+    public void UpdateStatus_RescheduleTime_ON_83(String ORDER_NO, String STATUS , String  RescheduleTime) {
+
+        String text=ORDER_NO +"/"+STATUS +"/"+ RescheduleTime;
+        Log.e( "UpdateStatus_Resche", text);
+        ApiClient.build().UpdateOrderStatus_RescheduleTime_ON_83(text)
+
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseSms -> {
+                            mutableLiveData_UpdateStatus_RescheduleTime_ON_83.setValue(responseSms);
+
+                        }
+                        ,throwable -> {
+                            Log.d("Error",throwable.getMessage());
+                            mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.setValue(throwable.getMessage());
+                        });
+    }
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
     public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
