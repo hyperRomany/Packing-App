@@ -34,7 +34,8 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("OrderNumber", ORDER_NO);
 
         ApiClient.buildRo().GetOrderData(
-                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+               // "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO
         )
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,6 +70,7 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("ADDRESS_DETAILS", ADDRESS_DETAILS);
         map.put("ORDER_DELIVERY_DATE", ORDER_DELIVERY_DATE);
         map.put("ORDER_DELIVERY_TIME", ORDER_DELIVERY_TIME);
+
         map.put("PICKER_CONFIMATION_TIME", PICKER_CONFIMATION_TIME);
         map.put("GRAND_TOTAL", GRAND_TOTAL);
         map.put("CURRENCY", CURRENCY);
@@ -139,7 +141,8 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+                //"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )

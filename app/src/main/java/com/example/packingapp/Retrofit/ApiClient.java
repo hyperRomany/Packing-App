@@ -31,8 +31,8 @@ public class ApiClient {
         TrafficStats.setThreadStatsTag(0x1000);
         return retrofit.create(RoubstaAPIRetrofit.class);
     }*/
-
-    public static final String BASE_URL_Roubsta = "https://mcprod.hyperone.com.eg/rest/";
+//
+    public static final String BASE_URL_Roubsta = "https://mcstaging.hyperone.com.eg/rest/";
 
     public static RoubstaAPIRetrofit buildRo() {
         final Retrofit retrofit = new Retrofit.Builder()
