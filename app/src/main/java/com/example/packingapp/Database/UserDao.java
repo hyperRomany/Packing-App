@@ -82,7 +82,7 @@ public interface UserDao {
     @Query("SELECT * FROM itemsOrderDataDBDetails where Order_number =:Order_number")
     List<ItemsOrderDataDBDetails> CheckordernumberData_inlast(String Order_number);
 
-    @Query("SELECT * FROM itemsOrderDataDBDetails")
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned")
     List<ItemsOrderDataDBDetails> getDetailsTrackingnumberToUpload();
 
     @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned Where Order_number =:Order_number")
