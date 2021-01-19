@@ -5,15 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.packingapp.Adapter.DriverOrdersAdapter;
 import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.Helper.ItemclickforRecycler;
+import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityOrdersOfRuntimeSheetNowForDriverBinding;
 import com.example.packingapp.model.DriverModules.DriverPackages_Header_DB;
 import com.example.packingapp.model.DriverModules.DriverPackages_Respones_Header_recycler;
@@ -24,6 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class OrdersOfRuntimeSheetNowForDriverActivity extends AppCompatActivity {
 private static final String TAG = "OrdersOfRuntimeSheetNow";
@@ -41,6 +42,8 @@ DriverOrdersAdapter driverOrdersAdapter;
         setContentView(binding.getRoot());
         CreateORUpdateRecycleView();
         getDriverOrdersViewModel= ViewModelProviders.of(this).get(GetDriverOrdersViewModel.class);
+
+        setTitle(R.string.OrdersOfRuntimeSheetNowForDriverActivity_label);
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 

@@ -71,7 +71,7 @@ List<String> Reject_Resons_list;
         CreateORUpdateRecycleView();
         CreateORUpdateRecycleView_Reject();
         database= AppDatabase.getDatabaseInstance(this);
-
+        setTitle(R.string.OrderDetails_forDriverActivity_label);
         Reject_Resons_list=new ArrayList<>();
         Reject_Resons_list_fun_add();
         if (getIntent().getExtras() != null){
@@ -183,8 +183,8 @@ List<String> Reject_Resons_list;
         DriverPackages_Header_DB driverPackages_header_db=
                 database.userDao().getDriverorder();
         //TODO adding my number to send sms and amke call
-//        CustomerPhone=driverPackages_header_db.getCustomer_phone();
-//        CustomerPhone=CustomerPhone.replace("+2","");
+        CustomerPhone=driverPackages_header_db.getCustomer_phone();
+        CustomerPhone=CustomerPhone.replace("+2","");
         Log.e(TAG, "onCreate:vvv "+ CustomerPhone);
 
         binding.imgBtnCall.setOnClickListener(new View.OnClickListener() {
@@ -387,7 +387,7 @@ List<String> Reject_Resons_list;
                 orderDetailsForDriverViewModel.UpdateStatus_RescheduleTime_ON_83(
                         Orderclicked,
 
-                        "Reschedule" ,Time
+                        "Reschedule" ,Time,database.userDao().getUserData_MU().getUser_id()
                 );
         orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_RescheduleTime_ON_83.observe(
                 OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
@@ -395,6 +395,9 @@ List<String> Reject_Resons_list;
                     public void onChanged(ResponseUpdateStatus message) {
                         Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onChanged:update "+message.getMessage() );
+                        Intent GoBackafterSuccess=new Intent(OrderDetails_forDriverActivity.this,DriverMainActivity.class);
+                        startActivity(GoBackafterSuccess);
+                        finish();
                     }
                 });
         orderDetailsForDriverViewModel.mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.observe(this, new Observer<String>() {

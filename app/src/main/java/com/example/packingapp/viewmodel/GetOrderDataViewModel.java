@@ -34,8 +34,8 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("OrderNumber", ORDER_NO);
 
         ApiClient.buildRo().GetOrderData(
-               // "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+               // "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO
         )
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,12 +51,13 @@ public class GetOrderDataViewModel extends ViewModel {
     }
 
     public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public static MutableLiveData<String> mutableLiveData_InsertH_Error = new MutableLiveData<>();
 
     public void InsertOrderdataHeader(String ORDER_NO, String OUTBOUND_DELIVERY, String CUSTOMER_NAME,
                                       String CUSTOMER_PHONE, String CUSTOMER_CODE, String ADDRESS_GOVERN, String ADDRESS_CITY,
                                       String ADDRESS_DISTRICT, String ADDRESS_DETAILS, String ORDER_DELIVERY_DATE, String ORDER_DELIVERY_TIME,
                                       String PICKER_CONFIMATION_TIME, String GRAND_TOTAL, String CURRENCY, float SHIPPING_FEES,String NO_OF_PACKAGES,
-                                      String STORAGE_LOCATION) {
+                                      String STORAGE_LOCATION,String CreatedBy ) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", ORDER_NO);
@@ -70,7 +71,6 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("ADDRESS_DETAILS", ADDRESS_DETAILS);
         map.put("ORDER_DELIVERY_DATE", ORDER_DELIVERY_DATE);
         map.put("ORDER_DELIVERY_TIME", ORDER_DELIVERY_TIME);
-
         map.put("PICKER_CONFIMATION_TIME", PICKER_CONFIMATION_TIME);
         map.put("GRAND_TOTAL", GRAND_TOTAL);
         map.put("CURRENCY", CURRENCY);
@@ -79,6 +79,7 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "InsertOrderdataHeader:NO_OF_PACKAGES "+NO_OF_PACKAGES );
         map.put("STORAGE_LOCATION", STORAGE_LOCATION);
         map.put("STATUS", "packed");
+        map.put("CreatedBy", CreatedBy);
 
         ApiClient.build().InsertOrderDataHeader(map)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,6 +89,7 @@ public class GetOrderDataViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             Log.d("ErrorH ",throwable.getMessage());
+                            mutableLiveData_InsertH_Error.setValue(throwable.getMessage());
                         });
 
     }
@@ -110,11 +112,19 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "InsertOrderdataDetails: "+itemsOrderDataDBDetailsList.size() );
         for (int i =0;i<itemsOrderDataDBDetailsList.size();i++) {
             //"\u200e"
-
+//TODO itemsOrderDataDBDetailsList.get(i).getPrice() + (itemsOrderDataDBDetailsList.get(i).getQuantity()*ShippingfeesPerItem)
+            Float TotalPriceForBarcode=0f;
+            if (itemsOrderDataDBDetailsList.get(i).getSku().substring(0,2).equalsIgnoreCase("23")){
+                TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() +
+                        ShippingfeesPerItem;
+            }else {
+                 TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() +
+                        (itemsOrderDataDBDetailsList.get(i).getQuantity() * ShippingfeesPerItem);
+            }
            String name= itemsOrderDataDBDetailsList.get(i).getName();
 
             String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"/"+name+"/"+itemsOrderDataDBDetailsList.get(i).getSku()
-                    +"/"+(itemsOrderDataDBDetailsList.get(i).getPrice() + ShippingfeesPerItem)+"/"+itemsOrderDataDBDetailsList.get(i).getQuantity()
+                    +"/"+(TotalPriceForBarcode)+"/"+itemsOrderDataDBDetailsList.get(i).getQuantity()
                     +"/"+itemsOrderDataDBDetailsList.get(i).getUnite();
             Log.e("data",itemsOrder);
             Log.e("OrderNumber",OrderNumber);
@@ -141,8 +151,8 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                //"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+//                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )

@@ -88,14 +88,20 @@ public interface UserDao {
     @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned Where Order_number =:Order_number")
     List<ItemsOrderDataDBDetails_Scanned> getDetailsTrackingnumberToUpload_scannedbyordernumber(String Order_number);
 
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned Where Order_number =:Order_number and TrackingNumber=:TrackingNumber")
+    List<ItemsOrderDataDBDetails_Scanned> getDetailsTrackingnumberToPrintAWBscannedbyordernumber(String Order_number , String TrackingNumber);
+
     @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber=:TrackingNumber")
     List<ItemsOrderDataDBDetails_Scanned> getDetailsTrackingnumberToUpload(String TrackingNumber);
 
-    @Query("SELECT * FROM TrackingnumbersListDB")
-    List<TrackingnumbersListDB> getTrackingnumberDB();
+    @Query("SELECT * FROM TrackingnumbersListDB Where OrderNumber =:Order_number")
+    List<TrackingnumbersListDB> getTrackingnumberDB(String Order_number);
 
     @Query("SELECT distinct(Ordernumber) FROM TrackingnumbersListDB")
     List<String> getOrdersNumberDB();
+
+    @Query("SELECT distinct(Order_number) FROM OrderDataModuleDBHeader")
+    List<String> getOrdersAllordersNumberDB();
 
     @Query("SELECT distinct(TrackingNumber) FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber LIKE :ORDER_NO ")
     List<String> getNoOfPackagesToUpload(String ORDER_NO);
@@ -122,12 +128,12 @@ public interface UserDao {
 //TODO use query to validation
     @Query("select order2  , sku2, ifnull(qty2,0) as'sumqty2',ifnull(qty1,0) as 'sumqty1' ,ifnull(qty2,0)-ifnull(qty1,0) as 'diff' from \n" +
             "(SELECT Order_number as 'order2',sku as'sku2', sum(ifnull(quantity,0))as 'qty2' from ItemsOrderDataDBDetails\n" +
-            "group by sku\n" +
+            "where Order_number=:Ordernumber group by sku\n" +
             ")as b\n" +
             "left outer join \n" +
             "(\n" +
             "SELECT Order_number as 'order1' ,sku as 'sku1', sum(ifnull(quantity,0))as 'qty1' from ItemsOrderDataDBDetails_Scanned \n" +
-            "group by sku\n" +
+            "where Order_number=:Ordernumber group by sku\n" +
             ")as a \n" +
             "on ( order2 = order1 and sku1 = sku2)\n" +
             "where sumqty2 <> sumqty1\n" +
@@ -137,12 +143,12 @@ public interface UserDao {
     //TODO use query to validation
     @Query("select sku2 from (select order2  , sku2, ifnull(qty2,0) as'sumqty2',ifnull(qty1,0) as 'sumqty1' ,ifnull(qty2,0)-ifnull(qty1,0) as 'diff' from \n" +
             "(SELECT Order_number as 'order2',sku as'sku2', sum(ifnull(quantity,0))as 'qty2' from ItemsOrderDataDBDetails\n" +
-            "group by sku\n" +
+            "where Order_number=:Ordernumber group by sku\n" +
             ")as b\n" +
             "left outer join \n" +
             "(\n" +
             "SELECT Order_number as 'order1' ,sku as 'sku1', sum(ifnull(quantity,0))as 'qty1' from ItemsOrderDataDBDetails_Scanned \n" +
-            "group by sku\n" +
+            "where Order_number=:Ordernumber group by sku\n" +
             ")as a \n" +
             "on ( order2 = order1 and sku1 = sku2)\n" +
             "where sumqty2 <> sumqty1\n" +
@@ -159,14 +165,20 @@ public interface UserDao {
     @Query("SELECT * FROM itemsOrderDataDBDetails where Order_Number =:OrderNumber and sku =:barcode")
     List<ItemsOrderDataDBDetails> getItem(String OrderNumber , String barcode);
 
-    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where sku =:barcode")
-    List<ItemsOrderDataDBDetails_Scanned> getItem_scanned(String barcode);
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where Order_Number =:OrderNumber and  sku =:barcode")
+    List<ItemsOrderDataDBDetails_Scanned> getItem_scanned(String OrderNumber , String barcode);
 
-    @Query("SELECT sum(quantity) FROM ItemsOrderDataDBDetails_Scanned where sku =:barcode")
-    float getSumofScannedqty(String barcode);
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned where Order_Number =:OrderNumber and  sku LIKE :barcode")
+    List<ItemsOrderDataDBDetails_Scanned> getItem_scanned_scales(String OrderNumber , String barcode);
 
-    @Query("SELECT * FROM itemsOrderDataDBDetails where  sku LIKE :barcode")
-    List<ItemsOrderDataDBDetails> getItem_scales(String barcode);
+    @Query("SELECT sum(quantity) FROM ItemsOrderDataDBDetails_Scanned where Order_Number =:OrderNumber and sku =:barcode")
+    float getSumofScannedqty(String OrderNumber , String barcode);
+
+    @Query("SELECT sum(quantity) FROM ItemsOrderDataDBDetails_Scanned where Order_Number =:OrderNumber and sku LIKE :barcode ")
+    float getSumofScannedqty_scales(String OrderNumber , String barcode);
+
+    @Query("SELECT * FROM itemsOrderDataDBDetails where Order_Number =:OrderNumber and sku LIKE :barcode")
+    List<ItemsOrderDataDBDetails> getItem_scales(String OrderNumber ,String barcode);
 
     @Query("SELECT * FROM TrackingnumbersListDB where TrackingNumber is not null and OrderNumber=:Ordernumber ORDER BY TrackingNumber DESC LIMIT 1")
     TrackingnumbersListDB getLastTrackingnumber(String Ordernumber);

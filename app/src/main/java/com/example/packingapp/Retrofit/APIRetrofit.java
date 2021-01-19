@@ -26,99 +26,99 @@ import retrofit2.http.POST;
 
 public interface APIRetrofit {
 
-    @POST("Packing_Api/Login/Auth.php")
+    @POST("Login/Auth.php")
     Observable<ResponseLogin> loginwithno(@Body Map<String, String> mobile);
 
     @FormUrlEncoded
-    @POST("Packing_Api/Vodafone/SendSMS.php")
+    @POST("Vodafone/SendSMS.php")
     Observable<ResponseSms> sendSms(@Field("number") String phone, @Field("message") String message);
 
-    @POST("Packing_Api/Vechile/Create.php")
+    @POST("Vechile/Create.php")
     Observable<Message> createVehicle(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Driver/Create.php")
+    @POST("Driver/Create.php")
     Observable<Message> createDriver(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Direction/Create.php")
+    @POST("Direction/Create.php")
     Observable<Message> createDirection(@Body Map<String, String> mobile);
 
-    @GET("Packing_Api/Driver/Read.php")
+    @GET("Driver/Read.php")
     Observable<ResponseDriver> readDriver();
 
-    @GET("Packing_Api/Vechile/Read.php")
+    @GET("Vechile/Read.php")
     Observable<ResponseVehicle> readVehicle();
 
-    @GET("Packing_Api/Direction/Read.php")
+    @GET("Direction/Read.php")
     Observable<ResponseWay> readWay();
 
-    @POST("Packing_Api/Vechile/Update.php")
+    @POST("Vechile/Update.php")
     Observable<Message> updateVehicle(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Driver/Update.php")
+    @POST("Driver/Update.php")
     Observable<Message> updateDriver(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Direction/Update.php")
+    @POST("Direction/Update.php")
     Observable<Message> updateWay(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Inout/create.php")
+    @POST("Inout/create.php")
     Observable<Message> createInOut(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Ordernumber/CreateHeader.php")
+    @POST("Ordernumber/CreateHeader.php")
     Observable<Message> InsertOrderDataHeader(@Body Map<String, String> mobile);
 
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/CreateDetails.php")
+    @POST("Ordernumber/CreateDetails.php")
     Observable<Message> InsertOrderDataDetails(@Field("ORDER_NO") String ORDER_NO,
                                                @Field("ItemsOrderDataDBDetailsList[0]") String name);
 
-    @POST("Packing_Api/Ordernumber/Read.php")
+    @POST("Ordernumber/Read.php")
     Observable<RecievePackedModule> GetOrderNumberAndNumPackage(@Body Map<String, String> mobile);
 
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/UpdateStatus.php")
+    @POST("Ordernumber/UpdateStatus.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_ON_83(@Field("OrderNumberHeader[0]") String name);
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/UpdateStatusAndRescheduleTime.php")
+    @POST("Ordernumber/UpdateStatusAndRescheduleTime.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_RescheduleTime_ON_83(@Field("OrderNumberHeader[0]") String name);
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/UpdateStatusAndZone.php")
+    @POST("Ordernumber/UpdateStatusAndZone.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_Zone_ON_83(@Field("OrderNumberHeader[0]") String name);
 
-    @GET("Packing_Api/Driver/Read.php")
+    @GET("Driver/Read.php")
     Observable<ResponseDriver> GetDrivers_IDS();
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/UpdateDriverID.php")
+    @POST("Ordernumber/UpdateDriverID.php")
     Observable<ResponseUpdateStatus> UpdateOrder_DriverID_83(@Field("OrderNumberHeader[0]") String name);
 
-    @POST("Packing_Api/Ordernumber/ReadDriverRunsheetOrders.php")
+    @POST("Ordernumber/ReadDriverRunsheetOrders.php")
     Observable<DriverPackages_Respones_Header_recycler> ReadDriverRunsheetOrders_83(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Ordernumber/ReadDriverTrackingnumbersOfOrders.php")
+    @POST("Ordernumber/ReadDriverTrackingnumbersOfOrders.php")
     Observable<DriverPackages_Respones_Details_recycler> ReadDriverTrackingnumbersOfOrders_83(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Ordernumber/UpdateStatusAndPasscode.php")
+    @POST("Ordernumber/UpdateStatusAndPasscode.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_PASSCODE_ON_83(@Body Map<String, String> mobile);
     
     @FormUrlEncoded
-    @POST("Packing_Api/Ordernumber/UpdateStatusAndReason.php")
+    @POST("Ordernumber/UpdateStatusAndReason.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus_Reasone_ON_83(@Field("TrackingNumberDetails[0]") String name);
 
-    @POST("Packing_Api/Ordernumber/GetOrderForEndOfDay.php")
+    @POST("Ordernumber/GetOrderForEndOfDay.php")
     Observable<ResponeEndOfDay> GetOrderForEndOfDay_ON_83(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Ordernumber/Read_ForRunTimeSheet.php")
+    @POST("Ordernumber/Read_ForRunTimeSheet.php")
     Observable<Response> ReadRunTimeSheet(@Body Map<String, String> mobile);
 
 
-    @POST("Packing_Api/Ordernumber/Retrieve_ForRunTimeSheet.php")
+    @POST("Ordernumber/Retrieve_ForRunTimeSheet.php")
     Observable<ResponseFetchRuntimesheetID> RetrieveRunTimeSheet(@Body Map<String, String> mobile);
 
 
 
 
-    @POST("Packing_Api/Ordernumber/Read_ForAWB.php")
+    @POST("Ordernumber/Read_ForAWB.php")
     Observable<ResponseReprintAWB> Reprint_AWB(@Body Map<String, String> mobile);
 
-    @POST("Packing_Api/Ordernumber/CreateAWBLog.php")
+    @POST("Ordernumber/CreateAWBLog.php")
     Observable<Message> Reprint_AWB_insertlog(@Body Map<String, String> mobile);
 }

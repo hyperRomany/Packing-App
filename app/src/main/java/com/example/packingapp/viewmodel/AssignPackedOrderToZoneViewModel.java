@@ -19,6 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class AssignPackedOrderToZoneViewModel extends ViewModel {
+    private static final String TAG = "AssignPackedOrderToZone";
     private MutableLiveData<RecievePackedModule> OrderDataLiveData = new MutableLiveData<>();
     public MutableLiveData<RecievePackedModule> getOrderDataLiveData() {
         return OrderDataLiveData;
@@ -54,8 +55,8 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         map.put("status", Status);
 
         ApiClient.buildRo().UpdateOrderStatus(
-               // "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+//                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )
@@ -73,11 +74,12 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Zone_ON_83 = new MutableLiveData<>();
+    public static MutableLiveData<String> mutableLiveDataError_Zone_ON_83 = new MutableLiveData<>();
 
-    public void UpdateOrderStatus_Zone_ON_83(String ORDER_NO, String ZONE, String Status) {
+    public void UpdateOrderStatus_Zone_ON_83(String ORDER_NO, String ZONE, String Status,String ModifyedBy) {
 
 
-        String text=ZONE+"/"+ORDER_NO+"/"+Status;
+        String text=ZONE+"/"+ORDER_NO+"/"+Status+"/"+ModifyedBy;
         ApiClient.build().UpdateOrderStatus_Zone_ON_83(text)
 
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,7 +90,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             Log.d("Error",throwable.getMessage());
-
+                            mutableLiveDataError_Zone_ON_83.setValue(throwable.getMessage());
                         });
 
     }
@@ -109,10 +111,11 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateDriverID_ON_83 = new MutableLiveData<>();
 
-    public void UpdateOrder_DriverID_ON_83(String ORDER_NO, String DriverID) {
+    public void UpdateOrder_DriverID_ON_83(String ORDER_NO, String DriverID,String ModifyedBy) {
 
 
-        String text=ORDER_NO+"/"+DriverID;
+        String text=ORDER_NO+"/"+DriverID+"/"+ModifyedBy;
+        Log.e(TAG, "zzUpdateOrder_DriverID_ON_83:txt "+text );
         ApiClient.build().UpdateOrder_DriverID_83(text)
 
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,7 +125,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
                         }
                         ,throwable -> {
-                            Log.d("Error",throwable.getMessage());
+                            Log.d("Error_UpdateOrder_Dri",throwable.getMessage());
 
                         });
 
@@ -133,6 +136,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public MutableLiveData<ResponseSms> getSmsLiveData() {
         return smsLiveData;
     }
+    public static MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
 
     public void SendSms(String number, String message) {
         ApiClient.build().sendSms(number,message)
@@ -143,7 +147,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             Log.d("Error_Vof ",throwable.getMessage());
-
+                            mutableLiveDataError_SendSms.setValue(throwable.getMessage());
                         });
 
     }
@@ -168,7 +172,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                             runTimeSheetData.setValue(responseSms);
                         }
                         ,throwable -> {
-                            Log.d("Error_Vof ",throwable.getMessage());
+                            Log.d("Error_SheetData ",throwable.getMessage());
                         });
 
     }

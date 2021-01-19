@@ -48,8 +48,8 @@ public class RecievePackedOrderViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                //"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+//                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )
@@ -70,9 +70,9 @@ public class RecievePackedOrderViewModel extends ViewModel {
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
 
-    public void UpdateStatus_ON_83(String ORDER_NO, String Status) {
+    public void UpdateStatus_ON_83(String ORDER_NO, String Status,String ModifyedBy) {
 
-        String text=ORDER_NO+"/"+Status;
+        String text=ORDER_NO+"/"+Status+"/"+ModifyedBy;
         ApiClient.build().UpdateOrderStatus_ON_83(text)
 
                 .observeOn(AndroidSchedulers.mainThread())

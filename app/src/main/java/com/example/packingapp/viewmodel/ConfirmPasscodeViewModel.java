@@ -18,13 +18,15 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     private static final String TAG = "ConfirmPasscodeViewMode";
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_PASSCODE_ON_83 = new MutableLiveData<>();
 
-    public void UpdateOrderStatus_Passcode_Header_ON_83(String ORDER_NO, String PASSCODE, String Status) {
+    public void UpdateOrderStatus_Passcode_Header_ON_83(String ORDER_NO, String PASSCODE, String Status,String ModifyedBy) {
 
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", ORDER_NO);
         map.put("PASSCODE", PASSCODE);
         map.put("STATUS", Status);
+        map.put("ModifyedBy", ModifyedBy);
+
         ApiClient.build().UpdateOrderStatus_PASSCODE_ON_83(map)
 
                 .observeOn(AndroidSchedulers.mainThread())
@@ -82,8 +84,8 @@ public class ConfirmPasscodeViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus:rob "+ ORDER_NO);
 
         ApiClient.buildRo().UpdateOrderStatus(
-                //"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
+//                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
                 map
         )

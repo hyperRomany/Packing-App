@@ -48,6 +48,15 @@ public class ItemsOrderDataDBDetails_Scanned {
     public ItemsOrderDataDBDetails_Scanned() {
     }
 
+    public ItemsOrderDataDBDetails_Scanned(String name, float price, float quantity, String sku, String unite, String trackingNumber) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.sku = sku;
+        this.unite = unite;
+        TrackingNumber = trackingNumber;
+    }
+
     public ItemsOrderDataDBDetails_Scanned(String OrderNumber , String name, float price,
                                            float quantity, String sku, String unite) {
         this.Order_number = OrderNumber;
@@ -76,6 +85,8 @@ public class ItemsOrderDataDBDetails_Scanned {
         this.quantity = quantity;
         this.unite = unite;
     }
+
+
 
     public int getUid() {
         return uid;

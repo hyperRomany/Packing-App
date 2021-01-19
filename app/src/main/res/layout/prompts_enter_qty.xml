@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/custome_bg_for_order_details_for_driver">
+
+    <TextView
+        android:id="@+id/txt_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/barcode"
+        android:textSize="@dimen/font_size_for_text_of_app"
+        android:textColor="@color/white" />
+
+    <EditText
+        android:id="@+id/edit_qty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_qyt"
+        android:textSize="@dimen/font_size_for_text_of_app"
+        android:textColorHint="#DDD"
+        android:inputType="number">
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/btn_save_qty"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:text="@string/enter"
+            android:background="@drawable/bg_btn"
+            android:textSize="@dimen/font_size_for_button_of_app"
+
+            android:textColor="@color/textcolor_btns"/>
+
+
+    </LinearLayout>
+</LinearLayout>

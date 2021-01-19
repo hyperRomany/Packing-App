@@ -152,8 +152,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                        final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
                                                                .findViewById(R.id.rv_ordernmber);
 
-                                                       OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getOrdersNumberDB());
-                                                       Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
+                                                       OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getOrdersAllordersNumberDB());
+                                                       Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersAllordersNumberDB().size() );
                                                        rv_ordernumbers.setAdapter(ordersnumberAdapter);
                                                        rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
@@ -259,9 +259,14 @@ public class GetOrderDatactivity extends AppCompatActivity {
         for (int i = 0; i < responseGetOrderData.getItemsOrderDataDBDetails().size(); i++) {
             //responseGetOrderData.getOrder_number()
             ItemsOrderDataDBDetails itemsOrderDataDBDetails = new ItemsOrderDataDBDetails(responseGetOrderData.getOrder_number(),
-                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getName(), responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice(),
-                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getQuantity(), responseGetOrderData.getItemsOrderDataDBDetails().get(i).getSku(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getName(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getQuantity(),
+                    responseGetOrderData.getItemsOrderDataDBDetails().get(i).getSku(),
                     responseGetOrderData.getItemsOrderDataDBDetails().get(i).getUnite());
+
+            Log.e(TAG, "zzz>> getPrice " + responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice());
+
             database.userDao().insertOrderItem(itemsOrderDataDBDetails);
         }
         Log.e(TAG, "zzz>> currency " + responseGetOrderData.getItemsOrderDataDBDetails().size());
@@ -319,6 +324,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
             List<String> NO_OF_PACKAGES =
                     database.userDao().getNoOfPackagesToUpload(orderDataModuleDBHeader.getOrder_number() + "%");
             Log.e(TAG, "UploadHeader:NO_OF_P " + NO_OF_PACKAGES.size());
+            Log.e(TAG, "UploadHeader:shipping fees " + orderDataModuleDBHeader.getShipping_fees());
+            Log.e(TAG, "UploadHeader:shipping feesDB " + database.userDao().getHeaderToUpload(ordernumberselected).getShipping_fees());
+
             /*Log.e(TAG, "zzUploadHeader:NO_OF_PAC: "+NO_OF_PACKAGES );
             Log.e(TAG, "zzUploadHeader:OutBo: "+orderDataModuleDBHeader.getOutBound_delivery() );
             Log.e(TAG, "zzUploadHeader:OutBo: "+orderDataModuleDBHeader.getCustomer_name() );
@@ -355,6 +363,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     orderDataModuleDBHeader.getShipping_fees(),
                     String.valueOf(NO_OF_PACKAGES.size()),
                     orderDataModuleDBHeader.getOut_From_Loc()
+                    ,database.userDao().getUserData_MU().getUser_id()
             );
 
             getOrderDataViewModel.mutableLiveData.observe(GetOrderDatactivity.this, new Observer<Message>() {
@@ -370,6 +379,19 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     //TODO Update status on magento
                     UpdateStatus(ordernumberselected);
 
+                }
+            });
+            //TODO insert header error
+            getOrderDataViewModel.mutableLiveData_InsertH_Error.observe(GetOrderDatactivity.this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    Log.e(TAG, "onChanged:mutableLiveD  " + s);
+                    if (s.contains("HTTP 400")) {
+                        Toast.makeText(GetOrderDatactivity.this, String.format("%s",
+                                getString(R.string.missingdata)), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else {

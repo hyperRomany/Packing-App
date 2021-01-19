@@ -42,6 +42,8 @@ public class EditPackagesForRecievingActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         database= AppDatabase.getDatabaseInstance(this);
 
+        setTitle(R.string.EditPackagesForRecievingActivity_label);
+
         binding.editTrackingnumber.requestFocus();
 
         Po_Item_For_Recycly = new ArrayList<>();

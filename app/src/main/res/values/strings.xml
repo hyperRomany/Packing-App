@@ -146,4 +146,17 @@
     <string name="enter_reschedule_time">أختر وقت التاجيل</string>
     <string name="enter_reschedule_time_lesethan11">أختر وقت أقل من 11 مساء</string>
     <string name="choice_reason">أختر السبب</string>
+    <string name="missingdata">البيانات ناقصه</string>
+    <string name="enter_qyt">أدخل الكميه</string>
+    <string name="barcode">الباركود</string>
+
+    <string name="GetOrderDatactivity_label">Packing</string>
+    <string name="AssignItemToPackagesActivity_label"><![CDATA[Packing->Assign Items]]></string>
+    <string name="EditPackagesActivity_label"><![CDATA[Packing->EditPackages]]></string>
+    <string name="EditPackageItemsActivity_label"><![CDATA[Packing->Edit Packages->Edit Items]]></string>
+    <string name="RecievePacked_label">Recieve Packed</string>
+    <string name="RecieveForDriver_label"><![CDATA[Driver->Confirm Recieving]]></string>
+    <string name="EditPackagesForRecievingActivity_label"><![CDATA[RecieveORConfirm->Edit packages]]></string>
+    <string name="OrdersOfRuntimeSheetNowForDriverActivity_label"><![CDATA[Driver->DriverOrders]]></string>
+    <string name="OrderDetails_forDriverActivity_label"><![CDATA[Driver->DriverOrders->OrderDetails]]></string>
 </resources>

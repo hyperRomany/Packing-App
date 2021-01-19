@@ -57,7 +57,26 @@ String DriverID="";
         if (getIntent().getExtras() !=null){
             RecievePackedOrConfirmForDriver = getIntent().getExtras().getString("RecievePackedOrConfirmForDriver");
         }
-        recievePackedOrderViewModel= ViewModelProviders.of(this).get(RecievePackedOrderViewModel.class);
+        if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
+            setTitle(getString(R.string.RecievePacked_label));
+        }else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")){
+            setTitle(getString(R.string.RecieveForDriver_label));
+        }
+/*
+        if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
+            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("packed")) {
+                AfterGetOrderData(responseGetOrderData , binding.editTrackingnumber.getText().toString());
+            }else {
+                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "This Order in "+responseGetOrderData.getSTATUS()+" State", Toast.LENGTH_SHORT).show();
+                binding.editTrackingnumber.setError(null);
+                binding.editTrackingnumber.setText("");
+            }
+        }else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")) {
+            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")) {
+*/
+
+
+                recievePackedOrderViewModel= ViewModelProviders.of(this).get(RecievePackedOrderViewModel.class);
         ObserveFunct();
         binding.btnLoadingNewPurchaseOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,12 +404,12 @@ String DriverID="";
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
                     recievePackedOrderViewModel.UpdateStatus_ON_83(
                             orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
-                            "in sorting"
+                            "in sorting",database.userDao().getUserData_MU().getUser_id()
                     );
             }else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")){
                 recievePackedOrderViewModel.UpdateStatus_ON_83(
                         orderDataModuleDBHeaderkist.get(i).getORDER_NO(),
-                        "Ready To Go"
+                        "Ready To Go",database.userDao().getUserData_MU().getUser_id()
                 );
 
             }else {
@@ -422,10 +441,15 @@ String DriverID="";
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
 
                     recievePackedOrderViewModel.UpdateStatus(orderDataModuleDBHeaderkist.get(i).getORDER_NO(),"in_sorting");
-
+                    Intent GoBackafterSuccess=new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,AdminstratorActivity.class);
+                    startActivity(GoBackafterSuccess);
+                    finish();
                 }else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")){
 
                     recievePackedOrderViewModel.UpdateStatus(orderDataModuleDBHeaderkist.get(i).getORDER_NO(),"ready_to_go");
+                    Intent GoBackafterSuccess=new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,DriverMainActivity.class);
+                    startActivity(GoBackafterSuccess);
+                    finish();
                 }else {
                     Toast.makeText(context, getResources().getString(R.string.statusnotUpdate), Toast.LENGTH_SHORT).show();
                 }
