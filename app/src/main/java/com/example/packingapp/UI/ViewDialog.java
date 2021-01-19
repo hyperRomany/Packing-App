@@ -328,7 +328,7 @@ private  String OrderNumber;
                                 "^CWZ,E:TT0003M_.TTF^FS" +
                                 "^CF0,5" +
                                 "^AZN,35,20^AAN,15,10^FO90,320^BCN,85,Y,N^FD" + "" + DetailsList.get(0).getTrackingNumber() + "^FS^PQ1" +
-                                "^CF0,10" +
+                                "^CF0,25" +
                                 "^FO30,30^CI28^AZN,20,15^FDفرع زايد^FS" +
                                 "^FO700,30^CI28^AZN,20,15^FDفرع زايد^FS" +
                                 "^FX" +
@@ -338,24 +338,25 @@ private  String OrderNumber;
                                 "^FO500,90^GB280,1^FS" +
                                 "^FO30,130^GB750,80,1^FS" +
                                 "^FO500,50^GB1,160,1^FS" +
-                                "^CF0,15" +
-                                "^FO590,65^CI28^AZN,20,15^FDشركة الشحن^FS" +
-                                "^FO600,105^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_address_city() + "^FS" +
-                                "^FO600,160^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_address_govern() + "^FS" +
-                                "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
-                                "^FO450,270^CI28^AZN,20,15^FD" + database.userDao().getTrackingnumberDB(OrderNumber).size() + "^FS" +
                                 "^CF0,25" +
-                                "^FO200,65^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_name() + "^FS" +
-                                "^FO200,90^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_phone() + "^FS" +
-                                "^FO100,150^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_address_detail() + "^FS" +
-                                "^CF0,15" +
+                                "^FO590,65^CI28^AZN,0,25^FDشركة الشحن^FS" +
+                                "^FO600,105^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_city() + "^FS" +
+                                "^FO600,160^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_govern() + "^FS" +
+                                "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
+                                "^FO450,270^CI28^AZN,0,25^FD" + database.userDao().getTrackingnumberDB(OrderNumber).size() + "^FS" +
+                                "^CF0,25" +
+                                "^FO200,65^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_name() + "^FS" +
+                                "^FO200,90^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_phone() + "^FS" +
+                                "^FO100,150^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_detail() + "^FS" +
+                                "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
                                 "^FO100,270^FD"+part2.substring(1)+"^FS" +
                                 "^FO600,230^CI28^AZN,20,15^FD التحقق من هوية العميل ^FS" +
+                                "^FO450,230^CI28^AZN,20,15^FD اجمالي قيمه الطلب ^FS" +
                                 "^CF0,25" +
-                                "^FO400,230^FD " + orderDataModuleDBHeader.getGrand_total() + " ^FS" +
+                                "^FO250,230^FD " + orderDataModuleDBHeader.getGrand_total() + " ^FS" +
                                 "^FO100,230^CI28^AZN,20,15^FD " + checkPaymentMethod(orderDataModuleDBHeader.getGrand_total()) + " ^FS" +
-                                "^CF0,15" +
+                                "^CF0,25" +
                                 "^FO200,465^CI28^AZN,20,15^FDاجمالي الطلب^FS" +
                                 "^FO200,505^CI28^AZN,20,15^FDتكلفه الشحن^FS" +
                                 "^FO220,550^CI28^AZN,20,15^FDالاجمالي^FS" +
@@ -366,7 +367,7 @@ private  String OrderNumber;
 
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
-                                "^FO100,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
                                 "^FO80,550^CI28^AZN,20,15^FD" + ( totel + Double.valueOf(orderDataModuleDBHeader.getShipping_fees()) )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
