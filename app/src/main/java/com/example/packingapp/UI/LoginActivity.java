@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.TypefaceUtil;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityLoginBinding;
 import com.example.packingapp.model.ResponseLogin;
@@ -26,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Ubuntu-Light.ttf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
+
         lgoinViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         database=AppDatabase.getDatabaseInstance(this);
         binding.login.setOnClickListener(new View.OnClickListener() {

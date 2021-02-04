@@ -114,8 +114,6 @@ public interface APIRetrofit {
     Observable<ResponseFetchRuntimesheetID> RetrieveRunTimeSheet(@Body Map<String, String> mobile);
 
 
-
-
     @POST("Ordernumber/Read_ForAWB.php")
     Observable<ResponseReprintAWB> Reprint_AWB(@Body Map<String, String> mobile);
 

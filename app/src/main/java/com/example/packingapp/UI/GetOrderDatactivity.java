@@ -113,7 +113,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
         binding.btnLoadingLastPurchaseOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!binding.editMagentoorder.getText().toString().isEmpty()) {
+               /* if (!binding.editMagentoorder.getText().toString().isEmpty()) {
                     //binding.editMagentoorder.getText().toString()
                     //TODO SEARCH IF LAST ORDER NUMBER IS IN DB OR not
                     List<ItemsOrderDataDBDetails> itemsOrderDataDBDetailsList = database.userDao()
@@ -129,8 +129,50 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 } else {
                     binding.editMagentoorder.setError(getResources().getString(R.string.enter));
                     binding.editMagentoorder.requestFocus();
-                }
+                }*/
+
+                LayoutInflater li = LayoutInflater.from(GetOrderDatactivity.this);
+                View promptsView = li.inflate(R.layout.prompts_showordersnumber, null);
+
+                androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(
+                        GetOrderDatactivity.this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                // create alert dialog
+                androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+                final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
+                        .findViewById(R.id.rv_ordernmber);
+                final TextView txt_title=(TextView) promptsView.findViewById(R.id.txt_title);
+                txt_title.setText(R.string.choice_lastordernumber_that_youneed_to_load);
+                OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getOrdersAllordersNumberDB());
+                Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersAllordersNumberDB().size() );
+                rv_ordernumbers.setAdapter(ordersnumberAdapter);
+                rv_ordernumbers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+                ItemclickforRecycler.addTo(rv_ordernumbers).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // promptsView.
+                        String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+                        Intent i = new Intent(getApplicationContext(), AssignItemToPackagesActivity.class);
+                        i.putExtra("AddNewPackageORAddForExistPackage", "New");
+                        i.putExtra("OrderNumber", Ordernumber);
+                        startActivity(i);
+
+                        alertDialog.dismiss();
+
+                    }
+                });
+                // show it
+                alertDialog.show();
+
             }
+
+
         });
 
         binding.btnPrintAwb.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +193,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
                                                        final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
                                                                .findViewById(R.id.rv_ordernmber);
-
+                                                        final TextView txt_title=(TextView) promptsView.findViewById(R.id.txt_title);
+                                                       txt_title.setText(R.string.choice_ordernumber_that_youneed_to_print);
                                                        OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getOrdersAllordersNumberDB());
                                                        Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersAllordersNumberDB().size() );
                                                        rv_ordernumbers.setAdapter(ordersnumberAdapter);

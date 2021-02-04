@@ -35,8 +35,6 @@ public class ReprintActivity extends AppCompatActivity {
                 .get(ReprintAWBViewModel.class);
         database= AppDatabase.getDatabaseInstance(this);
 
-
-
         reprintAWBViewModel.getOrderDataLiveData().observe(ReprintActivity.this, new Observer<ResponseReprintAWB>() {
             @Override
             public void onChanged(ResponseReprintAWB responseReprintAWB) {
@@ -44,9 +42,10 @@ public class ReprintActivity extends AppCompatActivity {
                 itemsOrderDataDBDetailslist=responseReprintAWB.getDetails();
                 List<OrderDataModuleHeader_Reprint> header_reprintList=new ArrayList<>();
                 header_reprintList=responseReprintAWB.getHeader();
-                Log.e(TAG, "onChanged: "+header_reprintList.size());
-                Log.e(TAG, "onChanged: "+itemsOrderDataDBDetailslist.size());
-                ViewDialog_Reprint alert = new ViewDialog_Reprint();
+                Log.e(TAG, "onChanged:header_reprintList "+header_reprintList.size());
+                Log.e(TAG, "onChanged:itemsOrderDataDBDetailslist "+itemsOrderDataDBDetailslist.size());
+
+               ViewDialog_Reprint alert = new ViewDialog_Reprint();
                 alert.showDialog(ReprintActivity.this , header_reprintList , itemsOrderDataDBDetailslist
                 ,binding.editTrackingnumber.getText().toString()
                                 .substring(0,binding.editTrackingnumber.getText().toString().indexOf("-")),

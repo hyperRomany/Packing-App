@@ -7,31 +7,52 @@
     tools:context=".UI.AssignItemToPackagesActivity"
     android:background="@color/main_background_color">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtinput_edit_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textColorHint="@color/txt_color_hint"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        >
     <EditText
         android:id="@+id/edit_barcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="250dp"
-        android:layout_margin="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         android:inputType="number"
         android:focusable="true"
         android:singleLine="true"
         />
-
+    </com.google.android.material.textfield.TextInputLayout>
     <ImageView
         android:id="@+id/imag_search"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="20dp"
-        android:background="@drawable/bg_btn"
+        android:background="@drawable/buttonshap"
         android:padding="15dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_add_card_62"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<LinearLayout
+    android:id="@+id/product_item_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+    app:layout_constraintTop_toBottomOf="@+id/txtinput_edit_barcode"
+
+    >
+    <include
+        layout="@layout/product_item_header"
+         />
+
+</LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -39,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_assign_items_to_package"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_barcode"
+        app:layout_constraintTop_toBottomOf="@+id/product_item_header"
         tools:listitem="@layout/product_item"
         tools:itemCount="100"
         android:layout_marginTop="15dp"
@@ -50,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Assign_item"
-        android:background="@drawable/bg_btn"
+        android:background="@drawable/buttonshap"
         android:textColor="@color/textcolor_btns"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +79,8 @@
         android:padding="5dp"
         android:textSize="@dimen/font_size_for_button_of_app"
 
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

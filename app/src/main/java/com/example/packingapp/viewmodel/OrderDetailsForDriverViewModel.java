@@ -29,7 +29,8 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                        }
                ,throwable -> {
                            Log.d("Error_Vof ",throwable.getMessage());
-                       });
+                       }
+               );
     }
 
     private MutableLiveData<DriverPackages_Respones_Details_recycler> DriverOrderReadyDetailsDataLiveData = new MutableLiveData<>();

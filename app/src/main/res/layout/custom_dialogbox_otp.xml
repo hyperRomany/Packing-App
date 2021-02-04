@@ -47,7 +47,8 @@
                         android:layout_marginTop="10dp"
                         android:id="@+id/bluetoothRadio"
                         android:textSize="18dp"
-                        android:text="Bluetooth (R)" />
+                        android:text="Bluetooth (R)"
+                        />
                 </RadioGroup>
 
                 <LinearLayout

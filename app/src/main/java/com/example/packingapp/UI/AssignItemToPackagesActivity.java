@@ -145,8 +145,29 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         itemAdapter.ClearRVAfterAssign();
                         ListOfBarcodesToAssign.clear();
                     }else {
+
+                        for (int i=0;i<Adapterlist.size();i++) {
+                            List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList_scanned =new ArrayList<>();
+                            itemsOrderDataDBDetailsList_scanned = database.userDao().getItem_scanned(OrderNumber ,Adapterlist.get(i).getSku());
+                            if (itemsOrderDataDBDetailsList_scanned.size() ==0 ) {
+                                Log.e(TAG, "onClick: insert "+ Adapterlist.get(i).getSku() );
+                                ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
+                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber, Adapterlist.get(i).getName(), Adapterlist.get(i).getPrice(),
+                                        Adapterlist.get(i).getQuantity(), Adapterlist.get(i).getSku(), Adapterlist.get(i).getUnite(),
+                                        AddNewPackageORAddForExistPackage);
+                                Log.e(TAG, "onClick:insert getScanned_quantity1: " + Adapterlist.get(i).getQuantity());
+
+                                database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
+                            }else {
+                                Log.e(TAG, "onClick: update "+ Adapterlist.get(i).getSku() );
+                                database.userDao().updateQTYforListOfItems(OrderNumber , AddNewPackageORAddForExistPackage , (itemsOrderDataDBDetailsList_scanned.get(0).getQuantity()
+                                        + Adapterlist.get(i).getQuantity()) , Adapterlist.get(i).getSku() );
+                            }
+                        }
+
                         Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.done), Toast.LENGTH_SHORT).show();
-                        database.userDao().updatetrackingnumberforListOfItems(AddNewPackageORAddForExistPackage, ListOfBarcodesToAssign);
+//                        database.userDao().updatetrackingnumberforListOfItems(AddNewPackageORAddForExistPackage, ListOfBarcodesToAssign);
+
                         //ToDo Clear all lists after assign
                         Intent GoBackToEditItemsOfPackage=new Intent(AssignItemToPackagesActivity.this,EditPackageItemsActivity.class);
                         GoBackToEditItemsOfPackage.putExtra("TrackingNumber",AddNewPackageORAddForExistPackage);
@@ -274,7 +295,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
             //TODO need to add search with order nuber for if there is repeated barcode in orders (pending orders)
                 itemsOrderDataDBDetailsList = database.userDao().getItem(OrderNumber , binding.editBarcode.getText().toString());
 //                    product = new Product("laptop", "5");
-
+                Log.e(TAG, "SearchOfBarcode:OrderNumber "+OrderNumber );
+                Log.e(TAG, "SearchOfBarcode:binding.editBarcode.getText().toString() "+binding.editBarcode.getText().toString() );
             if (itemsOrderDataDBDetailsList.size() >0 ) {
                 List<ItemsOrderDataDBDetails_Scanned> Adapterlist = itemAdapter.ReturnListOfAdapter();
                 List<String> listClone = new ArrayList<>();
@@ -335,8 +357,6 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         Log.e(TAG, "SearchOfBarcode: setError : this is more than required " );
                     }
                // }
-
-
                         /* ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                 = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(0).getName(),Adapterlist.get(0).getPrice(),
                                 Adapterlist.get(0).getQuantity(),Adapterlist.get(0).getSku(),Adapterlist.get(0).getUnite(),ListOfBarcodesToAssign.get(0));
@@ -552,7 +572,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         Log.e(TAG, "SearchOfBarcode:adapterQTY "+adapterQTY );
                         // delete it from here
 //                        postion=i;
-                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+adapterQTY+Qty_add)){
+                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+Qty_add)){
                             Adapterlist.remove(i);
                         }
 
@@ -565,10 +585,13 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                 // if (itemsOrderDataDBDetailsList_scanned.size() >0){
                 Log.e(TAG, "SearchOfBarcode:getQuantity "+itemsOrderDataDBDetailsList.get(0).getQuantity() );
                 Log.e(TAG, "SearchOfBarcode:SumofScannedqty "+SumofScannedqty );
-                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+adapterQTY+Qty_add)){
+                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+Qty_add)){
                     // if (adapterQTY>0){
 //                          QTY=adapterQTY+0.2f;
-                    QTY=adapterQTY+Qty_add;
+                    //TODO
+//                    QTY=adapterQTY+Qty_add;
+                    QTY=Qty_add;
+
                     ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                             = new ItemsOrderDataDBDetails_Scanned(OrderNumber,itemsOrderDataDBDetailsList.get(0).getName(),
                             itemsOrderDataDBDetailsList.get(0).getPrice(),
@@ -584,15 +607,13 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     //   QTY= itemsOrderDataDBDetailsList.get(0).getQuantity()+1 ;
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
-                }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (SumofScannedqty+adapterQTY+Qty_add)){
+                }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (SumofScannedqty+Qty_add)){
                     binding.editBarcode.setError("تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب");
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
                     Log.e(TAG, "SearchOfBarcode: setError : this is more than required " );
                 }
                 // }
-
-
                         /* ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                 = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(0).getName(),Adapterlist.get(0).getPrice(),
                                 Adapterlist.get(0).getQuantity(),Adapterlist.get(0).getSku(),Adapterlist.get(0).getUnite(),ListOfBarcodesToAssign.get(0));

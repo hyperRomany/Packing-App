@@ -9,7 +9,14 @@
         android:background="@color/main_background_color"
         tools:context=".UI.GetOrderDatactivity">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColorHint="@color/txt_color_hint"
 
+            >
         <EditText
             android:id="@+id/edit_magentoorder"
             android:layout_width="match_parent"
@@ -22,41 +29,53 @@
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             />
-
-        <Button
-            android:id="@+id/btn_loading_new_purchase_order"
-            android:layout_width="220dp"
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loadnewOrder"
-            android:background="@drawable/bg_btn"
-            android:textColor="@color/textcolor_btns"
+                android:orientation="vertical"
             android:layout_marginTop="50dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:textSize="@dimen/font_size_for_button_of_app"
+            android:background="@color/loaddata_groupe"
+            android:padding="10dp">
+                <Button
+                    android:id="@+id/btn_loading_new_purchase_order"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loadnewOrder"
+                    android:background="@drawable/buttonshap"
+                    android:textColor="@color/textcolor_btns"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/font_size_for_button_of_app"
+                    />
+                <Button
+                    android:id="@+id/btn_loading_last_purchase_order"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loadlastOrder"
+                    android:background="@drawable/buttonshap"
+                    android:textColor="@color/textcolor_btns"
+                    android:layout_marginTop="30dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/font_size_for_button_of_app"
+                    />
+        </LinearLayout>
 
-            />
-        <Button
-            android:id="@+id/btn_loading_last_purchase_order"
-            android:layout_width="220dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loadlastOrder"
-            android:background="@drawable/bg_btn"
-            android:textColor="@color/textcolor_btns"
+            android:orientation="vertical"
+            android:background="@color/loaddata_groupe"
             android:layout_marginTop="30dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:textSize="@dimen/font_size_for_button_of_app"
-            />
-
+            android:padding="10dp">
         <Button
             android:id="@+id/btn_print_awb"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:text="@string/print"
-            android:background="@drawable/bg_btn"
+            android:background="@drawable/buttonshap"
             android:textColor="@color/textcolor_btns"
-            android:layout_marginTop="30dp"
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
             android:textSize="@dimen/font_size_for_button_of_app"
@@ -67,14 +86,14 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@drawable/bg_btn"
+            android:background="@drawable/buttonshap"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:text="@string/edit"
             android:textColor="@color/textcolor_btns"
             android:textSize="@dimen/font_size_for_button_of_app"
             />
-
+        </LinearLayout>
         <ProgressBar
             android:id="@+id/prog_loading_magentoorder"
             android:layout_width="wrap_content"

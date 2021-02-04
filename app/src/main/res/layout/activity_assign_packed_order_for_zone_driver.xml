@@ -8,7 +8,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:background="@color/main_background_color"
         tools:context=".UI.AssignPackedOrderForZoneAndDriverActivity"
-    android:layoutDirection="rtl">
+        android:layoutDirection="rtl">
 
         <Button
             android:id="@+id/btn_show_assign_orders_to_zone"
@@ -166,7 +166,7 @@
             android:paddingBottom="5dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-
+            android:visibility="gone"
             >
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner

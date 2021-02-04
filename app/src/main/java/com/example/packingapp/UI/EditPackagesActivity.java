@@ -41,8 +41,8 @@ public class EditPackagesActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         database= AppDatabase.getDatabaseInstance(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         CreateORUpdateRecycleView();
 
@@ -170,6 +170,10 @@ public class EditPackagesActivity extends AppCompatActivity {
 
                                         List<String> sku_to_remove =database.userDao().getskuOfTrackingNumber(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
                                         Log.e(TAG, "onClick:sku_to_remove "+sku_to_remove.size() );
+                                        // we should use uid instanse of barcodes because barcode can be repeated
+                                        List<Integer> Uid_for_sku_to_remove =database.userDao().getuidOfTrackingNumber(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
+                                        Log.e(TAG, "onClick:sku_to_remove "+Uid_for_sku_to_remove.size() );
+
                                         List<String> AfterTrackingNumberDeleted_list=database.userDao().
                                                 GetTrackingNumbersAfterDeleteOne(OrdernumberToEditORDelete , TrackingnumberToEditORDelete);
                                         Log.e(TAG, "onClick:LastTrackingNumber "+AfterTrackingNumberDeleted_list.size() );
@@ -207,7 +211,8 @@ public class EditPackagesActivity extends AppCompatActivity {
                                         }
 
                                         database.userDao().DeleteTrackingNumberFromtrackingtable_using_uid(OrdernumberToEditORDelete , UID_to_delete);
-                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_sku(OrdernumberToEditORDelete ,  sku_to_remove);
+//                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_sku(OrdernumberToEditORDelete ,  sku_to_remove);
+                                        database.userDao().DeleteTrackingNumberFromDetailstable_using_uid(OrdernumberToEditORDelete ,  Uid_for_sku_to_remove);
                                         CreateORUpdateRecycleView();
 //                                      packedPackagesAdapter.notifyDataSetChanged();
 

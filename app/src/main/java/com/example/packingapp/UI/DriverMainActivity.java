@@ -33,7 +33,7 @@ public class DriverMainActivity extends AppCompatActivity {
                                 //TODO why you delete
                                 database.userDao().deleteRecievePackedModule();
                                 database.userDao().deleteDriverPackages_Header_DB();
-                                database.userDao().deleteDriverPackages_Header_DB();
+                                database.userDao().deleteDriverPackages_Details_DB();
                                 Intent gotoconfirmrecieve = new Intent(DriverMainActivity.this,RecievedPackedAndSortedOrderForSortingAndDriverActivity.class);
                                 gotoconfirmrecieve.putExtra("RecievePackedOrConfirmForDriver","ConfirmForDriver");
                                 startActivity(gotoconfirmrecieve);

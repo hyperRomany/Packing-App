@@ -192,11 +192,17 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void InsertItemsDetails_scanned(ItemsOrderDataDBDetails_Scanned i);
 
-    @Query("UPDATE itemsOrderDataDBDetails SET TrackingNumber = :tracking WHERE  sku in (:items) ")
+    @Query("UPDATE ItemsOrderDataDBDetails_Scanned SET TrackingNumber = :tracking WHERE  sku in (:items) ")
      void updatetrackingnumberforListOfItems(String tracking , List<String> items);
+
+    @Query("UPDATE ItemsOrderDataDBDetails_Scanned SET quantity = :quantity WHERE Order_number=:Order_number and TrackingNumber =:TrackingNumber and sku in (:items) ")
+    void updateQTYforListOfItems(String Order_number ,String TrackingNumber ,  float quantity , String items);
 
     @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned  WHERE Order_number=:Order_number and sku in (:items) ")
     void DeleteTrackingNumberFromDetailstable_using_sku( String Order_number , List<String> items);
+
+    @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned  WHERE Order_number=:Order_number and uid in (:uid_items) ")
+    void DeleteTrackingNumberFromDetailstable_using_uid( String Order_number , List<Integer> uid_items);
 
     @Query("SELECT DISTINCT TrackingNumber FROM ItemsOrderDataDBDetails_Scanned where TrackingNumber is not null or TrackingNumber !=''")
     List<PackedPackageModule> getAllPckages_scanned();
@@ -206,6 +212,12 @@ public interface UserDao {
 
     @Query("SELECT sku FROM ItemsOrderDataDBDetails_Scanned where Order_number=:Order_number and TrackingNumber =:TrackingNumber")
     List<String> getskuOfTrackingNumber(String Order_number , String TrackingNumber);
+
+    @Query("SELECT uid FROM ItemsOrderDataDBDetails_Scanned where Order_number=:Order_number and TrackingNumber =:TrackingNumber")
+    List<Integer> getuidOfTrackingNumber(String Order_number , String TrackingNumber);
+
+    @Query("SELECT uid FROM ItemsOrderDataDBDetails_Scanned where Order_number=:Order_number and TrackingNumber =:TrackingNumber and sku =(:items)")
+    List<Integer> getuidOfskuandTrackingNumber(String Order_number , String TrackingNumber , String items);
 
     @Query("UPDATE itemsOrderDataDBDetails SET TrackingNumber = NULL WHERE  TrackingNumber in (:tracking) ")
     void DeleteTrackingNumber(String tracking );
@@ -287,8 +299,8 @@ public interface UserDao {
     @Insert(onConflict = REPLACE)
     void insertDriverPackages(List<DriverPackages_Details_DB> driverPackages_details_dbs);
 
-    @Query("SELECT * FROM DriverPackages_Header_DB")
-    DriverPackages_Header_DB getDriverorder();
+    @Query("SELECT * FROM DriverPackages_Header_DB WHERE  ORDER_NO =:OrderNumber")
+    DriverPackages_Header_DB getDriverorder(String OrderNumber);
 
     @Query("UPDATE DriverPackages_Header_DB SET Passcode =:Passcode WHERE  ORDER_NO =:OrderNumber ")
     void UpdatePasscode(String OrderNumber ,String Passcode);

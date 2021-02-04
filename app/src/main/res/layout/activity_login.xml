@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".UI.LoginActivity"
     android:background="@color/main_background_color"
-    android:layoutDirection="rtl"
     >
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
@@ -22,19 +21,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/login_bg_for_items_btn"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        app:layout_constraintBottom_toTopOf="@+id/linear_textInputLayout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image"
         android:textSize="@dimen/font_size_for_button_of_app"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
        />
     <LinearLayout
         android:id="@+id/linear_textInputLayout1"
@@ -53,7 +51,8 @@
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:src="@drawable/person"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            app:tint="@color/hint_icons"/>
 
 
 
@@ -62,9 +61,8 @@
             android:id="@+id/textInputLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_layout_edit"
             android:padding="2dp"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/txt_color_hint"
             >
 
             <EditText
@@ -75,8 +73,8 @@
                 android:text="admin"
                 android:textSize="@dimen/font_size_for_text_of_app"
                 android:inputType="textPersonName"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColor="@color/txt_color"
+                android:textColorHint="@color/txt_color_hint"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,16 +93,16 @@
           android:layout_width="35dp"
           android:layout_height="wrap_content"
           android:src="@drawable/lock"
-          android:layout_gravity="center"/>
+          android:layout_gravity="center"
+          app:tint="@color/hint_icons"/>
 
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/textInputLayout2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@drawable/bg_layout_edit"
           android:padding="2dp"
-          android:textColorHint="@color/white"
+          android:textColorHint="@color/txt_color_hint"
           >
 
           <EditText
@@ -116,8 +114,8 @@
               android:textSize="@dimen/font_size_for_text_of_app"
 
               android:inputType="textPassword"
-              android:textColor="@color/white"
-              android:textColorHint="@color/white"
+              android:textColor="@color/txt_color"
+              android:textColorHint="@color/txt_color_hint"
               />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,6 +133,5 @@
         android:background="@drawable/buttonshap"
         android:text="@string/login"
         android:textSize="@dimen/font_size_for_button_of_app"
-
         android:textColor="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -163,6 +163,32 @@ FragmentConfirmPasscodeBinding binding;
             }
         });
 
+        confirmPasscodeViewModel.mutableLiveData_UpdateStatus.observe(getActivity(), new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged: "+message.getMessage() );
+            }
+        });
+        confirmPasscodeViewModel.mutableLiveData_UpdateStatus_PASSCODE_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                //    Toast.makeText(getActivity(), "ConfirmedH", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+                Log.e(TAG, "onChanged:update " + message.getMessage());
+                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        confirmPasscodeViewModel.mutableLiveData_UpdateStatus_Reason_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(getActivity(), "ConfirmedD", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+                Log.e(TAG, "onChanged:updateErrorDet " + message.getMessage());
+            }
+        });
     }
 
     public void UpdateStatus_Passcode_Header_ON_83(String Status) {
@@ -177,15 +203,7 @@ FragmentConfirmPasscodeBinding binding;
             Log.e(TAG, "UpdateStatus_zone_ON_83 zzzpa : " + Passcode);
             Log.e(TAG, "UpdateStatus_zone_ON_83 zzzsta : " + Status);
 
-            confirmPasscodeViewModel.mutableLiveData_UpdateStatus_PASSCODE_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
-                @Override
-                public void onChanged(ResponseUpdateStatus message) {
-                //    Toast.makeText(getActivity(), "ConfirmedH", Toast.LENGTH_SHORT).show();
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.popBackStack();
-                    Log.e(TAG, "onChanged:update " + message.getMessage());
-                }
-            });
+
         } else {
             Toast.makeText(getActivity(), "لم الرفع .. أضغط مره أخرى ", Toast.LENGTH_SHORT).show();
         }
@@ -200,15 +218,7 @@ FragmentConfirmPasscodeBinding binding;
             confirmPasscodeViewModel.UpdateOrderStatus_Reason_Details_ON_83(driverPackages_details_dbList);
             Log.e(TAG, "UpdateStatus_zone_ON_83 ErrorDet : " + driverPackages_details_dbList.size());
 
-            confirmPasscodeViewModel.mutableLiveData_UpdateStatus_Reason_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
-                @Override
-                public void onChanged(ResponseUpdateStatus message) {
-                    Toast.makeText(getActivity(), "ConfirmedD", Toast.LENGTH_SHORT).show();
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.popBackStack();
-                    Log.e(TAG, "onChanged:updateErrorDet " + message.getMessage());
-                }
-            });
+
         } else {
             Toast.makeText(getActivity(), "لم يتم الرفع .. أضغط مره أخرى ", Toast.LENGTH_SHORT).show();
         }
@@ -223,13 +233,7 @@ FragmentConfirmPasscodeBinding binding;
                 Orderclicked,
                 status
         );
-        confirmPasscodeViewModel.mutableLiveData_UpdateStatus.observe(getActivity(), new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged: "+message.getMessage() );
-            }
-        });
+
 //        }else {
 //            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
 //        }

@@ -270,17 +270,29 @@ String DriverID="";
 
         });
 
-        recievePackedOrderViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
+        recievePackedOrderViewModel.mutableLiveDataError_fetch.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Log.e(TAG, "onChanged: "+s );
-                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "load order data error "+s, Toast.LENGTH_LONG).show();
 
                 if (s.equals("HTTP 503 Service Unavailable")) {
                     Toast.makeText(context, getResources().getString(R.string.invalidnumber), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "load order data error "+s, Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+
+        recievePackedOrderViewModel.mutableLiveDataError_rou.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged: "+s );
+
+                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "update order status roubsta error "+s, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     private void LoadNewPurchaseOrder() {
@@ -465,13 +477,7 @@ String DriverID="";
                 Log.e(TAG, "onChanged:UpdateStatusrou "+message.getMessage() );
             }
         });
-        recievePackedOrderViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged:roub "+s );
-                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
+
 
 
     }

@@ -490,7 +490,7 @@ private  String OrderNumber;
             disconnect();
             dialog.dismiss();
             dialog.cancel();
-            dialog.hide();
+//            dialog.hide();
         }
     }
 

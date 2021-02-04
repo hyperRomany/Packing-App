@@ -49,8 +49,6 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String Status) {
-
-
         HashMap<String, String> map = new HashMap<>();
         map.put("status", Status);
 
@@ -157,6 +155,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public MutableLiveData<Response> getSheetLiveData() {
         return runTimeSheetData ;
     }
+    public static MutableLiveData<String> mutableLiveDataError_SheetData = new MutableLiveData<>();
 
     public void SheetData(String id ,String ORDER_NOs ,String DRIVER_ID , String Username  ) {
 

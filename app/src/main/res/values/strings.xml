@@ -93,7 +93,7 @@
     <string name="special_character_found_in_string">Special character found in the string</string>
     <string name="driver">السائق</string>
     <string name="Vechile">المركبات</string>
-    <string name="login">تسجيل الدخول</string>
+    <string name="login">دخول الحساب</string>
     <string name="packed">التعبئه والتغليف</string>
     <string name="SortingTeam">الفرز والترتيب</string>
     <string name="SortedTeam">فريق التوجيه</string>
@@ -159,4 +159,8 @@
     <string name="EditPackagesForRecievingActivity_label"><![CDATA[RecieveORConfirm->Edit packages]]></string>
     <string name="OrdersOfRuntimeSheetNowForDriverActivity_label"><![CDATA[Driver->DriverOrders]]></string>
     <string name="OrderDetails_forDriverActivity_label"><![CDATA[Driver->DriverOrders->OrderDetails]]></string>
+    <string name="enter_more_thanrequired">تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب</string>
+    <string name="choice_ordernumber_that_youneed_to_print">اختر الامر الذى تريد طباعته</string>
+    <string name="choice_lastordernumber_that_youneed_to_load">اختر الامر السابق الذى تريد تحميله</string>
+
 </resources>

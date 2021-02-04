@@ -60,6 +60,7 @@ private static final int REQUEST_PHONE_CALL = 1;
     DriverOrderpackagesAdapter driverOrderpackagesAdapter;
     DriverOrderpackagesAdapter driverOrderpackagesAdapter_Reject;
     int mHOUR ,mMINUTE;
+    int mAM_PM;
 List<String> Reject_Resons_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ List<String> Reject_Resons_list;
                 int randomNumber = random.nextInt(1280 - 65) + 65;
                 Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
                 //ToDo Don't SendPasscode For Test Get asscode From log
-                SendSMS(CustomerPhone, String.valueOf(randomNumber));
+                SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
 
                 database.userDao().UpdatePasscode(Orderclicked,String.valueOf(randomNumber));
 
@@ -153,7 +154,7 @@ List<String> Reject_Resons_list;
         Reject_Resons_list.add("عنوان العميل الصحيح خارج نطاق الخدمة");
         Reject_Resons_list.add("العميل طلب الإلغاء لعدم السماح بفتح الشحنة");
         Reject_Resons_list.add("العميل طلب التأجيل لمدة خارج النطاق المسموح");
-        Reject_Resons_list.add("سوء الأحوال الجوية / الطريق المؤدي لعنوان العميل");
+        Reject_Resons_list.add("سوء الأحوال الجوية .. الطريق المؤدي لعنوان العميل");
         Reject_Resons_list.add("تأخرت عن  ميعاد التسليم");
         Reject_Resons_list.add("تلف الشحنة أثناء التوصيل");
         Reject_Resons_list.add("شك في تصرف العميل");
@@ -161,9 +162,9 @@ List<String> Reject_Resons_list;
         Reject_Resons_list.add("توفر المنتج الآن بسعر أقل عن وقت الطلب");
         Reject_Resons_list.add("تلف الشحنة من المخازن");
         Reject_Resons_list.add("إلغاء من قبل هايبروان");
-        Reject_Resons_list.add("الشحنة / المنتج خطأ");
-        Reject_Resons_list.add("عطل سيارة/ هاتفي المحمول / ماكينة الدفع");
-        Reject_Resons_list.add("سوء الأحوال الجوية / الطريق المؤدي لعنوان العميل");
+        Reject_Resons_list.add("الشحنة..المنتج خطأ");
+        Reject_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
+        Reject_Resons_list.add("سوء الأحوال الجوية .. الطريق المؤدي لعنوان العميل");
         Reject_Resons_list.add("العميل طلب التأجيل دون ذكر أسباب");
         Reject_Resons_list.add("العميل طلب التأجيل لحين حل مشكلة مع هايبروان");
         Reject_Resons_list.add("العميل يريد الطلب في عنوان في نطاق منطقة أخرى");
@@ -175,14 +176,14 @@ List<String> Reject_Resons_list;
         Reject_Resons_list.add("إعادة تغليف");
         Reject_Resons_list.add("شك في تصرف العميل");
         Reject_Resons_list.add("التأجيل من قبل هايبروان");
-        Reject_Resons_list.add("عطل سيارة/ هاتفي المحمول / ماكينة الدفع");
+        Reject_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
 
     }
 
     private void PhoneAndSmsActions() {
         DriverPackages_Header_DB driverPackages_header_db=
-                database.userDao().getDriverorder();
-        //TODO adding my number to send sms and amke call
+                database.userDao().getDriverorder(Orderclicked);
+        //TODO adding my number to send sms and make call
         CustomerPhone=driverPackages_header_db.getCustomer_phone();
         CustomerPhone=CustomerPhone.replace("+2","");
         Log.e(TAG, "onCreate:vvv "+ CustomerPhone);
@@ -421,7 +422,6 @@ List<String> Reject_Resons_list;
                     "Reschedule"
             );
 
-
         orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus.observe(OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
@@ -429,6 +429,7 @@ List<String> Reject_Resons_list;
                 Log.e(TAG, "onChanged:UpdateStatusroub "+message.getMessage() );
             }
         });
+
         orderDetailsForDriverViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -476,18 +477,35 @@ List<String> Reject_Resons_list;
                 final Calendar c = Calendar.getInstance();
                 mHOUR = c.get(Calendar.HOUR);
                 mMINUTE = c.get(Calendar.MINUTE);
+                mAM_PM = c.get(Calendar.AM_PM);
+                Log.e(TAG, "onClick:mHOUR "+mHOUR );
+                Log.e(TAG, "onClick:mAM_PM "+mAM_PM );
 
                 TimePickerDialog timePickerDialog= new TimePickerDialog(OrderDetails_forDriverActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    if (hourOfDay<23) {
-                        edit_rescheduleinput.setError(null);
-                        edit_rescheduleinput.setText(hourOfDay + ":" + minute);
+                    if (mAM_PM == 1 ) {
+                        mHOUR+=12;
+                        Log.e(TAG, "onClick:hourOfDay " + hourOfDay);
+                        Log.e(TAG, "onClick:hourOfDay " + mHOUR);
+                        if (hourOfDay < 23 && hourOfDay != 00 && hourOfDay > mHOUR) {
+                            edit_rescheduleinput.setError(null);
+                            edit_rescheduleinput.setText(hourOfDay + ":" + minute);
+                        } else {
+                            edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                        }
                     }else {
-                        edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                        Log.e(TAG, "onClick:hourOfDay " + hourOfDay);
+                        Log.e(TAG, "onClick:hourOfDay " + mHOUR);
+                        if (hourOfDay < 23 && hourOfDay != 00 && hourOfDay > mHOUR) {
+                            edit_rescheduleinput.setError(null);
+                            edit_rescheduleinput.setText(hourOfDay + ":" + minute);
+                        } else {
+                            edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                        }
                     }
                     }
-                }, mHOUR, mMINUTE ,true);
+                }, mHOUR, mMINUTE ,false);
                 timePickerDialog.show();
                /* DatePickerDialog datePickerDialog = new DatePickerDialog(OrderDetails_forDriverActivity.this,
                         new DatePickerDialog.OnDateSetListener() {

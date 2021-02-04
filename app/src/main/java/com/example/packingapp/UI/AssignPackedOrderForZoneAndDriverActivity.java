@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,6 +40,7 @@ import com.example.packingapp.model.TimeSheet.RecordsItem;
 import com.example.packingapp.model.TimeSheet.Response;
 import com.example.packingapp.viewmodel.AssignPackedOrderToZoneViewModel;
 import com.onbarcode.barcode.android.AndroidColor;
+import com.onbarcode.barcode.android.AndroidFont;
 import com.onbarcode.barcode.android.Code93;
 import com.onbarcode.barcode.android.IBarcode;
 
@@ -73,8 +75,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     String trackingNo="";
     List<String> Response_id_for_runtimesheet_Orders;
     List<RecordsItem> Response_Recordsitems_list_for_runtimesheet_Orders;
-    List<List<RecordsHeader>> Response_phonenumber_for_runtimesheet_Orders;
-    List<Response> Response_list_for_runtimesheet_Orders;
+    List<RecordsHeader> Response_RecordsHeader_list_for_runtimesheet_Orders;
+   // List<Response> Response_list_for_runtimesheet_Orders;
     ArrayAdapter<String> spinnerAdapterDriver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +87,10 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         assignPackedOrderToZoneViewModel = ViewModelProviders.of(this)
                 .get(AssignPackedOrderToZoneViewModel.class);
-        Response_list_for_runtimesheet_Orders=new ArrayList<>();
+//        Response_list_for_runtimesheet_Orders=new ArrayList<>();
         Response_id_for_runtimesheet_Orders=new ArrayList<>();
         Response_Recordsitems_list_for_runtimesheet_Orders=new ArrayList<>();
-        Response_phonenumber_for_runtimesheet_Orders=new ArrayList<>();
+        Response_RecordsHeader_list_for_runtimesheet_Orders =new ArrayList<>();
 
         ObserveFU();
 
@@ -147,7 +149,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             @Override
             public void onChanged(Response response) {
                 if (response.getRecords().size() > 0) {
-                    List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                    List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop =  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
                    // for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                     //if (){
 //                    Response_list_for_runtimesheet_Orders.clear();
@@ -155,20 +157,20 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                    Response_Recordsitems_list_for_runtimesheet_Orders.clear();
 //                    Response_phonenumber_for_runtimesheet_Orders.clear();
 
-                        Response_list_for_runtimesheet_Orders.add(response);
+                    //    Response_list_for_runtimesheet_Orders.add(response);
                         Response_id_for_runtimesheet_Orders.add(response.getId());
                        // for (int i = 0; i < response.getRecords().size(); i++) {
                             Response_Recordsitems_list_for_runtimesheet_Orders.addAll(response.getRecords());
                       //  }
-                        Response_phonenumber_for_runtimesheet_Orders.add(response.getRecordsHeader());
+                        Response_RecordsHeader_list_for_runtimesheet_Orders.addAll(response.getRecordsHeader());
                         Log.e(TAG, "onChanged:response.getId() " + response.getId());
-                        Log.e(TAG, "UpdateDriverID_ON_83:Resposize_onChang " + Response_list_for_runtimesheet_Orders.size());
+                    //    Log.e(TAG, "UpdateDriverID_ON_83:Resposize_onChang " + Response_list_for_runtimesheet_Orders.size());
                         if (Response_Recordsitems_list_for_runtimesheet_Orders.size() !=0 && Response_id_for_runtimesheet_Orders.size() !=0&&
                                 Drivers_IDs_list.size()!=0) {
                             UpdateDriverID_ON_83(
                                     Response_Recordsitems_list_for_runtimesheet_Orders.get(
                                             Response_Recordsitems_list_for_runtimesheet_Orders.size() - 1).getORDER_NO(),
-                                    Response_list_for_runtimesheet_Orders,
+                                    Response_RecordsHeader_list_for_runtimesheet_Orders,
 //                                    Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getDriverID()
                                     Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition())
                                             .substring(0,Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition()).indexOf("&"))
@@ -183,6 +185,19 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لا تحتوي علي بيانات", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        assignPackedOrderToZoneViewModel.mutableLiveDataError_SheetData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged: "+s );
+
+                if (s.equals("HTTP 503 Service Unavailable")) {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_not_found), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -477,22 +492,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             public void onClick(View v) {
 //                Log.e(TAG, "onClick:spi "+binding.spinerDriverId.getSelectedItemPosition());
 //                Log.e(TAG, "onClick:spic  "+binding.spinerDriverId.getSelectedItem().toString());
-                Response_list_for_runtimesheet_Orders.clear();
+//                Response_list_for_runtimesheet_Orders.clear();
                 Response_id_for_runtimesheet_Orders.clear();
                 Response_Recordsitems_list_for_runtimesheet_Orders.clear();
-                Response_phonenumber_for_runtimesheet_Orders.clear();
-//                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
-//                browserIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//                browserIntent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "application/pdf");
-//                startActivity(browserIntent);
+                Response_RecordsHeader_list_for_runtimesheet_Orders.clear();
 
-               // File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/HyperOne.pdf");
-             /*/   Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "application/pdf");
-//                intent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "*/ // *");
-             //   intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-              //  startActivity(intent);
+                OpenPdf_FUN();
 
                 //TODO apply validation to spinner driver id
                if (binding.spinerDriverId.getSelectedItemPosition()!=0) {
@@ -621,6 +626,36 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    private void OpenPdf_FUN() {
+        //                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+//                browserIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//                browserIntent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "application/pdf");
+//                startActivity(browserIntent);
+
+        // File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/HyperOne.pdf");
+    //    Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "application/pdf");
+       //         intent.setDataAndType(Uri.parse("/storage/emulated/0/HyperOne.pdf"), "*/*");
+        //   intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    //    startActivity(intent);
+
+        File pdfFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"HyperOne.pdf");//File path
+
+        if (pdfFile.exists()) //Checking if the file exists or not
+        {
+            Uri path = Uri.fromFile(pdfFile);
+            Intent objIntent = new Intent(Intent.ACTION_VIEW);
+//            objIntent.setDataAndType(path, "application/pdf");
+            objIntent.setDataAndType(Uri.parse("content:///storage/emulated/0/HyperOne.pdf"), "application/pdf");
+            objIntent.setFlags(Intent. FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(objIntent);//Starting the pdf viewer
+        } else {
+            Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "The file not exists! ", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void Retrieve_Runsheet(String runsheet_id) {
@@ -923,18 +958,37 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //        }
     }
 
-    public void UpdateDriverID_ON_83(String OrderNumber , List<Response> response_list_for_runtimesheet_Orders2 , String DriverID){
+    public void UpdateDriverID_ON_83(String OrderNumber , List<RecordsHeader> response_header_list_for_runtimesheet_Orders2 , String DriverID){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
         List<RecievePackedModule_For_selection_loop_for_update> Distinctordernumberslist
                 = database.userDao().GetDistinctordernumbersFromRecievePackedModule();
 
         if (Distinctordernumberslist.size() > 0) {
 //            List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop=  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
-           for (int i=0;i<response_list_for_runtimesheet_Orders2.size();i++) {
+           for (int i=0;i<response_header_list_for_runtimesheet_Orders2.size();i++) {
+               Log.e(TAG, "UpdateDriverID_ON_83:UpdateOrder_DriverID "+OrderNumber );
                 assignPackedOrderToZoneViewModel.UpdateOrder_DriverID_ON_83(
                         OrderNumber,
                         DriverID,database.userDao().getUserData_MU().getUser_id()
                 );
+//TODO REmove hint to send sms to customer
+           /*    SendSMS(response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_PHONE().replace("+2","")
+              //         "01065286596"
+            /*           ,"أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
+                               response_header_list_for_runtimesheet_Orders2.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
+                               Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +" رقم هاتفه "+
+                               Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
+                               response_header_list_for_runtimesheet_Orders2.get(i).getGRAND_TOTAL()
+               );*/
+
+               Log.e(TAG, "UpdateDriverID_ON_83: "+
+                       "أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
+                       response_header_list_for_runtimesheet_Orders2.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
+                       Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +"رقم هاتفه "+
+                       Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
+                       response_header_list_for_runtimesheet_Orders2.get(i).getGRAND_TOTAL()
+               );
+               Log.e(TAG, "UpdateDriverID_ON_83:phone "+ response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_PHONE().replace("+2","") );
            }
            // Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : "+orderDataModuleDBHeaderkist.get(0).getZone() );
 
@@ -942,10 +996,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             //  String CustomerPhone =items.get(0).getCUSTOMER_PHONE().toString().replace("+2","");
 //            String CustomerPhone ="01065286596";
 //            SendSMS(CustomerPhone,"Your Order In His Way");
-            Log.e(TAG, "UpdateDriverID_ON_83:runtimesheet_Orders.size() "+Response_list_for_runtimesheet_Orders.size() );
-            Log.e(TAG, "UpdateDriverID_ON_83:runtimesheet_Orders.size()hh "+Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().size() );
-            Log.e(TAG, "UpdateDriverID_ON_83:Resposize2  "+response_list_for_runtimesheet_Orders2.size() );
-            for (int i = 0; i < Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().size(); i++) {
+            Log.e(TAG, "UpdateDriverID_ON_83:runtimesheet_Orders.size() "+response_header_list_for_runtimesheet_Orders2.size() );
+
+            Log.e(TAG, "UpdateDriverID_ON_83:Resposize2  "+response_header_list_for_runtimesheet_Orders2.size() );
+            /*
+           // for (int i = 0; i < response_header_list_for_runtimesheet_Orders2.size(); i++) {
+          //      Log.e(TAG, "UpdateDriverID_ON_83:runtimesheet_Orders.oo "+response_header_list_for_runtimesheet_Orders2.get(i).getORDER_NO() );
 
 //                SendSMS(/*Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_PHONE().replace("+2","")*/
 //                        "01065286596"
@@ -978,25 +1034,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                                +"ستصلك خلال الساعات القادمة مع مندوبنا"+Response_list_for_runtimesheet_Orders.get(i).getORDER_NO()
 //                                + " شحنتك رقم"+Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_NAME()+"أ/"
 //                        );
-                SendSMS(/*Response_list_for_runtimesheet_Orders.get(i).getCUSTOMER_PHONE().replace("+2","")*/
-                        "01065286596"
-                        ,"أ/"+Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
-                                Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
-                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +" رقم هاتفه "+
-                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
-                                Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getGRAND_TOTAL()
-                );
-                Log.e(TAG, "UpdateDriverID_ON_83: "+ Response_list_for_runtimesheet_Orders.get(i).getRecordsHeader().get(i).getORDER_NO() );
 
-                Log.e(TAG, "UpdateDriverID_ON_83: "+Response_list_for_runtimesheet_Orders.get(i).getRecordsHeader().get(i).getORDER_NO() );
-                Log.e(TAG, "UpdateDriverID_ON_83: "+
-                        "أ/"+Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
-                        Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
-                        Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +"رقم هاتفه "+
-                        Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
-                        Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getGRAND_TOTAL()
-                );
-            }
+//                Log.e(TAG, "UpdateDriverID_ON_83: "+ Response_list_for_runtimesheet_Orders.get(i).getRecordsHeader().get(i).getORDER_NO() );
+//                Log.e(TAG, "UpdateDriverID_ON_83:phone "+ Response_list_for_runtimesheet_Orders.get(0).getRecordsHeader().get(i).getCUSTOMER_PHONE() );
+
+
+      //      }*/
             }else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
         }
@@ -1086,10 +1129,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void PrintRunTimeSheet(String id , List<RecordsItem> items) {
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 0);
+        Log.e(TAG, "PrintRunTimeSheet:itemssize "+items.size() );
+        Log.e(TAG, "PrintRunTimeSheet: id  "+id );
         createPdf(id , items);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createPdf(String id ,List<RecordsItem> items) {
+   /* private void createPdf(String id ,List<RecordsItem> items) {
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -1168,9 +1213,11 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
         pdfDocument.close();
 
-    }
+    }*/
 
-    /* private void createPdf(String id , List<RecordsItem> items) {
+    
+    // TODO this last version but with one page
+     private void createPdf(String id , List<RecordsItem> items) {
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -1180,60 +1227,74 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         paint.setTextSize(30.0f);
         PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, 1).create());
         Canvas canvas = page.getCanvas();
-        canvas.drawText("إقرار إستلام /Receiving Avowal", 700.0f, 60.0f, paint);
-        canvas.drawText(" رقم  "+id, 700.0f, 60.0f, paint);
+        canvas.drawText( "إقرار إستلام /Receiving Avowal"  +" رقم  " +id , 1250.0f, 60.0f, paint);
 
-        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ", 800.0f, 100.0f, paint);
-        canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل", 30.0f, 140.0f, paint);
-        canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله", 30.0f, 180.0f, paint);
-        canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ", 30.0f, 220.0f, paint);
-        canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ", 550.0f, 260.0f, paint);
+        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ",
+                1150.0f, 100.0f, paint);
+        canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل",
+                500.0f, 140.0f, paint);
+        canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله",
+                550.0f, 180.0f, paint);
+        canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ",
+                550.0f, 220.0f, paint);
+        canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ",
+                1000.0f, 260.0f, paint);
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2.0f);
         Paint paint2 = paint;
 
-        canvas.drawRect(30.0f, 2600.0f, 2940.0f, 280.0f, paint2);
+        //bottom potion of header liner
+        canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setStyle(Paint.Style.FILL);
 
-        canvas.drawText("S/م", 1925.0f, 310.0f, paint);
-        canvas.drawLine(1870.0f, 280.0f, 1870.0f, 2600.0f, paint2);
-        canvas.drawText("outBound", 1830.0f, 310.0f, paint);
-        canvas.drawLine(1690.0f, 280.0f, 1690.0f, 2600.0f, paint2);
-        canvas.drawText("رقم الشحنة", 1500.0f, 310.0f, paint);
-        canvas.drawLine(1150.0f, 280.0f, 1150.0f, 2600.0f, paint2);
-        canvas.drawText("قيمة الشحنة", 1140.0f, 310.0f, paint);
-        canvas.drawLine(997.0f, 280.0f, 997.0f, 2600.0f, paint2);
-        canvas.drawText("طريقة الدفع", 990.0f, 310.0f, paint);
-        canvas.drawLine(850.0f, 280.0f, 850.0f, 2600.0f, paint2);
-        canvas.drawText("إسم العميل", 760.0f, 310.0f, paint);
-        canvas.drawLine(500.0f, 280.0f, 500.0f, 2600.0f, paint2);
-        canvas.drawText("عنوان العميل", 480.0f, 310.0f, paint);
-        canvas.drawLine(300.0f, 280.0f, 300.0f, 2600.0f, paint2);
-        canvas.drawText("ملاحظات", 180.0f, 310.0f, paint);
+        canvas.drawText("S/م", 2925.0f, 310.0f, paint);
+        canvas.drawLine(2870.0f, 280.0f, 2870.0f, 1800.0f, paint2);
+        canvas.drawText("outBound", 2852.0f, 310.0f, paint);
+        canvas.drawLine(2650.0f, 280.0f, 2650.0f, 1800.0f, paint2);
+        canvas.drawText("رقم الشحنة", 2400.0f, 310.0f, paint);
+        canvas.drawLine(2100.0f, 280.0f, 2100.0f, 1800.0f, paint2);
+        canvas.drawText("قيمة الشحنة", 2095.0f, 310.0f, paint);
+        canvas.drawLine(1920.0f, 280.0f, 1920.0f, 1800.0f, paint2);
+        canvas.drawText("طريقة الدفع", 1905.0f, 310.0f, paint);
+        canvas.drawLine(1755.0f, 280.0f, 1755.0f, 1800.0f, paint2);
+        canvas.drawText("نوع الشحنه", 1750.0f, 310.0f, paint);
+        canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
+        canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
+        canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
+        canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
+        canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
+        canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
+
+        canvas.drawLine(550.0f, 280.0f, 550.0f, 1800.0f, paint2);
+        canvas.drawText("ملاحظات", 300.0f, 310.0f, paint);
 
         //bottom of header row  line
-        canvas.drawLine(30.0f, 330.0f, 1940.0f, 330.0f, paint2);
+        canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
 
-        canvas.drawText("توقيع المستلم/Receiver sign", 1500.0f, 2700.0f, paint);
-        canvas.drawText("توقيع مسئول أمن المخزن", 1000.0f, 2700.0f, paint);
+        canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 1850.0f, paint);
+        canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 1850.0f, paint);
 
-        canvas.drawText("توقيع منسق التوصيل", 600.0f, 2700.0f, paint);
+        canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
         int pos=0;
         for (int i=0;i<items.size();i++) {
-            canvas.drawText(items.get(i).getADDRESS_CITY(), 480.0f, 390+pos, paint);
-            canvas.drawText(items.get(i).getCUSTOMER_NAME(), 760.0f, 390+pos, paint);
-            canvas.drawText("كاش", 950.0f, 390+pos, paint);
-            canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 1830.0f, 390+pos, paint);
-            canvas.drawText(String.valueOf(i+1), 1920.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_CITY(), 1220.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 850.0f, 390+pos, paint);
 
-            canvas.drawText(items.get(i).getITEM_PRICE(), 1130.0f, 390+pos, paint);
+            canvas.drawText("توصيل", 1750.0f, 390+pos, paint);
+
+            canvas.drawText("كاش", 1880.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390+pos, paint);
+            canvas.drawText(String.valueOf(i+1), 2910.0f, 390+pos, paint);
+
+            canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390+pos, paint);
 
 
             try {
-                testCODE93(canvas, 1160.0f, 340+pos, items.get(i).getTRACKING_NO());
-                canvas.drawLine(30.0f, 430.0f+pos, 1940.0f, 430.0f+pos, paint2);
+                testCODE93(canvas, 2120.0f, 340+pos, items.get(i).getTRACKING_NO());
+                canvas.drawLine(30.0f, 430.0f+pos, 2940.0f, 430.0f+pos, paint2);
 
 
             } catch (Exception e) {
@@ -1249,7 +1310,124 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
         pdfDocument.close();
 
+    }
+//TODO this for n of pages after calculte
+   /* private void createPdf(String id , List<RecordsItem> items) {
+
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        PdfDocument pdfDocument = new PdfDocument();
+// use mode items list for 17 and
+        //Log.e(TAG, "createPdf:17% "+(17 % 17) );
+        //Log.e(TAG, "createPdf:17/ "+(17 /17) );
+
+        //Log.e(TAG, "createPdf:18% "+(18 % 17) );
+       // Log.e(TAG, "createPdf:18/ "+(18 /17) );
+
+        int noOfPages=items.size() /17 ;
+        Log.e(TAG, "createPdf:noOfPagesBefore % "+noOfPages );
+        if (items.size() %17 >0){
+            noOfPages++;
+        }
+        Log.e(TAG, "createPdf:noOfPages "+noOfPages );
+
+        for (int j=0;j < noOfPages;j++) {
+            Paint paint = new Paint();
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+            paint.setTextSize(30.0f);
+
+            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, j+1).create());
+            Canvas canvas = page.getCanvas();
+            canvas.drawText("إقرار إستلام /Receiving Avowal" + " رقم  " + id , 1250.0f, 60.0f, paint);
+
+            canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ",
+                    1150.0f, 100.0f, paint);
+            canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل",
+                    500.0f, 140.0f, paint);
+            canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله",
+                    550.0f, 180.0f, paint);
+            canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ",
+                    550.0f, 220.0f, paint);
+            canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ",
+                    1000.0f, 260.0f, paint);
+
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(2.0f);
+            Paint paint2 = paint;
+
+            //bottom potion of header liner
+            canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
+            paint.setTextAlign(Paint.Align.RIGHT);
+            paint.setStyle(Paint.Style.FILL);
+
+            canvas.drawText("S/م", 2925.0f, 310.0f, paint);
+            canvas.drawLine(2870.0f, 280.0f, 2870.0f, 1800.0f, paint2);
+            canvas.drawText("outBound", 2852.0f, 310.0f, paint);
+            canvas.drawLine(2650.0f, 280.0f, 2650.0f, 1800.0f, paint2);
+            canvas.drawText("رقم الشحنة", 2400.0f, 310.0f, paint);
+            canvas.drawLine(2100.0f, 280.0f, 2100.0f, 1800.0f, paint2);
+            canvas.drawText("قيمة الشحنة", 2095.0f, 310.0f, paint);
+            canvas.drawLine(1920.0f, 280.0f, 1920.0f, 1800.0f, paint2);
+            canvas.drawText("طريقة الدفع", 1905.0f, 310.0f, paint);
+            canvas.drawLine(1755.0f, 280.0f, 1755.0f, 1800.0f, paint2);
+            canvas.drawText("نوع الشحنه", 1750.0f, 310.0f, paint);
+            canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
+            canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
+            canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
+            canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
+            canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
+            canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
+
+            canvas.drawLine(550.0f, 280.0f, 550.0f, 1800.0f, paint2);
+            canvas.drawText("ملاحظات", 300.0f, 310.0f, paint);
+
+            //bottom of header row  line
+            canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
+
+            canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 1850.0f, paint);
+            canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 1850.0f, paint);
+
+            canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
+            int pos = 0;
+            Log.e(TAG, "createPdf:noOfPages-1 "+ ((noOfPages-1)*17) );
+            Log.e(TAG, "createPdf:noOfPages-1 "+ (j*17) );
+            for (int i = (j*17); i < items.size(); i++) {
+                canvas.drawText(items.get(i).getADDRESS_CITY(), 1220.0f, 390 + pos, paint);
+                canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
+                canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 850.0f, 390 + pos, paint);
+
+                canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
+
+                canvas.drawText("كاش", 1880.0f, 390 + pos, paint);
+                canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
+                canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
+
+                canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
+
+
+                try {
+                    testCODE93(canvas, 2120.0f, 340 + pos, items.get(i).getTRACKING_NO());
+                    canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                pos += 100;
+            }
+
+
+            pdfDocument.finishPage(page);
+            try {
+                pdfDocument.writeTo(new FileOutputStream(new File(Environment.getExternalStorageDirectory(), "/HyperOne.pdf")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        pdfDocument.close();
+
     }*/
+
     private static void testCODE93(Canvas canvas , float left, float top,String trackingnumber) throws Exception
     {
         Code93 barcode = new Code93();
@@ -1279,9 +1457,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         barcode.setResolution(72);
 
         // disply barcode encoding data below the barcode
-        // barcode.setShowText(true);
+         barcode.setShowText(true);
         // barcode encoding data font style
-        //   barcode.setTextFont(new AndroidFont("Arial", Typeface.NORMAL, 16));
+           barcode.setTextFont(new AndroidFont("Arial", Typeface.NORMAL, 26));
         // space between barcode and barcode encoding data
         barcode.setTextMargin(10);
         barcode.setTextColor(AndroidColor.black);

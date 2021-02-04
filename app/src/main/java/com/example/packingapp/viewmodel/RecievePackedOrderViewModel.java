@@ -20,7 +20,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public static MutableLiveData<String> mutableLiveDataError_fetch = new MutableLiveData<>();
 
     public void fetchdata(String OrderNumber) {
 
@@ -35,12 +35,14 @@ public class RecievePackedOrderViewModel extends ViewModel {
                             //  Log.d(TAG, "fetchdata: "+responseGetOrderData);
                         }
                         ,throwable -> {
-                            mutableLiveDataError.setValue(throwable.getMessage());
+                            mutableLiveDataError_fetch.setValue(throwable.getMessage());
                             Log.d("Error_fetchda",throwable.getMessage());
                         });
     }
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public static MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
+
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
         map.put("status", status);
@@ -61,6 +63,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             Log.d("Error_rou",throwable.getMessage());
+                            mutableLiveDataError_rou.setValue(throwable.getMessage());
 
                         });
 

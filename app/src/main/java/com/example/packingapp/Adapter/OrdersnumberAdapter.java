@@ -38,7 +38,7 @@ String ordersnumber;
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_item_for_packed_packages, parent, false);
+                .inflate(R.layout.recycle_item_for_prompts_dialoge, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -76,7 +76,7 @@ String ordersnumber;
             }
         });*/
 
-        holder.checkBox.setVisibility(View.VISIBLE);
+        holder.checkBox.setVisibility(View.INVISIBLE);
         holder.txt_nu.setText(""+(position+1));
 
         holder.txt_tracking_number.setText(ordersnumber);
