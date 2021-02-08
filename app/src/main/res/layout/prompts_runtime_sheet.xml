@@ -5,19 +5,40 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp"
+    android:background="@color/main_background_color">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_color"
+        android:text="@string/recall_assign_orders_to_driver_tilte"
+        android:gravity="center"
+        android:textSize="@dimen/font_size_for_text_of_app"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textColorHint="@color/txt_color_hint"
+        >
     <EditText
         android:id="@+id/edit_runtimesheetidInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/recall_assign_orders_to_driver"
+        android:hint="@string/recall_assign_orders_to_driver_hint"
         android:textSize="@dimen/font_size_for_text_of_app"
         android:inputType="number"
-        android:textColorHint="#DDD">
+        android:textColorHint="@color/txt_color_hint"
+        android:textColor="@color/txt_color"
+        >
 
         <requestFocus />
     </EditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +53,7 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:text="@string/recall_assign_orders_to_driver"
-            android:background="@drawable/bg_btn"
+            android:background="@drawable/buttonshap"
             android:textSize="@dimen/font_size_for_button_of_app"
             android:textColor="@color/textcolor_btns"/>
         <Button

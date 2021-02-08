@@ -498,6 +498,9 @@ String DriverID="";
         final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
                 .findViewById(R.id.rv_ordernmber);
 
+        final TextView txt_title=(TextView) promptsView.findViewById(R.id.txt_title);
+        txt_title.setText(R.string.title_dialoge_missuing_trackingnumbers);
+
         OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages());
         Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );
         rv_ordernumbers.setAdapter(ordersnumberAdapter);

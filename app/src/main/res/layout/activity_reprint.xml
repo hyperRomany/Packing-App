@@ -13,6 +13,13 @@
     android:background="@color/main_background_color"
     >
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColorHint="@color/txt_color_hint"
+            >
         <EditText
             android:id="@+id/edit_trackingnumber"
             android:layout_width="match_parent"
@@ -23,7 +30,7 @@
             android:textColor="@color/txt_color"
             android:textColorHint="@color/txt_color_hint"
             android:textSize="@dimen/font_size_for_text_of_app" />
-
+        </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/btn_print_awb"
             android:layout_width="220dp"

@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="250dp"
-
         android:inputType="number"
         android:focusable="true"
         android:singleLine="true"
+        android:hint="@string/add_items_topakage"
         />
     </com.google.android.material.textfield.TextInputLayout>
     <ImageView

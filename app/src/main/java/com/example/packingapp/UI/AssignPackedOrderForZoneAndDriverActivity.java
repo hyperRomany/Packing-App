@@ -972,14 +972,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                         DriverID,database.userDao().getUserData_MU().getUser_id()
                 );
 //TODO REmove hint to send sms to customer
-           /*    SendSMS(response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_PHONE().replace("+2","")
+               SendSMS(response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_PHONE().replace("+2","")
               //         "01065286596"
-            /*           ,"أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
+                       ,"أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
                                response_header_list_for_runtimesheet_Orders2.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +" رقم هاتفه "+
                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getPhone()+" يرجى تحضير مبلغ "+
                                response_header_list_for_runtimesheet_Orders2.get(i).getGRAND_TOTAL()
-               );*/
+               );
 
                Log.e(TAG, "UpdateDriverID_ON_83: "+
                        "أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
@@ -1073,6 +1073,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 android.R.layout.simple_spinner_item,Drivers_IDs_list);
         spinnerAdapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinerDriverId.setAdapter(spinnerAdapterDriver);
+        binding.spinerDriverId.setTitle(getResources().getString(R.string.choice_driver_id));
+
     }
 
 
@@ -1490,6 +1492,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         final RecyclerView rv_ordernumbers = (RecyclerView) promptsView
                 .findViewById(R.id.rv_ordernmber);
+
+        final TextView txt_title=(TextView) promptsView.findViewById(R.id.txt_title);
+        txt_title.setText(R.string.title_dialoge_missuing_trackingnumbers);
 
         OrdersnumberAdapter ordersnumberAdapter = new OrdersnumberAdapter(database.userDao().getTrackingnumber_of_ordersThatNotcompleteAllpackages());
         Log.e(TAG, "onClick:listoforders "+database.userDao().getOrdersNumberDB().size() );

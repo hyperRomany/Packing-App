@@ -14,7 +14,7 @@
             android:id="@+id/confirm_received_trackingnumbers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/confirm_recieved_trackingnumber"
+            android:text="@string/recieved_trackingnumber"
             android:background="@drawable/buttonshap"
             android:textSize="@dimen/font_size_for_button_of_app"
             android:textColor="@color/textcolor_btns"/>

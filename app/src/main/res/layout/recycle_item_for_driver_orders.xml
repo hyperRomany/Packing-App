@@ -5,7 +5,7 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:orientation="vertical"
     android:id="@+id/main_linear_of_item"
-    >
+    android:background="@color/main_background_color">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -24,7 +24,8 @@ android:orientation="vertical"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
               android:textSize="@dimen/font_size_for_text_of_app"
-              android:background="@color/count_txt_bg"/>
+              android:background="@color/count_txt_bg"
+              android:textColor="@color/txt_color"/>
 
           <TextView
               android:id="@+id/txt_order_number"
@@ -42,7 +43,7 @@ android:orientation="vertical"
               android:text="@string/customer_phone"
               android:gravity="center_horizontal"
               android:textSize="@dimen/font_size_for_text_of_app"
-              />
+              android:textColor="@color/txt_color"/>
 
           <TextView
               android:id="@+id/txt_phone_number"
@@ -51,14 +52,15 @@ android:orientation="vertical"
               android:text="@string/phone_number"
               android:gravity="center_horizontal"
               android:textSize="@dimen/font_size_for_text_of_app"
-              />
+              android:textColor="@color/txt_color"/>
           <TextView
               android:id="@+id/txt_customer_address"
               android:layout_width="140dp"
               android:layout_height="wrap_content"
               android:text="@string/customer_address"
               android:gravity="center_horizontal"
-              android:textSize="@dimen/font_size_for_text_of_app"/>
+              android:textSize="@dimen/font_size_for_text_of_app"
+              android:textColor="@color/txt_color"/>
       </LinearLayout>
 
     <View
