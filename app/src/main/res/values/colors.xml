@@ -69,7 +69,10 @@
 
     <color name="assign_tozone_or_driver_groupe">#28CCCC</color>
 
-    <color name="linear_header_bg">#4B91E2</color>
-
+    <!-- <color name="linear_header_bg">#4B91E2</color> -->
+    <color name="linear_header_bg">#D8D8D8</color>
     <color name="linear_board_recycle">#4B91E2</color>
+
+    <color name="send_passcode_fragment_background_color">#28CCCC</color>
+
 </resources>

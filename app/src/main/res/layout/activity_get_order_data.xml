@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
                 android:orientation="vertical"
             android:layout_marginTop="50dp"
-            android:background="@color/loaddata_groupe"
-            android:padding="10dp">
+            android:background="@drawable/groubeshap"
+            android:padding="15dp">
                 <Button
                     android:id="@+id/btn_loading_new_purchase_order"
                     android:layout_width="220dp"
@@ -66,9 +66,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/loaddata_groupe"
+            android:background="@drawable/groubeshap"
             android:layout_marginTop="30dp"
-            android:padding="10dp">
+            android:padding="15dp">
         <Button
             android:id="@+id/btn_print_awb"
             android:layout_width="220dp"

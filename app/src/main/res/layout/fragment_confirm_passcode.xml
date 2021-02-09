@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     >
     <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="150dp"
+        android:layout_width="220dp"
+        android:layout_height="230dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:background="@drawable/custome_bg_for_order_details_for_driver"
+        android:background="@color/send_passcode_fragment_background_color"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,14 +18,26 @@
             android:orientation="vertical"
             android:layoutDirection="rtl"
             android:layout_centerInParent="true"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="65dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/txt_color"
+                android:text="@string/Send_passcode_to_customer"
+                android:gravity="center"
+                android:textSize="@dimen/font_size_for_text_of_app"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:layout_gravity="center">
 
                 <TextView
                     android:layout_width="0dp"
@@ -34,19 +46,28 @@
                     android:text="@string/passcode"
                     android:textSize="@dimen/font_size_for_text_of_app"
                     android:textStyle="bold"
-                    android:textColor="@color/third_white"
-                    />
+                    android:textColor="@color/txt_color"
+                    android:layout_gravity="center"/>
 
-                <EditText
-                    android:id="@+id/edit_passcode"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textColorHint="@color/txt_color_hint"
+                    >
+
+                <EditText
+                    android:id="@+id/edit_passcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/third_white"
+                    android:textColor="@color/txt_color"
                     android:textSize="@dimen/font_size_for_text_of_app"
                     android:hint="@string/enter_passcode"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:textColorHint="@color/txt_color_hint"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
         <Button
@@ -56,17 +77,19 @@
             android:background="@drawable/buttonshap"
             android:text="@string/Confirm_Passcode"
             android:textSize="@dimen/font_size_for_button_of_app"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
 
             android:textColor="@color/textcolor_btns"/>
 
         </LinearLayout>
         <ImageView
             android:id="@+id/image_close"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/close"
             android:layout_gravity="center_horizontal"
-            app:tint="@color/white"/>
+            app:tint="@color/txt_color_hint"/>
     </RelativeLayout>
 
 

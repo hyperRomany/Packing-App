@@ -76,7 +76,7 @@ String DriverID="";
 */
 
 
-                recievePackedOrderViewModel= ViewModelProviders.of(this).get(RecievePackedOrderViewModel.class);
+        recievePackedOrderViewModel= ViewModelProviders.of(this).get(RecievePackedOrderViewModel.class);
         ObserveFunct();
         binding.btnLoadingNewPurchaseOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +138,7 @@ String DriverID="";
                         UpdateStatus();
                     }else {
                         Toast.makeText(context, String.format("%s",
-                                getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                                getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers_recieve)), Toast.LENGTH_SHORT).show();
                         ShowMissedBarcodesFun();
                     }
                 }else {
@@ -242,6 +242,8 @@ String DriverID="";
                     if (responseGetOrderData.getSTATUS().equalsIgnoreCase("packed")) {
                         AfterGetOrderData(responseGetOrderData , binding.editTrackingnumber.getText().toString());
                     }else {
+                        Constant.ToastDialoge("This Order in "+responseGetOrderData.getSTATUS()+" State" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                         Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "This Order in "+responseGetOrderData.getSTATUS()+" State", Toast.LENGTH_SHORT).show();
                         binding.editTrackingnumber.setError(null);
                         binding.editTrackingnumber.setText("");
@@ -253,13 +255,18 @@ String DriverID="";
                                 AfterGetOrderData(responseGetOrderData, binding.editTrackingnumber.getText().toString());
                             }else {
                                 Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "لم يتم تسجيل هذا الامر لك", Toast.LENGTH_SHORT).show();
+                                Constant.ToastDialoge("لم يتم تسجيل هذا الامر لك" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                             }
 
                         }else {
                             Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "لم يتم تسجيل هذا الامر لك", Toast.LENGTH_SHORT).show();
+                            Constant.ToastDialoge("لم يتم تسجيل هذا الامر لك" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                         }
 
                     }else {
+                        Constant.ToastDialoge("This Order in "+responseGetOrderData.getSTATUS()+" State" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
                         Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "This Order in "+responseGetOrderData.getSTATUS()+" State", Toast.LENGTH_SHORT).show();
                         binding.editTrackingnumber.setError(null);
                         binding.editTrackingnumber.setText("");
@@ -277,8 +284,12 @@ String DriverID="";
 
                 if (s.equals("HTTP 503 Service Unavailable")) {
                     Toast.makeText(context, getResources().getString(R.string.invalidnumber), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.invalidnumber) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                 }else {
                     Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "load order data error "+s, Toast.LENGTH_LONG).show();
+                    Constant.ToastDialoge("load order data error "+s , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                 }
             }
         });
@@ -290,10 +301,13 @@ String DriverID="";
                 Log.e(TAG, "onChanged: "+s );
 
                 Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "update order status roubsta error "+s, Toast.LENGTH_LONG).show();
+                Constant.ToastDialoge("update order status roubsta error "+s , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
             }
         });
 
     }
+
 
     private void LoadNewPurchaseOrder() {
         String OrderNumber;
@@ -334,6 +348,7 @@ String DriverID="";
                                 binding.editTrackingnumber.getText().toString()));
                         CreateORUpdateRecycleView();
                         Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+                        Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
 
                         //    GETOrderData(binding.editTrackingnumber.getText().toString());
                   //      Log.e(TAG, "onClick: Trac " + binding.editTrackingnumber.getText().toString());
@@ -401,8 +416,12 @@ String DriverID="";
             binding.editTrackingnumber.setText("");
             CreateORUpdateRecycleView();
             Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+            Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
+
         }else {
             Toast.makeText(context, getResources().getString(R.string.invalidnumber), Toast.LENGTH_SHORT).show();
+            Constant.ToastDialoge( getResources().getString(R.string.invalidnumber) , context);
         }
         Log.e(TAG, "onChanged: insertR"+trackingnumber );
     }
@@ -426,17 +445,23 @@ String DriverID="";
 
             }else {
                 Toast.makeText(context, getResources().getString(R.string.statusnotUpdate), Toast.LENGTH_SHORT).show();
-            }
+                    Constant.ToastDialoge( getResources().getString(R.string.statusnotUpdate) , context);
+
+                }
             }
         }else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
+            Constant.ToastDialoge(getResources().getString(R.string.not_enter) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
         }
         recievePackedOrderViewModel.mutableLiveData_UpdateStatus_ON_83.observe(
                 RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "83 "+message.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onChanged:update83 "+message.getMessage() );
+               // Constant.ToastDialoge(message.getMessage() , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
             }
         });
 //        }else {
@@ -453,27 +478,69 @@ String DriverID="";
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
 
                     recievePackedOrderViewModel.UpdateStatus(orderDataModuleDBHeaderkist.get(i).getORDER_NO(),"in_sorting");
-                    Intent GoBackafterSuccess=new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,AdminstratorActivity.class);
-                    startActivity(GoBackafterSuccess);
-                    finish();
+//                    Intent GoBackafterSuccess=new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,AdminstratorActivity.class);
+//                     startActivity(GoBackafterSuccess);
+//                     finish();
+                    if (i== orderDataModuleDBHeaderkist.size()-1) {
+                        new AlertDialog.Builder(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this)
+                                .setTitle(getString(R.string.order_status))
+                                .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        // TODO will not delete order data with scane new one and delete will be by order number
+                                        Intent GoBackafterSuccess = new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, AdminstratorActivity.class);
+                                        startActivity(GoBackafterSuccess);
+                                        finish();
+                                    }
+                                })
+//                            .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    dialog.cancel();
+//                                }
+//                            })
+                                .show();
+                    }
+
                 }else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")){
 
                     recievePackedOrderViewModel.UpdateStatus(orderDataModuleDBHeaderkist.get(i).getORDER_NO(),"ready_to_go");
-                    Intent GoBackafterSuccess=new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,DriverMainActivity.class);
-                    startActivity(GoBackafterSuccess);
-                    finish();
+                    if (i== orderDataModuleDBHeaderkist.size()-1) {
+
+                        new androidx.appcompat.app.AlertDialog.Builder(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this)
+                                .setTitle(getString(R.string.order_status))
+                                .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        // TODO will not delete order data with scane new one and delete will be by order number
+                                        Intent GoBackafterSuccess = new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, DriverMainActivity.class);
+                                        startActivity(GoBackafterSuccess);
+                                        finish();
+                                    }
+                                })
+//                            .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    dialog.cancel();
+//                                }
+//                            })
+                                .show();
+                    }
+
                 }else {
                     Toast.makeText(context, getResources().getString(R.string.statusnotUpdate), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.statusnotUpdate) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                 }
             }
         }else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
+            Constant.ToastDialoge(getResources().getString(R.string.not_enter) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
         }
 
         recievePackedOrderViewModel.mutableLiveData_UpdateStatus.observe(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+              //  Constant.ToastDialoge(message.getMessage() , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
                 Log.e(TAG, "onChanged:UpdateStatusrou "+message.getMessage() );
             }
         });

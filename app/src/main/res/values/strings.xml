@@ -20,9 +20,14 @@
     <string name="enter_barcode">أدخل الباركود</string>
     <string name="enter_valid_barcode">هذا الباركود غير موجود</string>
     <string name="delete_dialoge">هل أنت متأكد من أنك تريد حذف</string>
-    <string name="message_not_equalfornoofpaclkageandcountoftrackingnumbers">رقم التتبع الذي تم إدخاله لا يساوي حزمة معبأة</string>
+    <string name="message_not_equalfornoofpaclkageandcountoftrackingnumbers_recieve">يوجد شحنات أخرى لم يتم إستلامها</string>
+    <string name="message_not_equalfornoofpaclkageandcountoftrackingnumbers_zone">يوجد شحنات أخرى لم يتم  تسكينها في المنطقة</string>
+    <string name="message_not_equalfornoofpaclkageandcountoftrackingnumbers_driver">يوجد شحنات أخرى لم يتم إضافتها لقائمة التوصيل</string>
+
+
+
     <string name="message_equalfornoofpaclkageandcountoftrackingnumbers">No of tracking number that entered is equal packed package</string>
-    <string name="there_is_no_trackednumber_scanned">لا يوجد رقم تتبع تم مسحه ضوئيًا.</string>
+    <string name="there_is_no_trackednumber_scanned">أدخل رقم التتبع أولاً</string>
     <string name="updte_zone_if_exist">"تم أدخال المنطقه مختلفه عما تم من قبل..هل تريد التعديل "</string>
     <string name="delete_last_assign">حذف الكل</string>
     <string name="enter_tracking_number">أدخل كود تتبع الشحنه</string>
@@ -137,7 +142,7 @@
     <string name="txt_enter_number">أدخل رقم الطلب</string>
     <string name="total_price">اجمالى السعر</string>
     <string name="will_delete_last_order">سوف يتم حذف أخر عمليه لأمر بيع وتحميله من جديد</string>
-    <string name="show_last_assign">تعديل</string>
+    <string name="show_last_assign">حذف</string>
     <string name="recall_assign_orders_to_driver">إستدعاء</string>
     <string name="reprinter">إعادة طباعة بوليصة شحن</string>
     <string name="customer_phone">أسم العميل</string>
@@ -154,9 +159,9 @@
     <string name="AssignItemToPackagesActivity_label"><![CDATA[Packing->Assign Items]]></string>
     <string name="EditPackagesActivity_label"><![CDATA[Packing->EditPackages]]></string>
     <string name="EditPackageItemsActivity_label"><![CDATA[Packing->Edit Packages->Edit Items]]></string>
-    <string name="RecievePacked_label">Recieve Packed</string>
+    <string name="RecievePacked_label"><![CDATA[Sorting->Receive packages]]></string>
     <string name="RecieveForDriver_label"><![CDATA[Driver->Confirm Recieving]]></string>
-    <string name="EditPackagesForRecievingActivity_label"><![CDATA[RecieveORConfirm->Edit packages]]></string>
+    <string name="EditPackagesForRecievingActivity_label"><![CDATA[Delete packages]]></string>
     <string name="OrdersOfRuntimeSheetNowForDriverActivity_label"><![CDATA[Driver->DriverOrders]]></string>
     <string name="OrderDetails_forDriverActivity_label"><![CDATA[Driver->DriverOrders->OrderDetails]]></string>
     <string name="enter_more_thanrequired">تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب</string>
@@ -173,8 +178,13 @@
     <string name="Send_SMS_to_custome">إرسال رسالة إلى العميل</string>
     <string name="rejected_packages_title">رفض الشحنه</string>
     <string name="Reschedule_for_order">تأجيل أمر البيع</string>
-    <string name="Show_Assign_Orders_To_Zone"> 1تسكين الشحنات فى مناطق توصيلها- </string>
-    <string name="show_assign_orders_to_driver">2تجهيز قائمة بالشحنات لمندوب التوصيل - </string>
+    <string name="Show_Assign_Orders_To_Zone"> 1-تسكين الشحنات فى مناطق توصيلها- </string>
+    <string name="show_assign_orders_to_driver">2-تجهيز قائمة بالشحنات لمندوب التوصيل- </string>
     <string name="delete">حذف</string>
+    <string name="Send_passcode_to_customer">ارسال الكود السرى للعميل</string>
+    <string name="this_is_weight_Item_cant_edit">هذا الصنف موزون .. لايمكن تعديله</string>
+    <string name="nodata">لا تحتوي علي بيانات</string>
+    <string name="thereisno_data_to">لايوجد بيانات للعرض</string>
+    <string name="assignpackedorderforzoneanddriver_label">Assign package to zone and to driver</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.packingapp.Helper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -33,4 +34,21 @@ public class Constant {
 
     }
 
+
+    public static void ToastDialoge(String status , Context context) {
+        new androidx.appcompat.app.AlertDialog.Builder( context)
+                .setTitle(status)
+                .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // TODO will not delete order data with scane new one and delete will be by order number
+
+                    }
+                })
+//                                .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        dialog.cancel();
+//                                    }
+//                                })
+                .show();
+    }
 }

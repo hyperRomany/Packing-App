@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.packingapp.Adapter.ItemAdapter;
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignItemsToPackageBinding;
@@ -166,6 +167,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.done), Toast.LENGTH_SHORT).show();
+                        Constant.ToastDialoge(getResources().getString(R.string.done) , AssignItemToPackagesActivity.this);
+
 //                        database.userDao().updatetrackingnumberforListOfItems(AddNewPackageORAddForExistPackage, ListOfBarcodesToAssign);
 
                         //ToDo Clear all lists after assign
@@ -176,6 +179,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     }
                 }else {
                     Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.notadd), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.notadd) , AssignItemToPackagesActivity.this);
+
                 }
                 binding.editBarcode.requestFocus();
             }
@@ -444,7 +449,9 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                                         edit_qty.getText().toString()
                                 ));
                     }else {
-                        Toast.makeText(context, "هذا الصنف موزون .. لايمكن تعديله", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getResources().getString(R.string.this_is_weight_Item_cant_edit), Toast.LENGTH_SHORT).show();
+                        Constant.ToastDialoge(getResources().getString(R.string.this_is_weight_Item_cant_edit) , AssignItemToPackagesActivity.this);
+
                     }
                     alertDialog.dismiss();
 

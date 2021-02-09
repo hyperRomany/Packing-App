@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.UI.OrderDetails_forDriverActivity;
 import com.example.packingapp.databinding.FragmentConfirmPasscodeBinding;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
@@ -167,6 +168,8 @@ FragmentConfirmPasscodeBinding binding;
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge( message.getMessage() , getActivity());
+
                 Log.e(TAG, "onChanged: "+message.getMessage() );
             }
         });
@@ -174,16 +177,22 @@ FragmentConfirmPasscodeBinding binding;
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 //    Toast.makeText(getActivity(), "ConfirmedH", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge( message.getMessage() , getActivity());
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.popBackStack();
                 Log.e(TAG, "onChanged:update " + message.getMessage());
-                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+
+
             }
         });
         confirmPasscodeViewModel.mutableLiveData_UpdateStatus_Reason_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 Toast.makeText(getActivity(), "ConfirmedD", Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge( message.getMessage() , getActivity());
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.popBackStack();
                 Log.e(TAG, "onChanged:updateErrorDet " + message.getMessage());

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.databinding.ActivitySendSMSBinding;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.viewmodel.OrderDetailsForDriverViewModel;
@@ -32,6 +33,8 @@ public class SendSMSActivity extends AppCompatActivity {
                     public void onChanged(ResponseSms responseSms) {
                         Toast.makeText(SendSMSActivity.this,
                                 responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
+                        Constant.ToastDialoge( responseSms.getSMSStatus().toString() , SendSMSActivity.this);
+
                     }
                 });
             }

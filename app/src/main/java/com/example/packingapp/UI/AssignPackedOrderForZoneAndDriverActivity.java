@@ -85,6 +85,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         setContentView(binding.getRoot());
         database=AppDatabase.getDatabaseInstance(this);
 
+        setTitle(getResources().getString(R.string.assignpackedorderforzoneanddriver_label));
         assignPackedOrderToZoneViewModel = ViewModelProviders.of(this)
                 .get(AssignPackedOrderToZoneViewModel.class);
 //        Response_list_for_runtimesheet_Orders=new ArrayList<>();
@@ -122,8 +123,12 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                 if (s.equals("HTTP 503 Service Unavailable")) {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.tracking_number_server), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.tracking_number_server) , AssignPackedOrderForZoneAndDriverActivity.this);
+
                 }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+                    Constant.ToastDialoge(s, AssignPackedOrderForZoneAndDriverActivity.this);
+
                 }
             }
         });
@@ -141,6 +146,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                 }
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge(getResources().getString(R.string.confirm), AssignPackedOrderForZoneAndDriverActivity.this);
+
             }
         });
 
@@ -177,12 +184,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             );
                             PrintRunTimeSheet(Response_id_for_runtimesheet_Orders.get(0), Response_Recordsitems_list_for_runtimesheet_Orders);
                         }else {
-                            Toast.makeText(context, "Lists size equal zero", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(context, "Lists size equal zero", Toast.LENGTH_SHORT).show();
                         }
                 //    }
                     //response.
                 } else {
-                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لا تحتوي علي بيانات", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.nodata) , AssignPackedOrderForZoneAndDriverActivity.this);
+
                 }
 
             }
@@ -195,8 +204,11 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
                 if (s.equals("HTTP 503 Service Unavailable")) {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_not_found), Toast.LENGTH_SHORT).show();
+               Constant.ToastDialoge(getResources().getString(R.string.order_not_found) , AssignPackedOrderForZoneAndDriverActivity.this);
                 }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+                    Constant.ToastDialoge(s , AssignPackedOrderForZoneAndDriverActivity.this);
+
                 }
             }
         });
@@ -204,24 +216,38 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus_Zone_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:update "+message.getMessage() );
+                List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop =  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                if (recievePackedORDER_NO_Distinctlist_for_for_loop.size()>0) {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onChanged:update " + message.getMessage());
+                    Constant.ToastDialoge(message.getMessage(), AssignPackedOrderForZoneAndDriverActivity.this);
+                }
             }
         });
 
         assignPackedOrderToZoneViewModel.mutableLiveData_UpdateDriverID_ON_83.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:update "+message.getMessage() );
+                List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop =  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                if (recievePackedORDER_NO_Distinctlist_for_for_loop.size()>0) {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(message.getMessage(), AssignPackedOrderForZoneAndDriverActivity.this);
+
+                    Log.e(TAG, "onChanged:update " + message.getMessage());
+                }
             }
         });
 
         assignPackedOrderToZoneViewModel.mutableLiveData_UpdateStatus.observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:UpdateStatus "+message.getMessage() );
+                List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop =  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
+                if (recievePackedORDER_NO_Distinctlist_for_for_loop.size()>0) {
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                    // Constant.ToastDialoge(message.getMessage() , AssignPackedOrderForZoneAndDriverActivity.this);
+
+                    Log.e(TAG, "onChanged:UpdateStatus " + message.getMessage());
+                }
             }
         });
         assignPackedOrderToZoneViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
@@ -229,6 +255,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             public void onChanged(String s) {
                 Log.e(TAG, "onChanged: "+s );
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, s, Toast.LENGTH_LONG).show();
+                Constant.ToastDialoge(s, AssignPackedOrderForZoneAndDriverActivity.this);
+
             }
         });
 
@@ -237,6 +265,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             public void onChanged(ResponseSms responseSms) {
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this,
                         responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
+               // Constant.ToastDialoge(responseSms.getSMSStatus().toString() , AssignPackedOrderForZoneAndDriverActivity.this);
+
             }
         });
         assignPackedOrderToZoneViewModel.mutableLiveDataError_SendSms.observe(this, new Observer<String>() {
@@ -248,6 +278,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.tracking_number_server), Toast.LENGTH_SHORT).show();
 //                }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "Send SMS Error"+s, Toast.LENGTH_LONG).show();
+              //  Constant.ToastDialoge("Send SMS Error"+s , AssignPackedOrderForZoneAndDriverActivity.this);
+
 //                }
             }
         });
@@ -264,7 +296,6 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                                     responseDriver.getRecords().get(i).getNameArabic());
                         }
                         Drivers_Data_list.addAll(responseDriver.getRecords());
-
                     }
                     this.responseDriver = responseDriver;
                     spinnerAdapterDriver.notifyDataSetChanged();
@@ -279,12 +310,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 AfterGetOrderData(responseGetOrderData, trackingnumber_public, Zone_public);
             } else {
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
+           Constant.ToastDialoge(getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , AssignPackedOrderForZoneAndDriverActivity.this);
             }
         }else {
             if (responseGetOrderData.getSTATUS().equalsIgnoreCase("sorted")) {
                 AfterGetOrderData(responseGetOrderData, trackingnumber_public, Zone_public);
             } else {
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge(getResources().getString(R.string.order_status) + responseGetOrderData.getSTATUS() , AssignPackedOrderForZoneAndDriverActivity.this);
 
             }
         }
@@ -325,7 +358,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             EditPackagesForRecievingActivity.class);
                     startActivity(GoToEditRecievedPackages);
                 }else {
-                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لايوجد بيانات للعرض", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, R.string.thereisno_data_to, Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.thereisno_data_to)  , AssignPackedOrderForZoneAndDriverActivity.this);
+
                 }
             }
         });
@@ -384,12 +419,15 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                        }
                     }else {
                         Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
-                                getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                                getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers_zone)), Toast.LENGTH_SHORT).show();
+                        Constant.ToastDialoge(getResources().getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers_zone)  , AssignPackedOrderForZoneAndDriverActivity.this);
+
                         ShowMissedBarcodesFun();
                     }
                 }else {
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
                             getString(R.string.there_is_no_trackednumber_scanned)), Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.there_is_no_trackednumber_scanned)  , AssignPackedOrderForZoneAndDriverActivity.this);
 
                 }
 
@@ -456,6 +494,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             startActivity(GoToEditRecievedPackages);
                         }else {
                             Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "لايوجد بيانات للعرض", Toast.LENGTH_SHORT).show();
+                            Constant.ToastDialoge(getResources().getString(R.string.thereisno_data_to)  , AssignPackedOrderForZoneAndDriverActivity.this);
+
                         }
                     }
                 });
@@ -568,7 +608,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                             Log.e(TAG, "onClick: " + binding.spinerDriverId.getSelectedItemPosition());
                         } else {
                             Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
-                                    getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers)), Toast.LENGTH_SHORT).show();
+                                    getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers_driver)), Toast.LENGTH_SHORT).show();
+                            Constant.ToastDialoge(getResources().getString(R.string.message_not_equalfornoofpaclkageandcountoftrackingnumbers_driver)  , AssignPackedOrderForZoneAndDriverActivity.this);
+
                         }
                     } else {
                         Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, String.format("%s",
@@ -864,6 +906,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //                    binding.editZone.setText("");
                     binding.editZone.setError(null);
                     Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+                    Constant.ToastDialoge(getResources().getString(R.string.confirm), AssignPackedOrderForZoneAndDriverActivity.this);
+
                     binding.editTrackingnumberZone.requestFocus();
                    // Toast.makeText(context, "تم", Toast.LENGTH_SHORT).show();
                 } else {
@@ -926,6 +970,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 //            binding.editZone.setText("");
             binding.editZone.setError(null);
             Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, getResources().getString(R.string.confirm), Toast.LENGTH_SHORT).show();
+            Constant.ToastDialoge(getResources().getString(R.string.confirm), AssignPackedOrderForZoneAndDriverActivity.this);
+
             Log.e(TAG, "onChanged: insertAfterGetOrderData " + trackingnumber);
         }else {
            // binding.editTrackingnumberZone.setError("تم أدخال هذا من قبل ");
@@ -973,7 +1019,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 );
 //TODO REmove hint to send sms to customer
                SendSMS(response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_PHONE().replace("+2","")
-              //         "01065286596"
+                     //  "01065286596"
                        ,"أ/"+response_header_list_for_runtimesheet_Orders2.get(i).getCUSTOMER_NAME()+ " شحنتك رقم"+
                                response_header_list_for_runtimesheet_Orders2.get(i).getORDER_NO()+"ستصلك خلال الساعات القادمة مع مندوبنا"+
                                Drivers_Data_list.get(binding.spinerDriverId.getSelectedItemPosition()).getNameArabic() +" رقم هاتفه "+
@@ -1109,6 +1155,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                 binding.editTrackingnumberDriver.setError(null);
                 Log.e(TAG, "onClick: Trac "+binding.editTrackingnumberDriver.getText().toString() );
                 Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge(getResources().getString(R.string.confirm), AssignPackedOrderForZoneAndDriverActivity.this);
+
             }else {
                 binding.editTrackingnumberDriver.setError(getResources().getString(R.string.enterbefor));
                 binding.editTrackingnumberDriver.setText("");

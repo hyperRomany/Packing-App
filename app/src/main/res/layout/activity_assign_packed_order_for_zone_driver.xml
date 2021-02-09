@@ -49,15 +49,14 @@
                     android:id="@+id/textInputLayout1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2.9"
                     android:padding="2dp"
                     android:textColorHint="@color/txt_color_hint"
                     >
                 <EditText
                     android:id="@+id/edit_trackingnumber_zone"
                     android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
+                    android:layout_width="match_parent"
                     android:hint="@string/enter_tracking_number"
                     android:textColor="@color/txt_color"
                     android:textColorHint="@color/txt_color_hint"
@@ -69,7 +68,7 @@
                 <Button
                     android:id="@+id/btn_loading_new_purchase_order_zone"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.1"
                     android:layout_height="wrap_content"
                     android:text="@string/enter_zone"
                     android:background="@drawable/buttonshap"
@@ -195,14 +194,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="2.9"
                         android:padding="2dp"
                         android:textColorHint="@color/txt_color_hint"
                         >
                     <EditText
                         android:id="@+id/edit_trackingnumber_driver"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_tracking_number"
                         android:textColor="@color/txt_color"
@@ -215,7 +213,7 @@
                     <Button
                         android:id="@+id/btn_loading_new_purchase_order_driver"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.1"
                         android:layout_height="wrap_content"
                         android:text="@string/enter"
                         android:background="@drawable/buttonshap"

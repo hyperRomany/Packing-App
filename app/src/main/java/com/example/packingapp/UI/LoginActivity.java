@@ -27,8 +27,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //
-        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Ubuntu-Light.ttf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
+//       TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Ubuntu-Light.ttf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Cairo-Light.otf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
 
         lgoinViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         database=AppDatabase.getDatabaseInstance(this);

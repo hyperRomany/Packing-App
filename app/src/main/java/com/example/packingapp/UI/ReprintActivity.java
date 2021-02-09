@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityReprintBinding;
 import com.example.packingapp.model.ReprintAWBModules.ItemsOrderDataDetails_Scanned_Reprint;
@@ -58,6 +59,8 @@ public class ReprintActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(ReprintActivity.this, ""+s, Toast.LENGTH_SHORT).show();
+                Constant.ToastDialoge(s , ReprintActivity.this);
+
             }
         });
         binding.btnPrintAwb.setOnClickListener(new View.OnClickListener() {
