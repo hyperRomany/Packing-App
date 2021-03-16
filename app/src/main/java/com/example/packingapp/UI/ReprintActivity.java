@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
-import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityReprintBinding;
 import com.example.packingapp.model.ReprintAWBModules.ItemsOrderDataDetails_Scanned_Reprint;
@@ -58,8 +57,12 @@ public class ReprintActivity extends AppCompatActivity {
         reprintAWBViewModel.mutableLiveDataError.observe(ReprintActivity.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Toast.makeText(ReprintActivity.this, ""+s, Toast.LENGTH_SHORT).show();
-                Constant.ToastDialoge(s , ReprintActivity.this);
+                if (s.equals("HTTP 503 Service Unavailable")) {
+                    Toast.makeText(ReprintActivity.this, getResources().getString(R.string.tracking_number_server), Toast.LENGTH_LONG).show();
+                }else {
+                    Log.e(TAG, "onChanged:forgetpassword "+s );
+                    Toast.makeText(ReprintActivity.this, s, Toast.LENGTH_LONG).show();
+                }
 
             }
         });

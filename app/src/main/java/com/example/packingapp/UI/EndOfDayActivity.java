@@ -10,6 +10,7 @@ import com.example.packingapp.model.DriverModules.ResponeEndOfDay;
 import com.example.packingapp.model.RecordsItem;
 import com.example.packingapp.viewmodel.EndOfDayViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,10 +61,10 @@ public class EndOfDayActivity extends AppCompatActivity {
                             }
                         }
 
-                        binding.txtSuccessValue.setText(String.valueOf(SuccessValue+FailedValue));
-                        binding.txtRequiredValue.setText(String.valueOf(SuccessValue));
-                        binding.txtFailedValue.setText(String.valueOf(FailedValue));
-
+                        binding.txtSuccessValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(SuccessValue+FailedValue))));
+                        binding.txtRequiredValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(SuccessValue))));
+                        binding.txtFailedValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(FailedValue))));
+                        binding.txtNumberFailedValue.setText(String.valueOf(FailedList.size()));
 
                     }
                 });

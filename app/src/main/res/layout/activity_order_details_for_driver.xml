@@ -14,26 +14,57 @@
     tools:context=".UI.OrderDetails_forDriverActivity"
     >
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circle_user_image"
+    <LinearLayout
+        android:id="@+id/linear_customer_data"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_user"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        app:civ_circle_background_color="@color/user_icone_bg"
-        />
+        android:layoutDirection="rtl">
+        <TextView
+            android:id="@+id/txt_customername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color"
+            android:text="Customername"
+            android:textSize="@dimen/font_size_for_text_of_app"/>
+        <TextView
+            android:id="@+id/txt_customerphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color"
+            android:text="Customerphone"
+            android:textSize="@dimen/font_size_for_text_of_app"/>
+        <TextView
+            android:id="@+id/txt_customeraddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color"
+            android:text="Customeraddress"
+            android:textSize="@dimen/font_size_for_text_of_app"/>
+
+    </LinearLayout>
+    <!-- <de.hdodenhof.circleimageview.CircleImageView
+         android:id="@+id/circle_user_image"
+         android:layout_width="match_parent"
+         android:layout_height="60dp"
+         android:src="@drawable/ic_user"
+         app:layout_constraintTop_toTopOf="parent"
+         tools:ignore="MissingConstraints"
+         app:civ_circle_background_color="@color/user_icone_bg"
+         />-->
 
     <LinearLayout
         android:id="@+id/linear_call_and_sms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/circle_user_image"
+        app:layout_constraintTop_toBottomOf="@id/linear_customer_data"
         android:weightSum="2"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp">
+        android:layout_marginEnd="10dp"
+        >
         <ImageButton
             android:id="@+id/img_btn_sms"
             android:layout_width="0dp"
@@ -56,13 +87,25 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:id="@+id/hor_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        app:layout_constraintTop_toBottomOf="@id/linear_call_and_sms"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/include_header_of_rv"
         layout="@layout/recycle_item_for_driver_packages_header"
         android:visibility="visible"
-
         app:layout_constraintTop_toBottomOf="@id/linear_call_and_sms"
         android:layout_marginTop="15dp"/>
 
@@ -73,14 +116,15 @@
     android:layout_width="match_parent"
         app:layout_constraintTop_toBottomOf="@id/include_header_of_rv"
         />
-
+    </LinearLayout>
+    </HorizontalScrollView>
     <LinearLayout
         android:id="@+id/linear_total_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/rv_customer_items"
-        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/hor_lay"
+        android:layout_marginTop="2dp"
         >
 
         <TextView
@@ -116,29 +160,36 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/linear_total_price"
-        android:weightSum="2"
+        android:weightSum="3"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
+
+        <Button
+            android:id="@+id/btn_reject_deleivery"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@drawable/buttonshap_reject"
+            android:text="@string/reject_packages"
+            android:textColor="@color/textcolor_btns"/>
 
         <Button
             android:id="@+id/btn_send_passcode_to_confirm_deleivery"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="40dp"
-            android:background="@drawable/buttonshap"
+            android:background="@drawable/buttonshap_recieve"
             android:text="@string/Confirm_Deleivery"
             android:textColor="@color/textcolor_btns"/>
-
         <Button
             android:id="@+id/btn_reschedule_delivery"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="40dp"
-            android:background="@drawable/buttonshap"
+            android:background="@drawable/buttonshap_reschedule"
             app:layout_constraintTop_toBottomOf="@+id/rv_customer_items"
             android:text="@string/Reschedule"
             android:textColor="@color/textcolor_btns"/>
-
     </LinearLayout>
 
     <TextView
@@ -148,12 +199,24 @@
         android:text="@string/rejected_packages"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/linear_reschedule_confirm_deleivery"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="2dp"
         android:gravity="center"
         android:textSize="@dimen/font_size_for_text_of_app"
         android:textStyle="bold"
         />
-
+    <HorizontalScrollView
+        android:id="@+id/hor_lay_reject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        app:layout_constraintTop_toBottomOf="@id/txt_title"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -161,7 +224,7 @@
         layout="@layout/recycle_item_for_driver_packages_header"
         android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/txt_title"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="2dp"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -170,7 +233,8 @@
         android:layout_width="match_parent"
         app:layout_constraintTop_toBottomOf="@id/include_header_of_rv_reject"
         />
-
+    </LinearLayout>
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

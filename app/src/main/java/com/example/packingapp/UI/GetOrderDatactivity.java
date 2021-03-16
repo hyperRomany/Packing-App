@@ -21,7 +21,6 @@ import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Sca
 import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.GetOrderResponse.ResponseGetOrderData;
 import com.example.packingapp.model.Message;
-import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.viewmodel.GetOrderDataViewModel;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
     GetOrderDataViewModel getOrderDataViewModel;
     private static final String TAG = "GetOrderDatactivity";
     AppDatabase database;
-
+    String ordernumberselected_ForDetails="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,43 +72,10 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 LoadNewPurchaseOrder();
             }
         });
-//        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
-//                new Observer<ResponseGetOrderData>() {
-//                    @Override
-//                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
-//                        Log.e(TAG, "onChanged: "+responseGetOrderData.getStatus() );
-//                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
-//                            ActionAfterGetData(responseGetOrderData);
-//                        }else {
-//                            Toast.makeText(GetOrderDatactivity.this, "This Order in "+responseGetOrderData.getStatus()+" State", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
 
-        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
-                new Observer<ResponseGetOrderData>() {
-                    @Override
-                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
-                        Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
-                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
-                            ActionAfterGetData(responseGetOrderData);
-                        } else {
-                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
-        getOrderDataViewModel.mutableLiveDataError.observe(GetOrderDatactivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged:mutableLiveD  " + s);
-                if (s.contains("HTTP 400")) {
-                    Toast.makeText(GetOrderDatactivity.this, String.format("%s", getString(R.string.order_not_found)), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+
         binding.btnLoadingLastPurchaseOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,8 +172,10 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                                                                // promptsView.
                                                                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
+                                                               ordernumberselected_ForDetails=Ordernumber;
                                                                UploadHeader(Ordernumber);
-                                                               //UploadDetails(Ordernumber);
+
+//                                                               UploadDetails(Ordernumber);
 
                                                                alertDialog.dismiss();
 
@@ -232,6 +200,73 @@ public class GetOrderDatactivity extends AppCompatActivity {
             }
         });
 
+        OberveFUN();
+    }
+
+    private void OberveFUN() {
+        //        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
+//                new Observer<ResponseGetOrderData>() {
+//                    @Override
+//                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
+//                        Log.e(TAG, "onChanged: "+responseGetOrderData.getStatus() );
+//                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
+//
+//                            ActionAfterGetData(responseGetOrderData);
+//                        }else {
+//                            Toast.makeText(GetOrderDatactivity.this, "This Order in "+responseGetOrderData.getStatus()+" State", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+
+
+        getOrderDataViewModel.getmutableLiveData().observe(GetOrderDatactivity.this, new Observer<Message>() {
+            @Override
+            public void onChanged(Message message) {
+                Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged: " + message.getMessage());
+                Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.doneforheader), Toast.LENGTH_SHORT).show();
+
+//                OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
+
+                UploadDetails(ordernumberselected_ForDetails);
+                //TODO Update status on magento
+                UpdateStatus(ordernumberselected_ForDetails);
+
+            }
+        });
+        //TODO insert header error
+        getOrderDataViewModel.mutableLiveData_InsertH_Error.observe(GetOrderDatactivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:mutableLiveD  " + s);
+                if (s.contains("HTTP 400")) {
+                    Toast.makeText(GetOrderDatactivity.this, String.format("%s",
+                            getString(R.string.missingdata)), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        getOrderDataViewModel.getmutableLiveData_Details().observe(GetOrderDatactivity.this, new Observer<Message>() {
+            @Override
+            public void onChanged(Message message) {
+                Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged: " + message.getMessage());
+
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(GetOrderDatactivity.this, ordernumberselected_ForDetails);
+
+            }
+        });
+
+        getOrderDataViewModel.mutableLiveData_InsertD_Error.observe(GetOrderDatactivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(GetOrderDatactivity.this, "لم يتم رفع تفاصيل" + s, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged:Details " + s);
+            }
+        });
     }
 
     private void LoadNewPurchaseOrder() {
@@ -272,7 +307,40 @@ public class GetOrderDatactivity extends AppCompatActivity {
     }
 
     private void GETOrderData() {
+        binding.progLoadingMagentoorder.setVisibility(View.VISIBLE);
+        binding.btnLoadingNewPurchaseOrder.setEnabled(false);
         getOrderDataViewModel.fetchdata(binding.editMagentoorder.getText().toString());
+
+        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
+                new Observer<ResponseGetOrderData>() {
+                    @Override
+                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
+                        binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
+                        binding.btnLoadingNewPurchaseOrder.setEnabled(true);
+
+                        Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
+                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
+                            ActionAfterGetData(responseGetOrderData);
+                        } else {
+                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        getOrderDataViewModel.getmutableLiveDataError().observe(GetOrderDatactivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
+                binding.btnLoadingNewPurchaseOrder.setEnabled(true);
+
+                Log.e(TAG, "onChanged:mutableLiveD  " + s);
+                if (s.contains("HTTP 400")) {
+                    Toast.makeText(GetOrderDatactivity.this, String.format("%s", getString(R.string.order_not_found)), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -333,7 +401,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
 
-            List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList = database.userDao().getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
+            List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList = database.userDao()
+                    .getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
            // String OrderNumber = database.userDao().getOrderNumber();
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(ordernumberselected);
 
@@ -346,13 +415,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
             getOrderDataViewModel.InsertOrderdataDetails(ordernumberselected, itemsOrderDataDBDetailsList, ShippingfeesPerItem);
 
-            getOrderDataViewModel.mutableLiveData_Details.observe(GetOrderDatactivity.this, new Observer<Message>() {
-                @Override
-                public void onChanged(Message message) {
-                    Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onChanged: " + message.getMessage());
-                }
-            });
         } else {
             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.item_notselected), Toast.LENGTH_SHORT).show();
         }
@@ -409,34 +471,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     ,database.userDao().getUserData_MU().getUser_id()
             );
 
-            getOrderDataViewModel.mutableLiveData.observe(GetOrderDatactivity.this, new Observer<Message>() {
-                @Override
-                public void onChanged(Message message) {
-                    Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onChanged: " + message.getMessage());
-                    Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.doneforheader), Toast.LENGTH_SHORT).show();
 
-                    UploadDetails(ordernumberselected);
-                    ViewDialog alert = new ViewDialog();
-                    alert.showDialog(GetOrderDatactivity.this, orderDataModuleDBHeader.getOrder_number());
-                    //TODO Update status on magento
-                    UpdateStatus(ordernumberselected);
-
-                }
-            });
-            //TODO insert header error
-            getOrderDataViewModel.mutableLiveData_InsertH_Error.observe(GetOrderDatactivity.this, new Observer<String>() {
-                @Override
-                public void onChanged(String s) {
-                    Log.e(TAG, "onChanged:mutableLiveD  " + s);
-                    if (s.contains("HTTP 400")) {
-                        Toast.makeText(GetOrderDatactivity.this, String.format("%s",
-                                getString(R.string.missingdata)), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         } else {
             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.item_notselected), Toast.LENGTH_SHORT).show();
             ShowMissedBarcodesFun(ordernumberselected);
@@ -489,14 +524,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 orderDataModuleDBHeader.getOrder_number(),
                 "packed"
         );
-        getOrderDataViewModel.mutableLiveData_UpdateStatus.observe(GetOrderDatactivity.this, new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged: " + message.getMessage());
 
-            }
-        });
 //        }else {
 //            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
 //        }

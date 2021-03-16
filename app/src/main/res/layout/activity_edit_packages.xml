@@ -17,19 +17,20 @@
         android:background="@color/main_background_color"
         >
 
-        <HorizontalScrollView
+       <!-- <HorizontalScrollView
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:orientation="horizontal"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
-            android:background="@drawable/module_bg_packages"
-            >
+            >-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:orientation="vertical"
-                android:padding="6dp">
+                android:padding="8dp"
+                android:background="@drawable/module_bg_packages"
+                >
 
                 <include layout="@layout/recycle_item_for_packed_packages_header"
                     android:visibility="visible"/>
@@ -42,7 +43,7 @@
                     />
 
             </LinearLayout>
-        </HorizontalScrollView>
+        <!--</HorizontalScrollView>-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,11 +56,10 @@
                 android:layout_height="wrap_content"
                 android:text="حذف"
                 android:background="@drawable/buttonshap"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:textColor="@color/textcolor_btns"
                 android:onClick="Delete_PDNEWQTY"
                 android:textSize="@dimen/font_size_for_button_of_app"
+                android:layout_centerInParent="true"
                 />
             <Button
                 android:id="@+id/btn_edit"
@@ -72,7 +72,7 @@
                 android:textColor="@color/textcolor_btns"
                 android:onClick="Edit_PDNEWQTY"
                 android:textSize="@dimen/font_size_for_button_of_app"
-                />
+                android:visibility="gone"/>
 
         </RelativeLayout>
     </LinearLayout>

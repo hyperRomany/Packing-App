@@ -38,6 +38,29 @@
         <requestFocus />
     </EditText>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choice_rescedule_reason"
+        android:textSize="@dimen/font_size_for_text_of_app"
+        android:textColor="@color/txt_color"
+        android:textStyle="bold"
+        android:gravity="center"
+        />
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spiner_rescheduleinput"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:textSize="@dimen/font_size_for_text_of_app"
+        android:textDirection="rtl"
+        android:textColor="@color/txt_color"
+        android:backgroundTint="@color/third_white"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,5 +78,7 @@
             android:background="@drawable/buttonshap"
             android:textColor="@color/textcolor_btns"/>
 
+
     </LinearLayout>
+
 </LinearLayout>

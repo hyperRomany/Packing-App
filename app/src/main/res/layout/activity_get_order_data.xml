@@ -9,34 +9,47 @@
         android:background="@color/main_background_color"
         tools:context=".UI.GetOrderDatactivity">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textColorHint="@color/txt_color_hint"
 
-            >
-        <EditText
-            android:id="@+id/edit_magentoorder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/txt_enter_number"
-            android:inputType="number"
-            android:textColor="@color/txt_color"
-            android:textColorHint="@color/txt_color_hint"
-            android:textSize="@dimen/font_size_for_text_of_app"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            />
-        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                android:orientation="vertical"
-            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
             android:background="@drawable/groubeshap"
             android:padding="15dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:textColorHint="@color/txt_color_hint"
+
+                    >
+                        <EditText
+                            android:id="@+id/edit_magentoorder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_enter_number"
+                            android:inputType="number"
+                            android:textColor="@color/txt_color"
+                            android:textColorHint="@color/txt_color_hint"
+                            android:textSize="@dimen/font_size_for_text_of_app"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
+                            />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ProgressBar
+                    android:id="@+id/prog_loading_magentoorder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="15dp"/>
+
+
                 <Button
                     android:id="@+id/btn_loading_new_purchase_order"
                     android:layout_width="220dp"
@@ -44,18 +57,6 @@
                     android:text="@string/loadnewOrder"
                     android:background="@drawable/buttonshap"
                     android:textColor="@color/textcolor_btns"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:textSize="@dimen/font_size_for_button_of_app"
-                    />
-                <Button
-                    android:id="@+id/btn_loading_last_purchase_order"
-                    android:layout_width="220dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loadlastOrder"
-                    android:background="@drawable/buttonshap"
-                    android:textColor="@color/textcolor_btns"
-                    android:layout_marginTop="30dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
                     android:textSize="@dimen/font_size_for_button_of_app"
@@ -68,8 +69,22 @@
             android:orientation="vertical"
             android:background="@drawable/groubeshap"
             android:layout_marginTop="30dp"
-            android:padding="15dp">
-        <Button
+            android:padding="15dp"
+           >
+
+                <Button
+                    android:id="@+id/btn_loading_last_purchase_order"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loadlastOrder"
+                    android:background="@drawable/buttonshap"
+                    android:textColor="@color/textcolor_btns"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/font_size_for_button_of_app"
+                    />
+
+           <Button
             android:id="@+id/btn_print_awb"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
@@ -79,7 +94,8 @@
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
             android:textSize="@dimen/font_size_for_button_of_app"
-            />
+               android:layout_marginTop="30dp"
+               />
 
         <Button
             android:id="@+id/btn_edit_packages"
@@ -94,11 +110,7 @@
             android:textSize="@dimen/font_size_for_button_of_app"
             />
         </LinearLayout>
-        <ProgressBar
-            android:id="@+id/prog_loading_magentoorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+
 
 
 </LinearLayout>

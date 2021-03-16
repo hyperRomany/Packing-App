@@ -1,44 +1,28 @@
 package com.example.packingapp.model.DriverModules;
 
-import com.google.gson.annotations.SerializedName;
-
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "DriverPackages_Details_DB")
-public class DriverPackages_Details_DB {
-
-
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
+public class DriverPackages_Details_ForAdapter {
 
     private  Boolean Checked_Item;
 
+    private int uid;
 
-    @ColumnInfo(name ="ORDER_NO")
-   @SerializedName("ORDER_NO")
+
    private String ORDER_NO;
 
-    @ColumnInfo(name = "TRACKING_NO")
-    @SerializedName("TRACKING_NO")
+
     private String TRACKING_NO;
 
-    @ColumnInfo(name = "PACKAGE_PRICE")
-    @SerializedName("PACKAGE_PRICE")
+
     private String PACKAGE_PRICE;
 
     //TODO this for ITEM_QUANTITY
-    @ColumnInfo(name = "COUNT_ITEMS_PACKAGE")
-    @SerializedName("COUNT_ITEMS_PACKAGE")
+
     private String COUNT_ITEMS_PACKAGE;
 
-    @ColumnInfo(name = "STATUS")
-    @SerializedName("STATUS")
+
     private String STATUS;
 
-    @ColumnInfo(name = "REASON")
-    @SerializedName("REASON")
+
     private String REASON;
 
     public Boolean getChecked_Item() {

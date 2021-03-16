@@ -19,6 +19,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
     public MutableLiveData<ResponseSms> getSmsLiveData() {
         return smsLiveData;
     }
+    public static MutableLiveData<String> mutableLiveData_sendSMS_Error = new MutableLiveData<>();
 
     public void SendSms(String number, String message) {
        ApiClient.build().sendSms(number,message)
@@ -29,6 +30,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                        }
                ,throwable -> {
                            Log.d("Error_Vof ",throwable.getMessage());
+                           mutableLiveData_sendSMS_Error.setValue(throwable.getMessage());
                        }
                );
     }
@@ -82,9 +84,9 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_RescheduleTime_ON_83 = new MutableLiveData<>();
     public static MutableLiveData<String> mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError = new MutableLiveData<>();
 
-    public void UpdateStatus_RescheduleTime_ON_83(String ORDER_NO, String STATUS , String  RescheduleTime,String ModifyedBy) {
+    public void UpdateStatus_RescheduleTime_ON_83(String ORDER_NO, String STATUS , String  RescheduleTime,String ModifyedBy, String  RescheduleReasone ) {
 
-        String text=ORDER_NO +"/"+STATUS +"/"+ RescheduleTime +"/"+ModifyedBy ;
+        String text=ORDER_NO +"/"+STATUS +"/"+ RescheduleTime +"/"+ModifyedBy +"/"+ RescheduleReasone ;
         Log.e( "UpdateStatus_Resche", text);
         ApiClient.build().UpdateOrderStatus_RescheduleTime_ON_83(text)
 

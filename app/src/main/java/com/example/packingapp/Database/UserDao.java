@@ -74,6 +74,12 @@ public interface UserDao {
     @Query("SELECT * FROM OrderDataModuleDBHeader")
     Observable<OrderDataModuleDBHeader> getHeader();
 
+    @Query("SELECT * FROM OrderDataModuleDBHeader")
+    List<OrderDataModuleDBHeader> getHeader_test_arraylist();
+
+    @Query("SELECT * FROM itemsOrderDataDBDetails where Order_number =:Order_number")
+    List<ItemsOrderDataDBDetails> getordernumberData__test_arraylist(String Order_number);
+
 
     @Query("SELECT * FROM OrderDataModuleDBHeader where Order_number =:Order_number")
     OrderDataModuleDBHeader getordernumberData(String Order_number);
@@ -281,17 +287,24 @@ public interface UserDao {
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievePackedModule> getorderNORecievePackedModule();
 
+
     @Query("SELECT DISTINCT(ORDER_NO)   FROM RecievePackedModule")
     List<String> GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
 
     @Query("SELECT DISTINCT(ORDER_NO) ,NO_OF_PACKAGES , STATUS , DRIVER_ID,Zone  FROM RecievePackedModule")
     List<RecievePackedModule_For_selection_loop_for_update> GetDistinctordernumbersFromRecievePackedModule();
 
+    @Query("SELECT DISTINCT(ORDER_NO) ,uid ,  NameArabic , phone , CUSTOMER_NAME , CUSTOMER_PHONE , GRAND_TOTAL FROM RecievePackedModule where CUSTOMER_NAME != NULL or CUSTOMER_NAME != ''")
+    List<RecievePackedModule> GetDistinctordernumbers_smsDataFromRecievePackedModule();
+
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievedPackageModule> getAllRecievedPackages();
 
     @Query("DELETE FROM RecievePackedModule where Tracking_Number=:Tracking_Number")
     void deleteRecievePackedModule_ForTrackingNumber( String Tracking_Number);
+
+    @Query("DELETE FROM RecievePackedModule where Tracking_Number in (:Tracking_Number) ")
+    void deleteRecievePackedModule_ForTrackingNumber_list( List<String> Tracking_Number);
 
     @Insert(onConflict = REPLACE)
     void insertDriverOrders(List<DriverPackages_Header_DB> driverPackages_Header_dblist);
@@ -316,11 +329,17 @@ public interface UserDao {
     @Query("UPDATE DriverPackages_Details_DB SET STATUS =:STATUS ,  REASON =:REASON WHERE  TRACKING_NO =:TrackingNumber ")
     void UpdatestatusAndReason_ForTrackingnumber(String TrackingNumber , String STATUS , String REASON);
 
+    @Query("UPDATE DriverPackages_Details_DB SET STATUS =:STATUS ,  REASON =:REASON WHERE  TRACKING_NO in (:TrackingNumberlist) ")
+    void UpdatestatusAndReason_ForTrackingnumber(List<String> TrackingNumberlist , String STATUS , String REASON);
+
     @Query("UPDATE DriverPackages_Details_DB SET STATUS =:STATUS WHERE  ORDER_NO =:OrderNumber And REASON is null or REASON =''")
     void UpdatestatusForNotRejectWhenClickConfirmed(String OrderNumber ,String STATUS );
 
-    @Query("SELECT * FROM DriverPackages_Details_DB where REASON is not null or REASON !=''")
-    List<DriverPackages_Details_DB> getAllPckagesForReject();
+    @Query("SELECT * FROM DriverPackages_Details_DB where ORDER_NO =:OrderNumber and ( REASON is not null or REASON !=''  )")
+    List<DriverPackages_Details_DB> getAllPckagesForReject(String OrderNumber );
+
+    @Query("SELECT * FROM DriverPackages_Details_DB WHERE  ORDER_NO =:OrderNumber and ( REASON is null or REASON ='' ) ")
+    List<DriverPackages_Details_DB> getAllPckagesForNotReject(String OrderNumber);
 
     @Query("SELECT * FROM DriverPackages_Details_DB WHERE  ORDER_NO =:OrderNumber")
     List<DriverPackages_Details_DB> getAllPckagesForUpload(String OrderNumber);

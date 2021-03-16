@@ -13,7 +13,9 @@ import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.model.ResponseVehicle;
 import com.example.packingapp.model.ResponseWay;
+import com.example.packingapp.model.ResponseZoneName;
 import com.example.packingapp.model.TimeSheet.Response;
+import com.google.gson.JsonArray;
 
 import java.util.Map;
 
@@ -28,6 +30,10 @@ public interface APIRetrofit {
 
     @POST("Login/Auth.php")
     Observable<ResponseLogin> loginwithno(@Body Map<String, String> mobile);
+
+    @POST("Login/ForgetPassword.php")
+    Observable<Message> Forgetpassword(@Body Map<String, String> mobile);
+
 
     @FormUrlEncoded
     @POST("Vodafone/SendSMS.php")
@@ -71,8 +77,18 @@ public interface APIRetrofit {
     Observable<Message> InsertOrderDataDetails(@Field("ORDER_NO") String ORDER_NO,
                                                @Field("ItemsOrderDataDBDetailsList[0]") String name);
 
+
+//TODO test arraylist
+   // @FormUrlEncoded
+    @POST("Ordernumber/writeinLogs_sap_ITEMStable.php")
+    Observable<Message> InsertOrderDataDetails_testarrylist(
+                                               @Body JsonArray name );
+
     @POST("Ordernumber/Read.php")
     Observable<RecievePackedModule> GetOrderNumberAndNumPackage(@Body Map<String, String> mobile);
+
+    @POST("Ordernumber/Read_getSMSData.php")
+    Observable<RecievePackedModule> GetOrderNumberDataAndSMSData(@Body Map<String, String> mobile);
 
     @FormUrlEncoded
     @POST("Ordernumber/UpdateStatus.php")
@@ -86,6 +102,10 @@ public interface APIRetrofit {
 
     @GET("Driver/Read.php")
     Observable<ResponseDriver> GetDrivers_IDS();
+
+    @GET("Direction/Read_zone.php")
+    Observable<ResponseZoneName> readZone();
+
     @FormUrlEncoded
     @POST("Ordernumber/UpdateDriverID.php")
     Observable<ResponseUpdateStatus> UpdateOrder_DriverID_83(@Field("OrderNumberHeader[0]") String name);

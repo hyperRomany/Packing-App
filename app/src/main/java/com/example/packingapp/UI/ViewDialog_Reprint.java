@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
-import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.R;
 import com.example.packingapp.UI.Printer.DemoSleeper;
 import com.example.packingapp.UI.Printer.SettingsHelper;
@@ -94,7 +93,7 @@ public class ViewDialog_Reprint {
             @Override
             public void onChanged(Message message) {
                 Toast.makeText(activity, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Constant.ToastDialoge( message.getMessage() , activity);
+//                Constant.ToastDialoge( message.getMessage() , activity);
 
             }
         });

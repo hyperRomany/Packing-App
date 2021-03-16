@@ -37,6 +37,26 @@ public class RecievePackedModule {
         @SerializedName("Zone")
         private String Zone;
 
+    //for sms data
+    @ColumnInfo(name ="NameArabic")
+    @SerializedName("NameArabic")
+    private String NameArabic;
+
+    @ColumnInfo(name ="phone")
+    @SerializedName("phone")
+    private String phone;
+
+    @ColumnInfo(name ="CUSTOMER_NAME")
+    @SerializedName("CUSTOMER_NAME")
+    private String CUSTOMER_NAME;
+
+    @ColumnInfo(name ="CUSTOMER_PHONE")
+    @SerializedName("CUSTOMER_PHONE")
+    private String CUSTOMER_PHONE;
+
+    @ColumnInfo(name ="GRAND_TOTAL")
+    @SerializedName("GRAND_TOTAL")
+    private String GRAND_TOTAL;
 
     public RecievePackedModule() {
     }
@@ -48,8 +68,21 @@ public class RecievePackedModule {
         Tracking_Number = tracking_Number;
     }
 
+    public RecievePackedModule(String ORDER_NO, String NO_OF_PACKAGES, String tracking_Number,
+                               String nameArabic, String phone, String CUSTOMER_NAME,
+                               String CUSTOMER_PHONE, String GRAND_TOTAL) {
+        this.ORDER_NO = ORDER_NO;
+        this.NO_OF_PACKAGES = NO_OF_PACKAGES;
+        Tracking_Number = tracking_Number;
+        NameArabic = nameArabic;
+        this.phone = phone;
+        this.CUSTOMER_NAME = CUSTOMER_NAME;
+        this.CUSTOMER_PHONE = CUSTOMER_PHONE;
+        this.GRAND_TOTAL = GRAND_TOTAL;
+    }
+
     public RecievePackedModule(String ORDER_NO, String NO_OF_PACKAGES,
-                               String tracking_Number,String Zone) {
+                               String tracking_Number, String Zone) {
         this.ORDER_NO = ORDER_NO;
         this.NO_OF_PACKAGES = NO_OF_PACKAGES;
         Tracking_Number = tracking_Number;
@@ -112,5 +145,43 @@ public class RecievePackedModule {
         Zone = zone;
     }
 
+    public String getNameArabic() {
+        return NameArabic;
+    }
 
+    public void setNameArabic(String nameArabic) {
+        NameArabic = nameArabic;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCUSTOMER_NAME() {
+        return CUSTOMER_NAME;
+    }
+
+    public void setCUSTOMER_NAME(String CUSTOMER_NAME) {
+        this.CUSTOMER_NAME = CUSTOMER_NAME;
+    }
+
+    public String getCUSTOMER_PHONE() {
+        return CUSTOMER_PHONE;
+    }
+
+    public void setCUSTOMER_PHONE(String CUSTOMER_PHONE) {
+        this.CUSTOMER_PHONE = CUSTOMER_PHONE;
+    }
+
+    public String getGRAND_TOTAL() {
+        return GRAND_TOTAL;
+    }
+
+    public void setGRAND_TOTAL(String GRAND_TOTAL) {
+        this.GRAND_TOTAL = GRAND_TOTAL;
+    }
 }

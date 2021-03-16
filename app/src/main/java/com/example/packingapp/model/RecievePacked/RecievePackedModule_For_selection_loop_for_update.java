@@ -1,26 +1,11 @@
 package com.example.packingapp.model.RecievePacked;
 
-import androidx.room.Entity;
-
-@Entity(tableName = "RecievePackedModule")
+//@Entity(tableName = "RecievePackedModule")
 public class RecievePackedModule_For_selection_loop_for_update {
-
-
-
         private String ORDER_NO;
-
-
         private String NO_OF_PACKAGES;
-
-              private String STATUS;
-
-
-
-
-    private String DRIVER_ID;
-
-
-
+        private String STATUS;
+        private String DRIVER_ID;
         private String Zone;
 
     public RecievePackedModule_For_selection_loop_for_update() {

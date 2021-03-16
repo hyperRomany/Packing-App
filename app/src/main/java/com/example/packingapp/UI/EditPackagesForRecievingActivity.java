@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.packingapp.Adapter.RecievedPackagesAdapter;
 import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.Helper.Constant;
+import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityEditPackagesForRecievingBinding;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
@@ -131,6 +132,14 @@ public class EditPackagesForRecievingActivity extends AppCompatActivity {
         binding.recycleItemsView.setLayoutManager(mLayoutManager);
         binding.recycleItemsView.setAdapter(recievedPackagesAdapter);
 
+        ItemclickforRecycler.addTo(binding.recycleItemsView).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+               // List<PackedPackageModule> packedPackageModuleList= packedPackagesAdapter.ReturnListOfPackages();
+
+            }
+        });
     }
 
     @Override

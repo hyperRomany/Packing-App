@@ -82,7 +82,7 @@
                 android:id="@+id/btn_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit"
+                android:text="@string/edit_qty"
                 android:background="@drawable/buttonshap"
                 android:textSize="@dimen/font_size_for_button_of_app"
                 android:textColor="@color/textcolor_btns"
@@ -90,7 +90,7 @@
                 android:layout_alignBottom="@+id/btn_add"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                />
+                android:visibility="gone"/>
 
         </RelativeLayout>
  </LinearLayout>

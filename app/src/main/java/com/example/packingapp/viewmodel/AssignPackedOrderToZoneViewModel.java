@@ -9,6 +9,7 @@ import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
+import com.example.packingapp.model.ResponseZoneName;
 import com.example.packingapp.model.TimeSheet.Response;
 
 import java.util.HashMap;
@@ -47,6 +48,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus(){
+        return mutableLiveData_UpdateStatus;
+    }
 
     public void UpdateStatus(String ORDER_NO, String Status) {
         HashMap<String, String> map = new HashMap<>();
@@ -65,13 +69,18 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
                         }
                         ,throwable -> {
-                            Log.d("Error",throwable.getMessage());
+                            Log.d("Error_roub",throwable.getMessage());
 
                         });
 
     }
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Zone_ON_83 = new MutableLiveData<>();
+    public static MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Zone_ON_83 (){
+        return mutableLiveData_UpdateStatus_Zone_ON_83;
+    };
+
+
     public static MutableLiveData<String> mutableLiveDataError_Zone_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrderStatus_Zone_ON_83(String ORDER_NO, String ZONE, String Status,String ModifyedBy) {
@@ -107,12 +116,28 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         });
     }
 
+
+    public static MutableLiveData<ResponseZoneName> mutableLiveData_readZones = new MutableLiveData<>();
+
+    public void GetZonessID(){
+        ApiClient.build().readZone()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe((ResponseZoneName responseZoneName) -> {
+                            mutableLiveData_readZones.setValue(responseZoneName);
+                        }
+                        ,throwable -> {
+                            Log.d("Error_zones",throwable.getMessage());
+
+                        });
+    }
+
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateDriverID_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrder_DriverID_ON_83(String ORDER_NO, String DriverID,String ModifyedBy) {
 
 
-        String text=ORDER_NO+"/"+DriverID+"/"+ModifyedBy;
+        String text=ORDER_NO+"/"+DriverID+"/"+ModifyedBy+"/Ready To Go";
         Log.e(TAG, "zzUpdateOrder_DriverID_ON_83:txt "+text );
         ApiClient.build().UpdateOrder_DriverID_83(text)
 
@@ -162,9 +187,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("Query", "select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                        " ADDRESS_CITY  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
+                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
                         " from (select ORDER_NO as ORDER_NO_H , CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                        " ADDRESS_CITY  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
+                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
                         " from PackingApp.HEADER group by ORDER_NO ) as h\n" +
                         " left outer join \n" +
                         " (SELECT ORDER_NO as ORDER_NO_D  , sum(ITEM_PRICE) ITEM_PRICE , TRACKING_NO from PackingApp.DETAILS group by TRACKING_NO) as d \n" +
@@ -172,9 +197,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         "where  ORDER_NO_H in( "+ORDER_NOs +")");
 
         Log.e(TAG, "SheetData: "+"select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                " ADDRESS_CITY  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
+                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
                 " from (select ORDER_NO as ORDER_NO_H , CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                " ADDRESS_CITY  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
+                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
                 " from PackingApp.HEADER group by ORDER_NO ) as h\n" +
                 " left outer join \n" +
                 " (SELECT ORDER_NO as ORDER_NO_D  , sum(ITEM_PRICE) ITEM_PRICE , TRACKING_NO from PackingApp.DETAILS group by TRACKING_NO) as d \n" +

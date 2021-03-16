@@ -93,8 +93,10 @@
     <string name="cannot_print">Cannot print</string>
     <string name="no_printers_found">No printers found</string>
     <string name="success_header_of_driver">اجمالى اوامر بيع اليوم</string>
-    <string name="failed_header_of_driver">اجمالي ما تم رفضه</string>
+    <string name="failed_header_of_driver">اجمالي قيمة ما تم رفضه</string>
     <string name="you_choice_mulite_or_choice_noting">لقد اخترت اكثر من اختيار أو لم تختار شى</string>
+    <string name="you_choice_noting">لم تختار شى</string>
+
     <string name="there_is_no_data_todelete">لايوجد بيانات للحذف</string>
     <string name="special_character_found_in_string">Special character found in the string</string>
     <string name="driver">السائق</string>
@@ -106,11 +108,13 @@
     <string name="Driver">مندوب التوصيل</string>
     <string name="Supervisor">اداره حركه السيارات</string>
     <string name="newOrder">ادخل امر شراء جديد</string>
-    <string name="edit">تعديل فى محتويات الشحنة</string>
+    <string name="edit">إنهاء التعديل</string>
+    <string name="edit_qty">تعديل</string>
+
     <string name="loadnewOrder">تغليف شحنة جديدة</string>
     <string name="loadlastOrder">فتح آخر عملية لهذا الطلب</string>
     <string name="serial">كود تتبع الشحنه</string>
-    <string name="search">بحث</string>
+    <string name="search">إدخال</string>
     <string name="enter_zone">تسكين</string>
     <string name="Reschedule">تحديد ميعاد آخر</string>
     <string name="Confirm_Deleivery">تأكيد الإستلام</string>
@@ -121,7 +125,7 @@
     <string name="choice_vehicle_id">اختار رقم المركبه</string>
     <string name="Product_Name">اسم المنتج</string>
     <string name="QTY">الكميه</string>
-    <string name="Assign_item">أتمام الشحنة</string>
+    <string name="Assign_item">إتمام الشحنة</string>
     <string name="title">نظام التعبئة والشحن والتوصيل</string>
     <string name="notadd">لم يتم اضافه عناصر</string>
     <string name="done">تم إضافة إلى موجود</string>
@@ -165,7 +169,7 @@
     <string name="OrdersOfRuntimeSheetNowForDriverActivity_label"><![CDATA[Driver->DriverOrders]]></string>
     <string name="OrderDetails_forDriverActivity_label"><![CDATA[Driver->DriverOrders->OrderDetails]]></string>
     <string name="enter_more_thanrequired">تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب</string>
-    <string name="choice_ordernumber_that_youneed_to_print">اختر الامر الذى تريد طباعته</string>
+    <string name="choice_ordernumber_that_youneed_to_print">اختر الشحنة التى تريد طباعتها</string>
     <string name="choice_lastordernumber_that_youneed_to_load">اختر الامر السابق الذى تريد تحميله</string>
     <string name="add_items_topakage">إضافة العنصر للشحنة</string>
     <string name="title_dialoge_missuing_barcode">عناصر لم يتم إضافتها لشحنة</string>
@@ -181,10 +185,36 @@
     <string name="Show_Assign_Orders_To_Zone"> 1-تسكين الشحنات فى مناطق توصيلها- </string>
     <string name="show_assign_orders_to_driver">2-تجهيز قائمة بالشحنات لمندوب التوصيل- </string>
     <string name="delete">حذف</string>
+    <string name="scananddelete">ادخال و حذف</string>
     <string name="Send_passcode_to_customer">ارسال الكود السرى للعميل</string>
     <string name="this_is_weight_Item_cant_edit">هذا الصنف موزون .. لايمكن تعديله</string>
     <string name="nodata">لا تحتوي علي بيانات</string>
     <string name="thereisno_data_to">لايوجد بيانات للعرض</string>
     <string name="assignpackedorderforzoneanddriver_label">Assign package to zone and to driver</string>
+    <string name="order_status_updated_packed">status updated</string>
+    <string name="order_status_updated_driver">status updated</string>
+    <string name="order_status_updated_last">Last Status updated</string>
+    <string name="add_item">تعبئة القطعة</string>
+    <string name="Added">تم</string>
+    <string name="version">Version</string>
+    <string name="reject_packages">رفض</string>
+    <string name="package_price">السعر</string>
+    <string name="customer_data">بيانات العميل</string>
+    <string name="failed_number_header_of_driver">اجمالى عدد ماتم رفضه</string>
+    <string name="choice_zone">اختر المنطقه</string>
+    <string name="choice_rescedule_reason">اختر سبب التاجيل</string>
+    <string name="enter_reschedule_reason">اختر السبب</string>
+    <string name="enter_reschedule_time_morethannow">اختر وقت اكبر من الوقت الحالى</string>
+    <string name="forgetpassword">هل نسيت كلمه المرور؟</string>
+    <string name="Resetpassword">تغيير كلمه السر</string>
+    <string name="username">أسم المستخدم</string>
+    <string name="enter_new_password">كلمه المرور الجديده</string>
+    <string name="enter_confirm_new_password">تأكيد كلمة المرور الجديده</string>
+    <string name="change">تغيير</string>
+    <string name="enter_username">ادخل اسم المستخدم</string>
+    <string name="enter_new_password_err">ادخل كلمه المرور الجديده</string>
+    <string name="enter_confirm_new_password_err">ادخل كلمه المرور الجديده مره اخرى</string>
+    <string name="confirm_new_password_err">تم ادخال كلمه مرور مختلفه</string>
+    <string name="barcode_data">بيانات الباركود</string>
 
 </resources>

@@ -15,8 +15,9 @@ public class RecordsItem {
 	private String TRACKING_NO;
 	@SerializedName("ORDER_NO")
 	private String ORDER_NO;
-	@SerializedName("ADDRESS_CITY")
-	private String ADDRESS_CITY;
+	@SerializedName("ADDRESS_DETAILS")
+	private String ADDRESS_DETAILS;
+
 	@SerializedName("ITEM_PRICE")
 	private String ITEM_PRICE;
 
@@ -79,12 +80,12 @@ public class RecordsItem {
 		this.ORDER_NO = ORDER_NO;
 	}
 
-	public String getADDRESS_CITY() {
-		return ADDRESS_CITY;
+	public String getADDRESS_DETAILS() {
+		return ADDRESS_DETAILS;
 	}
 
-	public void setADDRESS_CITY(String ADDRESS_CITY) {
-		this.ADDRESS_CITY = ADDRESS_CITY;
+	public void setADDRESS_DETAILS(String ADDRESS_DETAILS) {
+		this.ADDRESS_DETAILS = ADDRESS_DETAILS;
 	}
 
 	public String getITEM_PRICE() {

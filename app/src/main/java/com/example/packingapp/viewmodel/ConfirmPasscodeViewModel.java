@@ -18,6 +18,10 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     private static final String TAG = "ConfirmPasscodeViewMode";
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_PASSCODE_ON_83 = new MutableLiveData<>();
 
+    public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_PASSCODE_ON_83LiveData() {
+        return mutableLiveData_UpdateStatus_PASSCODE_ON_83;
+    }
+
     public void UpdateOrderStatus_Passcode_Header_ON_83(String ORDER_NO, String PASSCODE, String Status,String ModifyedBy) {
 
 
@@ -44,6 +48,10 @@ public class ConfirmPasscodeViewModel extends ViewModel {
 
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
+    public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Reason_ON_83() {
+        return mutableLiveData_UpdateStatus_Reason_ON_83;
+    }
+    public static MutableLiveData<String> mutableLiveDataError_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrderStatus_Reason_Details_ON_83(List<DriverPackages_Details_DB> driverPackages_details_dbList) {
         HashMap<String, String> map = new HashMap<>();
@@ -54,10 +62,11 @@ public class ConfirmPasscodeViewModel extends ViewModel {
         if (driverPackages_details_dbList.size()>0) {
             for (int i = 0; i < driverPackages_details_dbList.size(); i++)
             {
+
                 String text=driverPackages_details_dbList.get(i).getTRACKING_NO()
                         +"/"+driverPackages_details_dbList.get(i).getREASON()
                         +"/"+driverPackages_details_dbList.get(i).getSTATUS();
-
+                Log.e(TAG, "UpdateOrderStatus_Reason_Details_ON_83: "+text );
         ApiClient.build().UpdateOrderStatus_Reasone_ON_83(text)
 
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,8 +76,8 @@ public class ConfirmPasscodeViewModel extends ViewModel {
 
                         }
                         ,throwable -> {
-                            Log.d("ErrorDet",throwable.getMessage());
-
+                            Log.d("ErrorDetails",throwable.getMessage());
+                            mutableLiveDataError_UpdateStatus_Reason_ON_83.setValue(throwable.getMessage());
                         });
             }
         }
@@ -76,6 +85,10 @@ public class ConfirmPasscodeViewModel extends ViewModel {
 
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus (){
+        return mutableLiveData_UpdateStatus;
+    }
+    public static MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
@@ -97,7 +110,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             Log.d("Error_rou",throwable.getMessage());
-
+                            mutableLiveDataError_rou.setValue(throwable.getMessage());
                         });
 
     }

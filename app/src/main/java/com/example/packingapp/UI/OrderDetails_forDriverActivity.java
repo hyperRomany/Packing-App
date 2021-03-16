@@ -18,8 +18,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.packingapp.Adapter.DriverOrderpackagesAdapter;
+import com.example.packingapp.Adapter.DriverOrderpackages_rejectAdapter;
 import com.example.packingapp.Database.AppDatabase;
-import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.UI.Fragments.ConfirmPasscodeFragment;
 import com.example.packingapp.databinding.ActivityOrderDetailsForDriverBinding;
@@ -32,6 +32,7 @@ import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.viewmodel.OrderDetailsForDriverViewModel;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -58,10 +59,14 @@ private static final int REQUEST_PHONE_CALL = 1;
     String Orderclicked="";
     AppDatabase database;
     DriverOrderpackagesAdapter driverOrderpackagesAdapter;
-    DriverOrderpackagesAdapter driverOrderpackagesAdapter_Reject;
+    DriverOrderpackages_rejectAdapter driverOrderpackagesAdapter_Reject;
     int mHOUR ,mMINUTE;
     int mAM_PM;
-List<String> Reject_Resons_list;
+List<String> Reject_Resons_list ,Reschedule_Resons_list;
+    int CountChecked;
+    String TrackingnumberToReject;
+    List<String> TrackingnumberToReject_list;
+    int postion_ToReject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +74,19 @@ List<String> Reject_Resons_list;
         setContentView(binding.getRoot());
         orderDetailsForDriverViewModel= ViewModelProviders.of(this).get(OrderDetailsForDriverViewModel.class);
         PermissionForCall();
-        CreateORUpdateRecycleView();
-        CreateORUpdateRecycleView_Reject();
+
         database= AppDatabase.getDatabaseInstance(this);
         setTitle(R.string.OrderDetails_forDriverActivity_label);
         Reject_Resons_list=new ArrayList<>();
+        Reschedule_Resons_list=new ArrayList<>();
         Reject_Resons_list_fun_add();
+        Reschedule_Resons_list_fun_add();
         if (getIntent().getExtras() != null){
             Orderclicked=getIntent().getExtras().getString("Orderclicked");
         }
         Log.e(TAG, "onItemClicked: "+ Orderclicked);
 
+        GetCustomerDate_to_Text();
         PhoneAndSmsActions();
 
         binding.btnRescheduleDelivery.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +110,93 @@ List<String> Reject_Resons_list;
 
                 database.userDao().UpdatePasscode(Orderclicked,String.valueOf(randomNumber));
 
+            }
+        });
+
+        binding.btnRejectDeleivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DriverPackages_Details_DB> Trackingnumbers_List = driverOrderpackagesAdapter.ReturnListOfPackages();
+                Log.e("btn_editChecked",""+Trackingnumbers_List.size());
+                TrackingnumberToReject_list=new ArrayList<>();
+                CountChecked =0;
+                if (Trackingnumbers_List.size() != 0) {
+                    for (int i = 0; i < Trackingnumbers_List.size(); i++) {
+                        Boolean Checked = Trackingnumbers_List.get(i).getChecked_Item();
+                        //Log.e("btn_editChecked",""+Checked);
+                        if (Checked == true) {
+                            //Log.e("btn_editCheckedif",""+Checked);
+                            CountChecked += 1;
+                         //   TrackingnumberToReject = Trackingnumbers_List.get(i).getTRACKING_NO();
+                            TrackingnumberToReject_list.add(Trackingnumbers_List.get(i).getTRACKING_NO());
+                            postion_ToReject=i;
+                        }
+                        if (i == (Trackingnumbers_List.size() - 1)) {
+                            if (CountChecked < 1 ) {
+                                Toast.makeText(OrderDetails_forDriverActivity.this, R.string.you_choice_noting, Toast.LENGTH_LONG).show();
+                            } else if (CountChecked >= 1) {  //&& !BarCodeChecked.isEmpty()
+                               RejectDialog(TrackingnumberToReject_list,postion_ToReject);
+
+                            }
+
+                        } /*else
+                    Toast.makeText(EditPackagesActivity.this, "لايوجد بيانات للادخال", Toast.LENGTH_SHORT).show();
+                    */
+                    }
+                }
+            }
+        });
+        //Get Order Details if it's not in local database
+        if (database.userDao().getAllPckagesForUpload(Orderclicked).size() ==0) {
+            Log.e(TAG, "onCreate:getAllPckagesForUpload = zero ");
+            orderDetailsForDriverViewModel.ReadDriverRunsheetOrdersData(Orderclicked);
+
+        }
+        Log.e(TAG, "onCreate: "+ Orderclicked);
+        driverPackages_details_dbList=new ArrayList<>();
+        driverPackages_details_dbList_Reject=new ArrayList<>();
+
+        OberverFUN();
+        CreateORUpdateRecycleView();
+        CreateORUpdateRecycleView_Reject();
+    }
+
+    private void GetCustomerDate_to_Text() {
+        DriverPackages_Header_DB driverPackages_header_db = database.userDao().getDriverorder(Orderclicked);
+        binding.txtCustomername.setText("الأسم: "+driverPackages_header_db.getCustomer_name());
+        binding.txtCustomeraddress.setText("العنوان: "+driverPackages_header_db.getCustomer_address_detail());
+        binding.txtCustomerphone.setText("رقم التلفون: "+driverPackages_header_db.getCustomer_phone());
+    }
+
+    private void OberverFUN() {
+        orderDetailsForDriverViewModel.GetDriverOrdersReadyDetailsDataLiveData().observe(OrderDetails_forDriverActivity.this,
+                new Observer<DriverPackages_Respones_Details_recycler>() {
+                    @Override
+                    public void onChanged(DriverPackages_Respones_Details_recycler driverPackages_respones_details_recycler) {
+
+//                        DriverPackages_DB driverPackages_respones_recycler1=
+//                                new  DriverPackages_DB(driverPackages_respones_recycler.getOrderNumber(),
+//                                        driverPackages_respones_recycler.getCUSTOMER_PHONE());
+                        //       database.userDao().deleteDriverPackages_Details_DB();
+                        database.userDao().insertDriverPackages(driverPackages_respones_details_recycler.getRecords());
+                        Log.e(TAG, "onChangedgetdata: "+driverPackages_respones_details_recycler
+                                .getRecords().get(0).getTRACKING_NO() );
+                        Log.e(TAG, "onChangedgetdatasi: "+driverPackages_respones_details_recycler
+                                .getRecords().size() );
+
+                        driverPackages_details_dbList.addAll(driverPackages_respones_details_recycler.getRecords());
+//                        driverOrderpackagesAdapter.notifyDataSetChanged();
+                        CreateORUpdateRecycleView();
+                        CreateORUpdateRecycleView_Reject();
+                       // totalPriceFUN(driverPackages_respones_details_recycler.getRecords());
+                    }
+                });
+        
+        orderDetailsForDriverViewModel.getSmsLiveData().observe(OrderDetails_forDriverActivity.this, new Observer<ResponseSms>() {
+            @Override
+            public void onChanged(ResponseSms responseSms) {
+                Toast.makeText(OrderDetails_forDriverActivity.this,
+                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
                 ConfirmPasscodeFragment detialsfragment=new ConfirmPasscodeFragment();
                 Bundle bundle=new Bundle();
                 bundle.putString("Orderclicked",Orderclicked);
@@ -121,28 +215,17 @@ List<String> Reject_Resons_list;
 
             }
         });
+        orderDetailsForDriverViewModel.mutableLiveData_sendSMS_Error.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:sensms "+s );
+                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
 
-        orderDetailsForDriverViewModel.ReadDriverRunsheetOrdersData(Orderclicked);
-        Log.e(TAG, "onCreate: "+ Orderclicked);
-        orderDetailsForDriverViewModel.GetDriverOrdersReadyDetailsDataLiveData().observe(OrderDetails_forDriverActivity.this,
-                new Observer<DriverPackages_Respones_Details_recycler>() {
-                    @Override
-                    public void onChanged(DriverPackages_Respones_Details_recycler driverPackages_respones_details_recycler) {
-
-//                        DriverPackages_DB driverPackages_respones_recycler1=
-//                                new  DriverPackages_DB(driverPackages_respones_recycler.getOrderNumber(),
-//                                        driverPackages_respones_recycler.getCUSTOMER_PHONE());
-                        database.userDao().insertDriverPackages(driverPackages_respones_details_recycler.getRecords());
-                        Log.e(TAG, "onChangedgetdata: "+driverPackages_respones_details_recycler
-                                .getRecords().get(0).getTRACKING_NO() );
-                        Log.e(TAG, "onChangedgetdatasi: "+driverPackages_respones_details_recycler
-                                .getRecords().size() );
-
-                        driverPackages_details_dbList.addAll(driverPackages_respones_details_recycler.getRecords());
-                        driverOrderpackagesAdapter.notifyDataSetChanged();
-                        totalPriceFUN(driverPackages_respones_details_recycler.getRecords());
-                    }
-                });
+//                if (s.equals("HTTP 503 Service Unavailable")) {
+//                    Toast.makeText(OrderDetails_forDriverActivity.this, getResources().getString(R.string.invaliduser), Toast.LENGTH_LONG).show();
+//                }
+            }
+        });
     }
 
     private void Reject_Resons_list_fun_add() {
@@ -163,23 +246,27 @@ List<String> Reject_Resons_list;
         Reject_Resons_list.add("تلف الشحنة من المخازن");
         Reject_Resons_list.add("إلغاء من قبل هايبروان");
         Reject_Resons_list.add("الشحنة..المنتج خطأ");
-        Reject_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
-        Reject_Resons_list.add("سوء الأحوال الجوية .. الطريق المؤدي لعنوان العميل");
-        Reject_Resons_list.add("العميل طلب التأجيل دون ذكر أسباب");
-        Reject_Resons_list.add("العميل طلب التأجيل لحين حل مشكلة مع هايبروان");
-        Reject_Resons_list.add("العميل يريد الطلب في عنوان في نطاق منطقة أخرى");
-        Reject_Resons_list.add("عنوان العميل غير واضح ولا يرد على الهاتف");
-        Reject_Resons_list.add("العميل طلب تجميع الطلبات");
-        Reject_Resons_list.add("ظرف خاص");
-        Reject_Resons_list.add("تأخرت عن  ميعاد التسليم");
-
-        Reject_Resons_list.add("إعادة تغليف");
-        Reject_Resons_list.add("شك في تصرف العميل");
-        Reject_Resons_list.add("التأجيل من قبل هايبروان");
-        Reject_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
 
     }
 
+    private void Reschedule_Resons_list_fun_add() {
+        Reschedule_Resons_list.add(getResources().getString(R.string.choice_reason));
+        //this reasons for reschedule
+        Reschedule_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
+        Reschedule_Resons_list.add("سوء الأحوال الجوية .. الطريق المؤدي لعنوان العميل");
+        Reschedule_Resons_list.add("العميل طلب التأجيل دون ذكر أسباب");
+        Reschedule_Resons_list.add("العميل طلب التأجيل لحين حل مشكلة مع هايبروان");
+        Reschedule_Resons_list.add("العميل يريد الطلب في عنوان في نطاق منطقة أخرى");
+        Reschedule_Resons_list.add("عنوان العميل غير واضح ولا يرد على الهاتف");
+        Reschedule_Resons_list.add("العميل طلب تجميع الطلبات");
+        Reschedule_Resons_list.add("ظرف خاص");
+        Reschedule_Resons_list.add("تأخرت عن  ميعاد التسليم");
+        Reschedule_Resons_list.add("إعادة تغليف");
+        Reschedule_Resons_list.add("شك في تصرف العميل");
+        Reschedule_Resons_list.add("التأجيل من قبل هايبروان");
+        Reschedule_Resons_list.add("عطل سيارة.. هاتفي المحمول .. ماكينة الدفع");
+
+    }
     private void PhoneAndSmsActions() {
         DriverPackages_Header_DB driverPackages_header_db=
                 database.userDao().getDriverorder(Orderclicked);
@@ -259,19 +346,12 @@ List<String> Reject_Resons_list;
     private void SendSMS(String CustomerPhone ,String SMSBody) {
 
         orderDetailsForDriverViewModel.SendSms(CustomerPhone , SMSBody);
-        orderDetailsForDriverViewModel.getSmsLiveData().observe(OrderDetails_forDriverActivity.this, new Observer<ResponseSms>() {
-            @Override
-            public void onChanged(ResponseSms responseSms) {
-                Toast.makeText(OrderDetails_forDriverActivity.this,
-                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     public void CreateORUpdateRecycleView(){
 
-        driverPackages_details_dbList=new ArrayList<>();
-        //   Po_Item_For_Recycly=database.userDao().getAllPckages();
+        driverPackages_details_dbList =database.userDao().getAllPckagesForNotReject(Orderclicked);
 
         driverOrderpackagesAdapter =new DriverOrderpackagesAdapter(driverPackages_details_dbList);
         binding.rvCustomerItems.setHasFixedSize(true);
@@ -287,24 +367,26 @@ List<String> Reject_Resons_list;
         binding.rvCustomerItems.setLayoutManager(mLayoutManager);
         binding.rvCustomerItems.setAdapter(driverOrderpackagesAdapter);
 
+        totalPriceFUN(driverPackages_details_dbList);
 
-        ItemclickforRecycler.addTo(binding.rvCustomerItems).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
-
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                //driverOrderpackagesAdapter.ReturnListOfPackages();
-                RejectDialog(driverPackages_details_dbList.get(position).getTRACKING_NO(),position);
-            }
-        });
+//        ItemclickforRecycler.addTo(binding.rvCustomerItems).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                //driverOrderpackagesAdapter.ReturnListOfPackages();
+//                driverPackages_details_dbList =database.userDao().getAllPckagesForNotReject(Orderclicked);
+//
+//                RejectDialog(driverPackages_details_dbList.get(position).getTRACKING_NO(),position);
+//            }
+//        });
     }
 
 
     public void CreateORUpdateRecycleView_Reject(){
 
-        driverPackages_details_dbList_Reject=new ArrayList<>();
-        //   Po_Item_For_Recycly=database.userDao().getAllPckages();
-
-        driverOrderpackagesAdapter_Reject =new DriverOrderpackagesAdapter(driverPackages_details_dbList_Reject);
+        driverPackages_details_dbList_Reject =database.userDao().getAllPckagesForReject(Orderclicked);
+        Log.e(TAG, "CreateORUpdateRecycleView_Reject:size "+driverPackages_details_dbList_Reject.size() );
+        driverOrderpackagesAdapter_Reject =new DriverOrderpackages_rejectAdapter(driverPackages_details_dbList_Reject);
         binding.rvCustomerRejectItems.setHasFixedSize(true);
 
         // vertical RecyclerView
@@ -318,10 +400,9 @@ List<String> Reject_Resons_list;
         binding.rvCustomerRejectItems.setLayoutManager(mLayoutManager);
         binding.rvCustomerRejectItems.setAdapter(driverOrderpackagesAdapter_Reject);
 
-
     }
 
-    public void RejectDialog(String RejectTrackingNumber , int position){
+    public void RejectDialog(List<String> RejectTrackingNumberList , int position){
 
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.prompts_reason_of_reject, null);
@@ -338,7 +419,7 @@ List<String> Reject_Resons_list;
 
         final TextView txt_tracking_number_reject = (TextView) promptsView
                 .findViewById(R.id.txt_tracking_number_reject);
-        txt_tracking_number_reject.setText(RejectTrackingNumber);
+        txt_tracking_number_reject.setText("سوف يتم رفض"+RejectTrackingNumberList.size());
 
         final SearchableSpinner spiner_rejectinput = (SearchableSpinner) promptsView
                 .findViewById(R.id.spiner_rejectinput);
@@ -358,15 +439,17 @@ List<String> Reject_Resons_list;
 
                 if (spiner_rejectinput.getSelectedItemPosition()!=0) {
                     //SendSMS(CustomerPhone, edit_rejectinput.getText().toString());
-                    database.userDao().UpdatestatusAndReason_ForTrackingnumber(RejectTrackingNumber,
+                    database.userDao().UpdatestatusAndReason_ForTrackingnumber(RejectTrackingNumberList,
                             "Rejected under inspection",Reject_Resons_list.get(spiner_rejectinput.getSelectedItemPosition()));
                     driverPackages_details_dbList_Reject.add(driverPackages_details_dbList.get(position));
                     Log.e(TAG, "onClick: "+ driverPackages_details_dbList.size());
                     driverPackages_details_dbList.remove(position);
                     Log.e(TAG, "onClickre: "+ driverPackages_details_dbList_Reject.size());
-                    driverOrderpackagesAdapter.notifyDataSetChanged();
-                    driverOrderpackagesAdapter_Reject.notifyDataSetChanged();
-                    totalPriceFUN(driverPackages_details_dbList);
+//                    driverOrderpackagesAdapter.notifyDataSetChanged();
+//                    driverOrderpackagesAdapter_Reject.notifyDataSetChanged();
+                    CreateORUpdateRecycleView();
+                    CreateORUpdateRecycleView_Reject();
+
 
                     alertDialog.dismiss();
 
@@ -380,7 +463,7 @@ List<String> Reject_Resons_list;
         alertDialog.show();
     }
 
-    public void UpdateStatus_Reschedule_ON_83(String Time){
+    public void UpdateStatus_Reschedule_ON_83(String Time ,String RescheduleReasone){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
                        Log.e(TAG, "UpdateStatus_ON_83: "+Orderclicked);
                 Log.e(TAG, "UpdateStatus_ON_83: "+Time );
@@ -388,7 +471,8 @@ List<String> Reject_Resons_list;
                 orderDetailsForDriverViewModel.UpdateStatus_RescheduleTime_ON_83(
                         Orderclicked,
 
-                        "Reschedule" ,Time,database.userDao().getUserData_MU().getUser_id()
+                        "Reschedule" ,Time,database.userDao().getUserData_MU().getUser_id(),
+                        RescheduleReasone
                 );
         orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_RescheduleTime_ON_83.observe(
                 OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
@@ -440,14 +524,16 @@ List<String> Reject_Resons_list;
 
 
     }
-    void totalPriceFUN(    List<DriverPackages_Details_DB> driverPackages_details_dbList_price){
+    void totalPriceFUN(    List<DriverPackages_Details_DB> driverPackages_details_dbList_price ){
         Double TotalPrice=0.0;
         for(int i=0 ; i<driverPackages_details_dbList.size();i++){
             TotalPrice+=Double.valueOf(driverPackages_details_dbList_price.get(i).getPACKAGE_PRICE());
             Log.e(TAG, "totalPriceFUN: "+ TotalPrice);
         }
+        Log.e(TAG, "totalPriceFUN:driverPackages_details_dbList_pricesize "+ driverPackages_details_dbList_price.size());
+        Log.e(TAG, "totalPriceFUN:driverPackages_details_dbListsize "+ driverPackages_details_dbList.size());
 
-        binding.txtTotalPrice.setText(String.valueOf(TotalPrice));
+        binding.txtTotalPrice.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(TotalPrice))));
     }
 
     public void Reschedule(){
@@ -470,6 +556,14 @@ List<String> Reject_Resons_list;
 //        String timeStamp = new SimpleDateFormat("HH:mm").format(new Date());
 //        edit_rescheduleinput.setText(timeStamp);
 
+        final SearchableSpinner spiner_rescheduleinput = (SearchableSpinner) promptsView
+                .findViewById(R.id.spiner_rescheduleinput);
+        //TODO TO ASSIGN ID TO SPINNER
+        ArrayAdapter<String> spinnerAdapterDriver=new ArrayAdapter<String>(OrderDetails_forDriverActivity.this,
+                android.R.layout.simple_spinner_item,Reschedule_Resons_list);
+        spinnerAdapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner_rescheduleinput.setAdapter(spinnerAdapterDriver);
+
         edit_rescheduleinput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -477,7 +571,7 @@ List<String> Reject_Resons_list;
                 final Calendar c = Calendar.getInstance();
                 mHOUR = c.get(Calendar.HOUR);
                 mMINUTE = c.get(Calendar.MINUTE);
-                mAM_PM = c.get(Calendar.AM_PM);
+                mAM_PM = c.get(Calendar.AM_PM);  // 1 pm   0 am
                 Log.e(TAG, "onClick:mHOUR "+mHOUR );
                 Log.e(TAG, "onClick:mAM_PM "+mAM_PM );
 
@@ -487,21 +581,27 @@ List<String> Reject_Resons_list;
                     if (mAM_PM == 1 ) {
                         mHOUR+=12;
                         Log.e(TAG, "onClick:hourOfDay " + hourOfDay);
-                        Log.e(TAG, "onClick:hourOfDay " + mHOUR);
+                        Log.e(TAG, "onClick:mHOUR " + mHOUR);
                         if (hourOfDay < 23 && hourOfDay != 00 && hourOfDay > mHOUR) {
                             edit_rescheduleinput.setError(null);
                             edit_rescheduleinput.setText(hourOfDay + ":" + minute);
                         } else {
-                            edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                            if (hourOfDay > 23) {
+                                edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                                edit_rescheduleinput.setText("");
+                            }else if (hourOfDay < mHOUR){
+                                edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_morethannow));
+                                edit_rescheduleinput.setText("");
+                            }
                         }
                     }else {
                         Log.e(TAG, "onClick:hourOfDay " + hourOfDay);
                         Log.e(TAG, "onClick:hourOfDay " + mHOUR);
-                        if (hourOfDay < 23 && hourOfDay != 00 && hourOfDay > mHOUR) {
+                        if (/* hourOfDay < 23 &&*/ hourOfDay != 00 && hourOfDay < mHOUR) {
                             edit_rescheduleinput.setError(null);
                             edit_rescheduleinput.setText(hourOfDay + ":" + minute);
                         } else {
-                            edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_lesethan11));
+                            edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time_morethannow));
                         }
                     }
                     }
@@ -526,15 +626,19 @@ List<String> Reject_Resons_list;
             @Override
             public void onClick(View v) {
                 // promptsView.
-                if (!edit_rescheduleinput.getText().toString().isEmpty() ) {
+                if (!edit_rescheduleinput.getText().toString().isEmpty() &&
+                        spiner_rescheduleinput.getSelectedItemPosition() !=0 ) {
                     Log.e(TAG, "onClick:eee "+edit_rescheduleinput.getText().toString() );
-                    UpdateStatus_Reschedule_ON_83(edit_rescheduleinput.getText().toString());
+                    UpdateStatus_Reschedule_ON_83(edit_rescheduleinput.getText().toString() , Reschedule_Resons_list.get(spiner_rescheduleinput.getSelectedItemPosition()));
                    // UpdateStatus();
                     alertDialog.dismiss();
 
                 }else{
                     if (edit_rescheduleinput.getText().toString().isEmpty()){
                         edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_time));
+                        edit_rescheduleinput.requestFocus();
+                    }else if (spiner_rescheduleinput.getSelectedItemPosition() ==0){
+                        edit_rescheduleinput.setError(getResources().getString(R.string.enter_reschedule_reason));
                         edit_rescheduleinput.requestFocus();
                     }
                 }

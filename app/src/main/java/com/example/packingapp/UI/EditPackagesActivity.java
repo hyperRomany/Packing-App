@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.packingapp.Adapter.PackedPackagesAdapter;
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityEditPackagesBinding;
 import com.example.packingapp.model.PackedPackageModule;
@@ -105,6 +106,16 @@ public class EditPackagesActivity extends AppCompatActivity {
         binding.recycleItemsView.setLayoutManager(mLayoutManager);
         binding.recycleItemsView.setAdapter(packedPackagesAdapter);
 
+        ItemclickforRecycler.addTo(binding.recycleItemsView).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                List<PackedPackageModule> packedPackageModuleList= packedPackagesAdapter.ReturnListOfPackages();
+                Intent GoToShowItemsOfPackages = new Intent(EditPackagesActivity.this, EditPackageItemsActivity.class);
+                GoToShowItemsOfPackages.putExtra("TrackingNumber", packedPackageModuleList.get(position).getTrackingNumber());
+                startActivity(GoToShowItemsOfPackages);
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.packingapp.UI.Fragments;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
-import com.example.packingapp.Helper.Constant;
+import com.example.packingapp.R;
+import com.example.packingapp.UI.DriverMainActivity;
 import com.example.packingapp.UI.OrderDetails_forDriverActivity;
 import com.example.packingapp.databinding.FragmentConfirmPasscodeBinding;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
@@ -22,6 +25,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -58,6 +62,7 @@ FragmentConfirmPasscodeBinding binding;
         confirmPasscodeViewModel= ViewModelProviders.of(this).get(ConfirmPasscodeViewModel.class);
 
         database= AppDatabase.getDatabaseInstance(getActivity());
+
 
         return mLeak;
     }
@@ -119,7 +124,7 @@ FragmentConfirmPasscodeBinding binding;
                 //Has-Been-Delivered
                if (Passcode.equalsIgnoreCase(binding.editPasscode.getText().toString())) {
                    //get list of packages that rejected by checking for reason equal nullir empty
-                   List<DriverPackages_Details_DB> driverPackages_details_dbList_rejected  =database.userDao().getAllPckagesForReject();
+                   List<DriverPackages_Details_DB> driverPackages_details_dbList_rejected  =database.userDao().getAllPckagesForReject(Orderclicked);
                    // update status
                    database.userDao().UpdatestatusForNotRejectWhenClickConfirmed(Orderclicked,"Has-Been-Delivered");
 
@@ -129,15 +134,14 @@ FragmentConfirmPasscodeBinding binding;
                    if (driverPackages_details_dbList_rejected.size() >0 ){
                        UpdateStatus_Passcode_Header_ON_83("Rejected under inspection");
                        //TODO list for tracking number and reason and status for details _check file name
-                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
-                       UpdateStatus("rejected_under_inspection");
+//                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+//                       UpdateStatus("rejected_under_inspection");
                    }else {
                        UpdateStatus_Passcode_Header_ON_83("Has-Been-Delivered");
                        //TODO list for tracking number and reason and status for details
-                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
-                       UpdateStatus("has_been_delivered");
+//                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+//                       UpdateStatus("has_been_delivered");
                    }
-
 //                   OrderDetails_forDriverActivity orderDetails_forDriverActivity = (OrderDetails_forDriverActivity) getActivity();
 //                   if (orderDetails_forDriverActivity != null) {
 //                       //   mainActivity.CreateORUpdateRecycleView(2);
@@ -164,38 +168,132 @@ FragmentConfirmPasscodeBinding binding;
             }
         });
 
-        confirmPasscodeViewModel.mutableLiveData_UpdateStatus.observe(getActivity(), new Observer<ResponseUpdateStatus>() {
+        ObserveFUN();
+    }
+
+    private void ObserveFUN() {
+        confirmPasscodeViewModel.getmutableLiveData_UpdateStatus().observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Constant.ToastDialoge( message.getMessage() , getActivity());
+//                Constant.ToastDialoge( message.getMessage() , getActivity());
+                Log.e(TAG, "onChanged:ro "+message.getMessage() );
+                //ToDo Last Function
+                Log.e(TAG, "onChanged:goback " );
 
-                Log.e(TAG, "onChanged: "+message.getMessage() );
+                new AlertDialog.Builder( getContext())
+                        .setTitle(getString(R.string.order_status_updated_last))
+                        .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                // TODO will not delete order data with scane new one and delete will be by order number
+                                OrderDetails_forDriverActivity orderDetails_forDriverActivity=(OrderDetails_forDriverActivity) getActivity();
+                                if (orderDetails_forDriverActivity != null) {
+                                    Intent GoToDriverMain = new Intent(orderDetails_forDriverActivity, DriverMainActivity.class);
+                                    startActivity(GoToDriverMain);
+                                    orderDetails_forDriverActivity.finish();
+                                }else {
+                                    Log.e(TAG, "onClick:orderDetails_forDriverActivity == null " );
+
+                                }
+                            }
+                        })
+//                                .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        dialog.cancel();
+//                                    }
+//                                })
+                        .show();
+
+
+
             }
         });
-        confirmPasscodeViewModel.mutableLiveData_UpdateStatus_PASSCODE_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
+
+
+
+
+        confirmPasscodeViewModel.mutableLiveDataError_rou.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:rou _error "+s );
+
+//                new androidx.appcompat.app.AlertDialog.Builder( getContext())
+//                        .setTitle(getString(R.string.order_status_updated_last))
+//                        .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int whichButton) {
+//                                // TODO will not delete order data with scane new one and delete will be by order number
+//                                Intent GoToDriverMain=new Intent(getActivity(), DriverMainActivity.class);
+//                                startActivity(GoToDriverMain);
+//                                getActivity().finish();
+//                            }
+//                        })
+////                                .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
+////                                    public void onClick(DialogInterface dialog, int whichButton) {
+////                                        dialog.cancel();
+////                                    }
+////                                })
+//                        .show();
+            }
+        });
+
+        confirmPasscodeViewModel.getmutableLiveData_UpdateStatus_PASSCODE_ON_83LiveData().observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
                 //    Toast.makeText(getActivity(), "ConfirmedH", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Constant.ToastDialoge( message.getMessage() , getActivity());
+//                Toast.makeText(getActivity(), ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+//                Constant.ToastDialoge( message.getMessage() , getActivity());
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.popBackStack();
-                Log.e(TAG, "onChanged:update " + message.getMessage());
+//                FragmentManager fm = getActivity().getSupportFragmentManager();
+//                fm.popBackStack();
+                Log.e(TAG, "onChanged:update passcode for header " + message.getMessage());
+                List<DriverPackages_Details_DB> driverPackages_details_dbList_rejected  =database.userDao().getAllPckagesForReject(Orderclicked);
+                List<DriverPackages_Details_DB> driverPackages_details_dbList  =database.userDao().getAllPckagesForUpload(Orderclicked);
 
+                if (driverPackages_details_dbList_rejected.size() >0 ){
+//                    UpdateStatus_Passcode_Header_ON_83("Rejected under inspection");
+                    //TODO list for tracking number and reason and status for details _check file name
+                    UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+                    UpdateStatus("rejected_under_inspection");
+                }else {
+//                    UpdateStatus_Passcode_Header_ON_83("Has-Been-Delivered");
+                    //TODO list for tracking number and reason and status for details
+                    UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+                    UpdateStatus("has_been_delivered");
+                }
 
             }
         });
-        confirmPasscodeViewModel.mutableLiveData_UpdateStatus_Reason_ON_83.observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
+
+        confirmPasscodeViewModel.mutableLiveDataError_UpdateStatus_Reason_ON_83.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:UpdateStatus_Reason_ON_83_errror "+s );
+            }
+        });
+
+        confirmPasscodeViewModel.getmutableLiveData_UpdateStatus_Reason_ON_83().observe(getViewLifecycleOwner(), new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(getActivity(), "ConfirmedD", Toast.LENGTH_SHORT).show();
-                Constant.ToastDialoge( message.getMessage() , getActivity());
+//                Toast.makeText(getActivity(), "ConfirmedD", Toast.LENGTH_SHORT).show();
+//                Constant.ToastDialoge( message.getMessage() , getActivity());
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.popBackStack();
+//                FragmentManager fm = getActivity().getSupportFragmentManager();
+//                fm.popBackStack();
                 Log.e(TAG, "onChanged:updateErrorDet " + message.getMessage());
+                List<DriverPackages_Details_DB> driverPackages_details_dbList_rejected  =database.userDao().getAllPckagesForReject(Orderclicked);
+
+//                if (driverPackages_details_dbList_rejected.size() >0 ){
+////                    UpdateStatus_Passcode_Header_ON_83("Rejected under inspection");
+//                    //TODO list for tracking number and reason and status for details _check file name
+////                    UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+//                    UpdateStatus("rejected_under_inspection");
+//                }else {
+////                    UpdateStatus_Passcode_Header_ON_83("Has-Been-Delivered");
+//                    //TODO list for tracking number and reason and status for details
+////                    UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+//                    UpdateStatus("has_been_delivered");
+//                }
             }
         });
     }

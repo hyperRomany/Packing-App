@@ -30,6 +30,7 @@
             android:label="@string/AssignItemToPackagesActivity_label"/>
         <activity android:name=".UI.INOUTActivity" />
         <activity android:name=".UI.CallActivity" />
+
         <activity
             android:name=".UI.LoginActivity"
             android:theme="@style/NoAction">

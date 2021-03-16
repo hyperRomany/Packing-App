@@ -50,7 +50,7 @@ DriverOrdersAdapter driverOrdersAdapter;
         database=AppDatabase.getDatabaseInstance(this);
         RecordsItem recordsItem = database.userDao().getUserData_MU();
         Log.e(TAG, "onCreate: "+recordsItem.getUser_id() );
-        getDriverOrdersViewModel.ReadDriverRunsheetOrdersData(recordsItem.getUser_id(),timeStamp,"Ready To Go");
+        getDriverOrdersViewModel.ReadDriverRunsheetOrdersData(recordsItem.getUser_id(),timeStamp,"Out for delivery");
         getDriverOrdersViewModel.DriverOrdersReadyDataLiveData().observe(OrdersOfRuntimeSheetNowForDriverActivity.this,
                 new Observer<DriverPackages_Respones_Header_recycler>() {
                     @Override

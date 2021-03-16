@@ -54,11 +54,13 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
             OrderNumber=getIntent().getExtras().getString("OrderNumber");
         }else {
             Toast.makeText(this, "AddNewPackageORAddForExistPackage is null", Toast.LENGTH_SHORT).show();
+            OrderNumber = "000001101";
+            AddNewPackageORAddForExistPackage ="New";
         }
 
        CreateORUpdateRecycleView();
 
-        binding.imagSearch.setOnClickListener(new View.OnClickListener() {
+        binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                SearchOfBarcode();
@@ -143,6 +145,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 
                         }
                         //ToDo Clear all lists after assign
+                        Constant.ToastDialoge(getResources().getString(R.string.Added) , AssignItemToPackagesActivity.this);
+
                         itemAdapter.ClearRVAfterAssign();
                         ListOfBarcodesToAssign.clear();
                     }else {
@@ -167,7 +171,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         }
 
                         Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.done), Toast.LENGTH_SHORT).show();
-                        Constant.ToastDialoge(getResources().getString(R.string.done) , AssignItemToPackagesActivity.this);
+//                        Constant.ToastDialoge(getResources().getString(R.string.done) , AssignItemToPackagesActivity.this);
 
 //                        database.userDao().updatetrackingnumberforListOfItems(AddNewPackageORAddForExistPackage, ListOfBarcodesToAssign);
 
@@ -179,7 +183,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     }
                 }else {
                     Toast.makeText(AssignItemToPackagesActivity.this, getResources().getString(R.string.notadd), Toast.LENGTH_SHORT).show();
-                    Constant.ToastDialoge(getResources().getString(R.string.notadd) , AssignItemToPackagesActivity.this);
+//                    Constant.ToastDialoge(getResources().getString(R.string.notadd) , AssignItemToPackagesActivity.this);
 
                 }
                 binding.editBarcode.requestFocus();
@@ -260,16 +264,18 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 
                         }
                     }
-                    Log.e(TAG, "SearchOfBarcode:TotalQTYFor23 " + Double.valueOf(TotalQTYFor23));
+//                    Log.e(TAG, "SearchOfBarcode:TotalQTYFor23Doublesc " + Double.valueOf(TotalQTYFor23));
+                    Log.e(TAG, "SearchOfBarcode:TotalQTYFor23Float " + Float.valueOf(TotalQTYFor23));
                     Log.e(TAG, "SearchOfBarcode:getQuantity " + itemsOrderDataDBDetailsList.get(0).getQuantity());
                     Log.e(TAG, "SearchOfBarcode:adapterQTY " + adapterQTY);
                     Log.e(TAG, "SearchOfBarcode:summ "+SumofScannedqty );
                     Log.e(TAG, "SearchOfBarcode:summ+++  "+(SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23) ));
+
                   //  if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Double.valueOf(TotalQTYFor23))) {
                     //TODO for scales i think that there is will be issue for = this man that it can add more than for second time
-                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23))) {
+                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23))) {
 
-                            QTY = Float.valueOf(TotalQTYFor23);
+                            QTY = adapterQTY+ Float.valueOf(TotalQTYFor23);  //
                             Log.e(TAG, "SearchOfBarcode:QTY " + QTY);
                             ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                     = new ItemsOrderDataDBDetails_Scanned(OrderNumber, itemsOrderDataDBDetailsList.get(0).getName(),
@@ -283,7 +289,9 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             //   QTY= itemsOrderDataDBDetailsList.get(0).getQuantity()+1 ;
                             binding.editBarcode.setText("");
                             binding.editBarcode.requestFocus();
-                        } else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23))) {
+                        } else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23))
+                      //  || itemsOrderDataDBDetailsList.get(0).getQuantity() != (SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23))
+                        ) {
                             binding.editBarcode.setError("تم أضافه الكميه المطلبه او زياده عن المطلوب");
                             binding.editBarcode.setText("");
                             binding.editBarcode.requestFocus();
@@ -327,9 +335,6 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 
                     }
                 }
-
-
-
                /* if (itemsOrderDataDBDetailsList_scanned.size() ==0){
                     QTY=1;
                 }else*/
@@ -450,7 +455,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                                 ));
                     }else {
                         Toast.makeText(context, getResources().getString(R.string.this_is_weight_Item_cant_edit), Toast.LENGTH_SHORT).show();
-                        Constant.ToastDialoge(getResources().getString(R.string.this_is_weight_Item_cant_edit) , AssignItemToPackagesActivity.this);
+//                        Constant.ToastDialoge(getResources().getString(R.string.this_is_weight_Item_cant_edit) , AssignItemToPackagesActivity.this);
 
                     }
                     alertDialog.dismiss();

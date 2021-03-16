@@ -7,50 +7,66 @@
     tools:context=".UI.AssignItemToPackagesActivity"
     android:background="@color/main_background_color">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtinput_edit_barcode"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linear_search"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:textColorHint="@color/txt_color_hint"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp"
+        android:weightSum="4"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         >
-    <EditText
-        android:id="@+id/edit_barcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="250dp"
-        android:inputType="number"
-        android:focusable="true"
-        android:singleLine="true"
-        android:hint="@string/add_items_topakage"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-    <ImageView
-        android:id="@+id/imag_search"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="20dp"
-        android:background="@drawable/buttonshap"
-        android:padding="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_card_62"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="50dp"
+            android:text="@string/add_item"
+            android:background="@drawable/buttonshap"
+            android:textColor="@color/textcolor_btns"
+            android:padding="5dp"
+            android:textSize="@dimen/font_size_for_button_of_app"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtinput_edit_barcode"
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColorHint="@color/txt_color_hint"
+
+            >
+            <EditText
+                android:id="@+id/edit_barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="250dp"
+                android:inputType="number"
+                android:focusable="true"
+                android:singleLine="true"
+                android:hint="@string/add_items_topakage"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
 
 <LinearLayout
     android:id="@+id/product_item_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-    app:layout_constraintTop_toBottomOf="@+id/txtinput_edit_barcode"
-
+    app:layout_constraintTop_toBottomOf="@+id/linear_search"
     >
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         layout="@layout/product_item_header"
-         />
+         android:layout_marginTop="30dp"/>
 
 </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
@@ -73,11 +89,12 @@
         android:text="@string/Assign_item"
         android:background="@drawable/buttonshap"
         android:textColor="@color/textcolor_btns"
+        android:padding="5dp"
+        android:textSize="@dimen/font_size_for_button_of_app"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="5dp"
-        android:textSize="@dimen/font_size_for_button_of_app"
+
 
         android:layout_marginBottom="10dp"
 

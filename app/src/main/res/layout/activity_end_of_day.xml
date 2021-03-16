@@ -52,6 +52,30 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_failed_header" />
 
     <TextView
+        android:id="@+id/txt_number_failed_header"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/endofday_header_bg"
+        android:gravity="center_vertical"
+        android:text="@string/failed_number_header_of_driver"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_for_text_of_app"
+
+        app:layout_constraintTop_toBottomOf="@id/txt_failed_value" />
+
+    <TextView
+        android:id="@+id/txt_number_failed_value"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="@string/failed_number_header_of_driver"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_size_for_text_of_app"
+
+        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_header" />
+
+
+    <TextView
         android:id="@+id/txt_required_header"
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -59,7 +83,7 @@
         android:text="@string/required_header_of_driver"
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_for_text_of_app"
-        app:layout_constraintTop_toBottomOf="@+id/txt_failed_value" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_value" />
 
     <TextView
         android:id="@+id/txt_required_value"

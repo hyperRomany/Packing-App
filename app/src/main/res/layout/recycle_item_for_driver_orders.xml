@@ -9,7 +9,7 @@ android:orientation="vertical"
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          >
+          android:orientation="vertical">
           <!-- <CheckBox
            android:id="@+id/checkbox_item"
            android:layout_width="wrap_content"
@@ -17,7 +17,11 @@ android:orientation="vertical"
            android:visibility="invisible"
           />-->
 
-
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              >
           <TextView
               android:id="@+id/txt_nu"
               android:layout_width="25dp"
@@ -35,32 +39,45 @@ android:orientation="vertical"
               android:gravity="center_horizontal"
               android:textSize="@dimen/font_size_for_text_of_app"
               />
+          </LinearLayout>
 
-          <TextView
-              android:id="@+id/txt_customer_name"
-              android:layout_width="140dp"
+          <LinearLayout
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/customer_phone"
-              android:gravity="center_horizontal"
-              android:textSize="@dimen/font_size_for_text_of_app"
-              android:textColor="@color/txt_color"/>
+              android:orientation="vertical"
+              android:layout_marginStart="120dp"
+              android:layout_marginLeft="120dp">
+              <TextView
+                  android:id="@+id/txt_customer_name"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:minWidth="200dp"
+                  android:text="@string/customer_phone"
+                  android:gravity="center_horizontal"
+                  android:textSize="@dimen/font_size_for_text_of_app"
+                  android:textColor="@color/txt_color"/>
 
-          <TextView
-              android:id="@+id/txt_phone_number"
-              android:layout_width="140dp"
-              android:layout_height="wrap_content"
-              android:text="@string/phone_number"
-              android:gravity="center_horizontal"
-              android:textSize="@dimen/font_size_for_text_of_app"
-              android:textColor="@color/txt_color"/>
-          <TextView
-              android:id="@+id/txt_customer_address"
-              android:layout_width="140dp"
-              android:layout_height="wrap_content"
-              android:text="@string/customer_address"
-              android:gravity="center_horizontal"
-              android:textSize="@dimen/font_size_for_text_of_app"
-              android:textColor="@color/txt_color"/>
+              <TextView
+                  android:id="@+id/txt_phone_number"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:minWidth="200dp"
+
+                  android:text="@string/phone_number"
+                  android:gravity="center_horizontal"
+                  android:textSize="@dimen/font_size_for_text_of_app"
+                  android:textColor="@color/txt_color"/>
+              <TextView
+                  android:id="@+id/txt_customer_address"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:minWidth="200dp"
+
+                  android:text="@string/customer_address"
+                  android:gravity="center_horizontal"
+                  android:textSize="@dimen/font_size_for_text_of_app"
+                  android:textColor="@color/txt_color"/>
+          </LinearLayout>
       </LinearLayout>
 
     <View

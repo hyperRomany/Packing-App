@@ -27,7 +27,9 @@ public class GetOrderDataViewModel extends ViewModel {
     }
 
     public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
-
+    public MutableLiveData<String> getmutableLiveDataError() {
+        return mutableLiveDataError;
+    }
     public void fetchdata(String ORDER_NO) {
 
         HashMap<String, String> map = new HashMap<>();
@@ -51,6 +53,10 @@ public class GetOrderDataViewModel extends ViewModel {
     }
 
     public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public  MutableLiveData<Message> getmutableLiveData(){
+        return mutableLiveData;
+    }
+
     public static MutableLiveData<String> mutableLiveData_InsertH_Error = new MutableLiveData<>();
 
     public void InsertOrderdataHeader(String ORDER_NO, String OUTBOUND_DELIVERY, String CUSTOMER_NAME,
@@ -88,13 +94,17 @@ public class GetOrderDataViewModel extends ViewModel {
                             mutableLiveData.setValue(responseSms);
                         }
                         ,throwable -> {
-                            Log.d("ErrorH ",throwable.getMessage());
+                            Log.d("Error_H ",throwable.getMessage());
                             mutableLiveData_InsertH_Error.setValue(throwable.getMessage());
                         });
 
     }
 
     public static MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
+    public MutableLiveData<Message> getmutableLiveData_Details() {
+        return mutableLiveData_Details;
+    }
+    public static MutableLiveData<String> mutableLiveData_InsertD_Error = new MutableLiveData<>();
 
     public void InsertOrderdataDetails(String OrderNumber ,
                                        List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList ,
@@ -135,8 +145,8 @@ public class GetOrderDataViewModel extends ViewModel {
                                     mutableLiveData_Details.setValue(responseSms);
                                 }
                                 , throwable -> {
-                                    Log.d("Errorr ", throwable.getMessage());
-
+                                    Log.d("Errorr_D ", throwable.getMessage());
+                                    mutableLiveData_InsertD_Error.setValue(throwable.getMessage());
                                 });
 
         }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.packingapp.Adapter.PackedPackageItemsAdapter;
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityEditPackageBinding;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
@@ -101,6 +102,15 @@ public class EditPackageItemsActivity extends AppCompatActivity {
         binding.recycleItemsView.setLayoutManager(mLayoutManager);
         binding.recycleItemsView.setAdapter(packedPackageItemsAdapter);
 
+        ItemclickforRecycler.addTo(binding.recycleItemsView).setOnItemClickListener(new ItemclickforRecycler.OnItemClickListener() {
+
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                List<PackedPackageModule> packedPackageModuleList= packedPackagesAdapter.ReturnListOfPackages();
+                Po_Item_For_Recycly=database.userDao().getItemsOfTrackingNumber(TrackingNumber);
+                EnterQTY(Po_Item_For_Recycly.get(position).getSku());
+            }
+        });
     }
 
     public void Delete_PDNEWQTY(View view) {
@@ -399,7 +409,7 @@ public class EditPackageItemsActivity extends AppCompatActivity {
 
                 Log.e(TAG, "SearchOfBarcode:getQuantity "+itemsOrderDataDBDetailsList.get(0).getQuantity() );
               //  Log.e(TAG, "SearchOfBarcode:SumofScannedqty "+SumofScannedqty );
-                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (SumofScannedqty+Qty_add)){
+                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Qty_add)){
 //                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Qty_add)){
 
                     // if (adapterQTY>0){
@@ -415,7 +425,7 @@ public class EditPackageItemsActivity extends AppCompatActivity {
 //                    packedPackageItemsAdapter.notifyDataSetChanged();
                     CreateORUpdateRecycleView();
 
-                }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (SumofScannedqty+Qty_add)){
+                }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (Qty_add)){
                     Toast.makeText(EditPackageItemsActivity.this, getResources().getString(R.string.enter_more_thanrequired), Toast.LENGTH_SHORT).show();
                 }
 

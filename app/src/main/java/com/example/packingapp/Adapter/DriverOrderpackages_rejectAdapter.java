@@ -14,7 +14,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DriverOrderpackagesAdapter extends RecyclerView.Adapter<DriverOrderpackagesAdapter.MyViewHolder> {
+public class DriverOrderpackages_rejectAdapter extends RecyclerView.Adapter<DriverOrderpackages_rejectAdapter.MyViewHolder> {
 
     private List<DriverPackages_Details_DB> ItemsList;
     DriverPackages_Details_DB packages_db;
@@ -29,13 +29,14 @@ public class DriverOrderpackagesAdapter extends RecyclerView.Adapter<DriverOrder
             checkBox = view.findViewById(R.id.checkbox_item);
             txt_tracking_number =  view.findViewById(R.id.txt_tracking_number);
             txt_package_items=view.findViewById(R.id.txt_package_items);
-            main_linear_of_item=view.findViewById(R.id.main_linear_of_item);
             txt_package_price=view.findViewById(R.id.txt_package_price);
+
+            main_linear_of_item=view.findViewById(R.id.main_linear_of_item);
         }
     }
 
 
-    public DriverOrderpackagesAdapter(List<DriverPackages_Details_DB> moviesList) {
+    public DriverOrderpackages_rejectAdapter(List<DriverPackages_Details_DB> moviesList) {
         this.ItemsList = moviesList;
     }
 
@@ -83,10 +84,10 @@ public class DriverOrderpackagesAdapter extends RecyclerView.Adapter<DriverOrder
 
 
         holder.txt_nu.setText(""+(position+1));
-
+        holder.checkBox.setVisibility(View.INVISIBLE);
+        holder.txt_package_price.setText(packages_db.getPACKAGE_PRICE());
         holder.txt_tracking_number.setText(packages_db.getTRACKING_NO());
         holder.txt_package_items.setText(packages_db.getCOUNT_ITEMS_PACKAGE());
-        holder.txt_package_price.setText(packages_db.getPACKAGE_PRICE());
         //android:textIsSelectable="true"
 //        holder.txt_ean11.setTextIsSelectable(true);
 //

@@ -54,11 +54,36 @@
         android:id="@+id/send"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/buttonshap"
         android:text="Send"
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout1" />
+
+    <Button
+        android:id="@+id/uploadarraylist"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshap"
+        android:text="TestUploadArraylist"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/send" />
+    <Button
+        android:id="@+id/printpdf"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/buttonshap"
+        android:text="print pdf"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uploadarraylist" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,22 +35,25 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
         if (mInstance == null) {
             mInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
                     .allowMainThreadQueries()
+        //            .addMigrations(MIGRATION_1_2)
                     .fallbackToDestructiveMigration()
                     .build();
         }
         return mInstance;
     }
-
+//TODO add migration to don't need to remove and install app again
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
 
-            //database.execSQL("CREATE TABLE IF NOT EXISTS ItemsOrderDataDBDetails_Scanned " );
-
+    //        database.execSQL("ALTER TABLE DriverPackages_Details_DB ADD COLUMN  Checked_Item BOOLEAN " );
+//"ALTER TABLE `PackingApp`.`vechile` \n"
+//        "ADD COLUMN `test` VARCHAR(45) NULL AFTER `Weight`;"
         }
     };
 
     public static void destroyInstance() {
         mInstance = null;
     }
+
 }

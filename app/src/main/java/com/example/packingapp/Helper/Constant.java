@@ -36,6 +36,8 @@ public class Constant {
 
 
     public static void ToastDialoge(String status , Context context) {
+     //   Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+
         new androidx.appcompat.app.AlertDialog.Builder( context)
                 .setTitle(status)
                 .setPositiveButton("موافق", new DialogInterface.OnClickListener() {

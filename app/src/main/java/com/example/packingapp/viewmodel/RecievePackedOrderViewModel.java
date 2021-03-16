@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 
 import java.util.HashMap;
@@ -40,7 +41,36 @@ public class RecievePackedOrderViewModel extends ViewModel {
                         });
     }
 
+
+    private MutableLiveData<RecievePackedModule> OrderDataAndSMSDataLiveData = new MutableLiveData<>();
+    public MutableLiveData<RecievePackedModule> getOrderDataAndSMSDataLiveData() {
+        return OrderDataAndSMSDataLiveData;
+    }
+
+    public static MutableLiveData<String> OrderDataAndSMSDatamutableLiveDataError_fetch = new MutableLiveData<>();
+
+    public void fetchdataAndSMSData(String OrderNumber) {
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("ORDER_NO", OrderNumber);
+
+        ApiClient.build().GetOrderNumberDataAndSMSData(map)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe( (responseGetOrderData) -> {
+                            OrderDataAndSMSDataLiveData.setValue(responseGetOrderData);
+                              Log.d(TAG, "fetchdataSMSData: "+responseGetOrderData.getNameArabic());
+                        }
+                        ,throwable -> {
+                            OrderDataAndSMSDatamutableLiveDataError_fetch.setValue(throwable.getMessage());
+                            Log.d("Error_fetchdaSMSData",throwable.getMessage());
+                        });
+    }
+
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus() {
+        return  mutableLiveData_UpdateStatus;
+    }
     public static MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
@@ -72,6 +102,9 @@ public class RecievePackedOrderViewModel extends ViewModel {
 
 
     public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
+    public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_ON_83() {
+        return mutableLiveData_UpdateStatus_ON_83;
+    }
 
     public void UpdateStatus_ON_83(String ORDER_NO, String Status,String ModifyedBy) {
 
@@ -91,7 +124,25 @@ public class RecievePackedOrderViewModel extends ViewModel {
 
     }
 
+    private MutableLiveData<ResponseSms> smsLiveData = new MutableLiveData<>();
+    public MutableLiveData<ResponseSms> getSmsLiveData() {
+        return smsLiveData;
+    }
+    public static MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
 
+    public void SendSms(String number, String message) {
+        ApiClient.build().sendSms(number,message)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseSms -> {
+                            smsLiveData.setValue(responseSms);
+                        }
+                        ,throwable -> {
+                            Log.d("Error_Vof ",throwable.getMessage());
+                            mutableLiveDataError_SendSms.setValue(throwable.getMessage());
+                        });
+
+    }
 
 
 }
