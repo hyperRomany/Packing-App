@@ -151,6 +151,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
             Log.e(TAG, "onCreate:getAllPckagesForUpload = zero ");
             orderDetailsForDriverViewModel.ReadDriverRunsheetOrdersData(Orderclicked);
 
+
         }
         Log.e(TAG, "onCreate: "+ Orderclicked);
         driverPackages_details_dbList=new ArrayList<>();
@@ -192,40 +193,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                     }
                 });
         
-        orderDetailsForDriverViewModel.getSmsLiveData().observe(OrderDetails_forDriverActivity.this, new Observer<ResponseSms>() {
-            @Override
-            public void onChanged(ResponseSms responseSms) {
-                Toast.makeText(OrderDetails_forDriverActivity.this,
-                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
-                ConfirmPasscodeFragment detialsfragment=new ConfirmPasscodeFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("Orderclicked",Orderclicked);
-//                bundle.putString("UserName",UserName);
-//                bundle.putString("Branch",Branch);
-                // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
 
-                detialsfragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_content,detialsfragment);
-
-                // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
-                // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-            }
-        });
-        orderDetailsForDriverViewModel.mutableLiveData_sendSMS_Error.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged:sensms "+s );
-                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
-
-//                if (s.equals("HTTP 503 Service Unavailable")) {
-//                    Toast.makeText(OrderDetails_forDriverActivity.this, getResources().getString(R.string.invaliduser), Toast.LENGTH_LONG).show();
-//                }
-            }
-        });
     }
 
     private void Reject_Resons_list_fun_add() {
@@ -346,6 +314,41 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
     private void SendSMS(String CustomerPhone ,String SMSBody) {
 
         orderDetailsForDriverViewModel.SendSms(CustomerPhone , SMSBody);
+
+        orderDetailsForDriverViewModel.getSmsLiveData().observe(OrderDetails_forDriverActivity.this, new Observer<ResponseSms>() {
+            @Override
+            public void onChanged(ResponseSms responseSms) {
+                Toast.makeText(OrderDetails_forDriverActivity.this,
+                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
+                ConfirmPasscodeFragment detialsfragment=new ConfirmPasscodeFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("Orderclicked",Orderclicked);
+//                bundle.putString("UserName",UserName);
+//                bundle.putString("Branch",Branch);
+                // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
+
+                detialsfragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_content,detialsfragment);
+
+                // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
+                // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
+        orderDetailsForDriverViewModel.mutableLiveData_sendSMS_Error.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:sensms "+s );
+                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
+
+//                if (s.equals("HTTP 503 Service Unavailable")) {
+//                    Toast.makeText(OrderDetails_forDriverActivity.this, getResources().getString(R.string.invaliduser), Toast.LENGTH_LONG).show();
+//                }
+            }
+        });
 
     }
 

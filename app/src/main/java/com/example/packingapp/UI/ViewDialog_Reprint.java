@@ -355,7 +355,7 @@ public class ViewDialog_Reprint {
                                 "^FO30,130^GB750,80,1^FS" +
                                 "^FO500,50^GB1,160,1^FS" +
                                 "^CF0,25" +
-                                "^FO590,65^CI28^AZN,0,25^FDشركة الشحن^FS" +
+                                "^FO590,65^CI28^AZN,0,25^FDهايبروان^FS" +
                                 "^FO600,105^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_CITY() + "^FS" +
                                 "^FO600,160^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_GOVERN() + "^FS" +
                                 "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
@@ -383,7 +383,7 @@ public class ViewDialog_Reprint {
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getORDER_NO() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
                                 "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getSHIPPING_FEES() + "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + (totel + Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) )+ "^FS\n" +
+                                "^FO80,550^CI28^AZN,20,15^FD" + (totel /*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +

@@ -348,7 +348,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
                     @Override
                     public void onChanged(ResponseUpdateStatus message) {
-                        Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "83 " + message.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, /*"83 " + */ message.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onChanged:update83 " + message.getMessage());
 //                        Constant.ToastDialoge(message.getMessage() , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
 

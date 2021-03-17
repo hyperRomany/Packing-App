@@ -128,7 +128,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         i.putExtra("AddNewPackageORAddForExistPackage", "New");
                         i.putExtra("OrderNumber", Ordernumber);
                         startActivity(i);
-
                         alertDialog.dismiss();
 
                     }
@@ -203,6 +202,25 @@ public class GetOrderDatactivity extends AppCompatActivity {
         OberveFUN();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        getOrderDataViewModel.getOrderDataLiveData().removeObservers(this);
+       // getOrderDataViewModel.getmutableLiveDataError().removeObservers(this);
+//        ViewModel.onCleared();
+        Log.e(TAG, "onStop: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getOrderDataViewModel.getOrderDataLiveData().removeObservers(this);
+        getOrderDataViewModel.getmutableLiveDataError().removeObservers(this);
+
+        Log.e(TAG, "onPause: ");
+
+    }
+
     private void OberveFUN() {
         //        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
 //                new Observer<ResponseGetOrderData>() {
@@ -218,6 +236,40 @@ public class GetOrderDatactivity extends AppCompatActivity {
 //                    }
 //                });
 
+
+        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
+                new Observer<ResponseGetOrderData>() {
+                    @Override
+                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
+                        binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
+                        binding.btnLoadingNewPurchaseOrder.setEnabled(true);
+
+                        Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
+                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
+                            ActionAfterGetData(responseGetOrderData);
+                        } else {
+                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
+                        }
+                        getOrderDataViewModel.getOrderDataLiveData().removeObservers(GetOrderDatactivity.this);
+                    }
+                });
+
+        getOrderDataViewModel.getmutableLiveDataError().observe(GetOrderDatactivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
+                binding.btnLoadingNewPurchaseOrder.setEnabled(true);
+
+                Log.e(TAG, "onChanged:mutableLiveD  " + s);
+                if (s.contains("HTTP 400")) {
+                    Toast.makeText(GetOrderDatactivity.this, String.format("%s", getString(R.string.order_not_found)), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
+                }
+                getOrderDataViewModel.getmutableLiveDataError().removeObservers(GetOrderDatactivity.this);
+
+            }
+        });
 
         getOrderDataViewModel.getmutableLiveData().observe(GetOrderDatactivity.this, new Observer<Message>() {
             @Override
@@ -269,6 +321,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
         });
     }
 
+
     private void LoadNewPurchaseOrder() {
         if (!binding.editMagentoorder.getText().toString().isEmpty()) {
 
@@ -311,36 +364,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
         binding.btnLoadingNewPurchaseOrder.setEnabled(false);
         getOrderDataViewModel.fetchdata(binding.editMagentoorder.getText().toString());
 
-        getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
-                new Observer<ResponseGetOrderData>() {
-                    @Override
-                    public void onChanged(ResponseGetOrderData responseGetOrderData) {
-                        binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
-                        binding.btnLoadingNewPurchaseOrder.setEnabled(true);
 
-                        Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
-                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
-                            ActionAfterGetData(responseGetOrderData);
-                        } else {
-                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-        getOrderDataViewModel.getmutableLiveDataError().observe(GetOrderDatactivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                binding.progLoadingMagentoorder.setVisibility(View.INVISIBLE);
-                binding.btnLoadingNewPurchaseOrder.setEnabled(true);
-
-                Log.e(TAG, "onChanged:mutableLiveD  " + s);
-                if (s.contains("HTTP 400")) {
-                    Toast.makeText(GetOrderDatactivity.this, String.format("%s", getString(R.string.order_not_found)), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
 

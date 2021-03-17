@@ -339,7 +339,7 @@ private  String OrderNumber;
                                 "^FO30,130^GB750,80,1^FS" +
                                 "^FO500,50^GB1,160,1^FS" +
                                 "^CF0,25" +
-                                "^FO590,65^CI28^AZN,0,25^FDشركة الشحن^FS" +
+                                "^FO590,65^CI28^AZN,0,25^FDهايبروان^FS" +
                                 "^FO600,105^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_city() + "^FS" +
                                 "^FO600,160^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_govern() + "^FS" +
                                 "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
@@ -368,7 +368,7 @@ private  String OrderNumber;
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
                                 "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel + Double.valueOf(orderDataModuleDBHeader.getShipping_fees()) )+ "^FS\n" +
+                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel /*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +

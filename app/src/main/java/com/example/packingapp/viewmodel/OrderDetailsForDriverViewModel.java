@@ -108,9 +108,23 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
 
 
         HashMap<String, String> map = new HashMap<>();
+        map.put("number", ORDER_NO);
         map.put("status", Status);
+        ApiClient.build().UpdateOrderStatus(
+                ORDER_NO,Status
 
-        ApiClient.buildRo().UpdateOrderStatus(
+        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseSms -> {
+                            mutableLiveData_UpdateStatus.setValue(responseSms);
+
+                        }
+                        ,throwable -> {
+                            Log.d("Error_roub",throwable.getMessage());
+
+                        });
+       /* ApiClient.buildRo().UpdateOrderStatus(
                 "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
 //                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
@@ -126,7 +140,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                             mutableLiveDataError.setValue(throwable.getMessage());
                             Log.d("Errorroub",throwable.getMessage());
 
-                        });
+                        });*/
 
     }
 
