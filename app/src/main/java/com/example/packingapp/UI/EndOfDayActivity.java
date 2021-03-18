@@ -52,10 +52,10 @@ public class EndOfDayActivity extends AppCompatActivity {
 //                        driverPackages_Header_dbList.addAll(driverPackages_respones_Header_recycler.getRecords());
 //                        driverOrdersAdapter.notifyDataSetChanged();
                         for (int i=0;i<responeEndOfDay.getEndOfDayModule().size();i++){
-                            if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("Rejected under inspection")){
+                            if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("rejected_under_inspection")){
                                 FailedList.add(responeEndOfDay.getEndOfDayModule().get(i));
                                 FailedValue +=Double.valueOf(responeEndOfDay.getEndOfDayModule().get(i).getITEM_PRICE());
-                            } else if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("Has-Been-Delivered")) {
+                            } else if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("has_been_delivered")) {
                                 SuccessList.add(responeEndOfDay.getEndOfDayModule().get(i));
                                 SuccessValue +=Double.valueOf(responeEndOfDay.getEndOfDayModule().get(i).getITEM_PRICE());
                             }

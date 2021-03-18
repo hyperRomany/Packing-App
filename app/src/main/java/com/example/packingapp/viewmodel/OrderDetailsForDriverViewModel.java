@@ -97,7 +97,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
 
                         }
                         ,throwable -> {
-                            Log.d("Error",throwable.getMessage());
+                            Log.d("Error_83",throwable.getMessage());
                             mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.setValue(throwable.getMessage());
                         });
     }
@@ -109,6 +109,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
+        Log.e("TAG", "UpdateStatus:ro "+ORDER_NO );
         map.put("status", Status);
         ApiClient.build().UpdateOrderStatus(
                 ORDER_NO,Status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"

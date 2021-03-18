@@ -192,7 +192,42 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                        // totalPriceFUN(driverPackages_respones_details_recycler.getRecords());
                     }
                 });
-        
+
+        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_RescheduleTime_ON_83.observe(
+                OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
+                    @Override
+                    public void onChanged(ResponseUpdateStatus message) {
+                        Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onChanged:update "+message.getMessage() );
+                        UpdateStatus();
+
+                    }
+                });
+        orderDetailsForDriverViewModel.mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:updateerror "+s );
+                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
+        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus.observe(OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus message) {
+                Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChanged:UpdateStatusroub "+message.getMessage() );
+                Intent GoBackafterSuccess=new Intent(OrderDetails_forDriverActivity.this,DriverMainActivity.class);
+                startActivity(GoBackafterSuccess);
+                finish();
+            }
+        });
+
+        orderDetailsForDriverViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:roub "+s );
+                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
@@ -443,7 +478,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                 if (spiner_rejectinput.getSelectedItemPosition()!=0) {
                     //SendSMS(CustomerPhone, edit_rejectinput.getText().toString());
                     database.userDao().UpdatestatusAndReason_ForTrackingnumber(RejectTrackingNumberList,
-                            "Rejected under inspection",Reject_Resons_list.get(spiner_rejectinput.getSelectedItemPosition()));
+                            "rejected_under_inspection",Reject_Resons_list.get(spiner_rejectinput.getSelectedItemPosition()));
                     driverPackages_details_dbList_Reject.add(driverPackages_details_dbList.get(position));
                     Log.e(TAG, "onClick: "+ driverPackages_details_dbList.size());
                     driverPackages_details_dbList.remove(position);
@@ -473,28 +508,10 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                 Log.e(TAG, "UpdateStatus_ON_83: "+"ffff " );
                 orderDetailsForDriverViewModel.UpdateStatus_RescheduleTime_ON_83(
                         Orderclicked,
-
-                        "Reschedule" ,Time,database.userDao().getUserData_MU().getUser_id(),
+                        "reschedule" ,Time,database.userDao().getUserData_MU().getUser_id(),
                         RescheduleReasone
                 );
-        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus_RescheduleTime_ON_83.observe(
-                OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
-                    @Override
-                    public void onChanged(ResponseUpdateStatus message) {
-                        Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onChanged:update "+message.getMessage() );
-                        Intent GoBackafterSuccess=new Intent(OrderDetails_forDriverActivity.this,DriverMainActivity.class);
-                        startActivity(GoBackafterSuccess);
-                        finish();
-                    }
-                });
-        orderDetailsForDriverViewModel.mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged:update "+s );
-                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
+
 
     }
 
@@ -505,25 +522,10 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 
 
             orderDetailsForDriverViewModel.UpdateStatus(
-                    orderDataModuleDBHeaderkist.get(0).getORDER_NO(),
-                    "Reschedule"
+                    Orderclicked,
+                    "reschedule"
             );
 
-        orderDetailsForDriverViewModel.mutableLiveData_UpdateStatus.observe(OrderDetails_forDriverActivity.this, new Observer<ResponseUpdateStatus>() {
-            @Override
-            public void onChanged(ResponseUpdateStatus message) {
-                Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onChanged:UpdateStatusroub "+message.getMessage() );
-            }
-        });
-
-        orderDetailsForDriverViewModel.mutableLiveDataError.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e(TAG, "onChanged:roub "+s );
-                Toast.makeText(OrderDetails_forDriverActivity.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
 
 
     }
@@ -632,8 +634,9 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                 if (!edit_rescheduleinput.getText().toString().isEmpty() &&
                         spiner_rescheduleinput.getSelectedItemPosition() !=0 ) {
                     Log.e(TAG, "onClick:eee "+edit_rescheduleinput.getText().toString() );
-                    UpdateStatus_Reschedule_ON_83(edit_rescheduleinput.getText().toString() , Reschedule_Resons_list.get(spiner_rescheduleinput.getSelectedItemPosition()));
-                   // UpdateStatus();
+                    UpdateStatus_Reschedule_ON_83(edit_rescheduleinput.getText().toString() ,
+                            Reschedule_Resons_list.get(spiner_rescheduleinput.getSelectedItemPosition()));
+                    //UpdateStatus();
                     alertDialog.dismiss();
 
                 }else{

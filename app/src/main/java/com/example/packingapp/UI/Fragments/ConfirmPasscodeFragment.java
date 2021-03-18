@@ -126,18 +126,18 @@ FragmentConfirmPasscodeBinding binding;
                    //get list of packages that rejected by checking for reason equal nullir empty
                    List<DriverPackages_Details_DB> driverPackages_details_dbList_rejected  =database.userDao().getAllPckagesForReject(Orderclicked);
                    // update status
-                   database.userDao().UpdatestatusForNotRejectWhenClickConfirmed(Orderclicked,"Has-Been-Delivered");
+                   database.userDao().UpdatestatusForNotRejectWhenClickConfirmed(Orderclicked,"has_been_delivered");
 
                    List<DriverPackages_Details_DB> driverPackages_details_dbList  =database.userDao().getAllPckagesForUpload(Orderclicked);
                    Log.e(TAG, "onClick: "+driverPackages_details_dbList.size() );
 
                    if (driverPackages_details_dbList_rejected.size() >0 ){
-                       UpdateStatus_Passcode_Header_ON_83("Rejected under inspection");
+                       UpdateStatus_Passcode_Header_ON_83("rejected_under_inspection");
                        //TODO list for tracking number and reason and status for details _check file name
 //                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
 //                       UpdateStatus("rejected_under_inspection");
                    }else {
-                       UpdateStatus_Passcode_Header_ON_83("Has-Been-Delivered");
+                       UpdateStatus_Passcode_Header_ON_83("has_been_delivered");
                        //TODO list for tracking number and reason and status for details
 //                       UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
 //                       UpdateStatus("has_been_delivered");

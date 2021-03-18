@@ -153,7 +153,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public void UpdateOrder_DriverID_ON_83(String ORDER_NO, String DriverID,String ModifyedBy) {
 
 
-        String text=ORDER_NO+"/"+DriverID+"/"+ModifyedBy+"/Ready To Go";
+        String text=ORDER_NO+"/"+DriverID+"/"+ModifyedBy+"/ready_to_go";
         Log.e(TAG, "zzUpdateOrder_DriverID_ON_83:txt "+text );
         ApiClient.build().UpdateOrder_DriverID_83(text)
 

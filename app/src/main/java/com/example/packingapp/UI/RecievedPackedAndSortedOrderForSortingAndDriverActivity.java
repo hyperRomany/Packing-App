@@ -287,7 +287,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 Log.e(TAG, "onChanged:stat " + responseGetOrderData.getSTATUS());
                 Log.e(TAG, "onChanged:packeOr " + RecievePackedOrConfirmForDriver);
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")) {
-                    if (responseGetOrderData.getSTATUS().equalsIgnoreCase("Ready To Go")) {
+                    if (responseGetOrderData.getSTATUS().equalsIgnoreCase("ready_to_go")) {
                         if (responseGetOrderData.getDRIVER_ID() != null) {
                             if (responseGetOrderData.getDRIVER_ID().equalsIgnoreCase(DriverID)) {
                                 AfterGetOrderData_AndSMSData(responseGetOrderData, binding.editTrackingnumber.getText().toString());
@@ -641,12 +641,12 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
                     recievePackedOrderViewModel.UpdateStatus_ON_83(
                             orderNumberlist.get(i),
-                            "in sorting", database.userDao().getUserData_MU().getUser_id()
+                            "in_sorting", database.userDao().getUserData_MU().getUser_id()
                     );
                 } else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")) {
                     recievePackedOrderViewModel.UpdateStatus_ON_83(
                             orderNumberlist.get(i),
-                            "Out for delivery", database.userDao().getUserData_MU().getUser_id()
+                            "out_for_delivery", database.userDao().getUserData_MU().getUser_id()
                     );
                     SendSMS(orderNumber_smsDatalist.get(i).getCUSTOMER_PHONE().replace("+2","")
                             /*"01065286596"*/

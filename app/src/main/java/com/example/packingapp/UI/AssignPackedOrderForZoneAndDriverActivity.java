@@ -325,7 +325,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     private void ForOberveOfGetOrderData(RecievePackedModule responseGetOrderData) {
 
         if (Zone_public != null) {
-            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("in sorting")
+            if (responseGetOrderData.getSTATUS().equalsIgnoreCase("in_sorting")
             ) {
                 AfterGetOrderData(responseGetOrderData, trackingnumber_public, Zone_public);
             } else {
@@ -1016,7 +1016,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                 assignPackedOrderToZoneViewModel.UpdateOrderStatus_Zone_ON_83(
                         Distinctordernumberslist.get(i).getORDER_NO(),
-                        Distinctordernumberslist.get(i).getZone(), Status,database.userDao().getUserData_MU().getUser_id()
+                        Distinctordernumberslist.get(i).getZone(),
+                        Status,database.userDao().getUserData_MU().getUser_id()
                 );
              //   Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : " + Distinctordernumberslist.get(i).getZone());
             }
