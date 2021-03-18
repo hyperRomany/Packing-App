@@ -19,7 +19,7 @@ public class EndOfDayViewModel extends ViewModel {
         return DriverrEndOfDayLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void GetOrderForEndOfDay_ON_83(String DRIVER_ID) {
 

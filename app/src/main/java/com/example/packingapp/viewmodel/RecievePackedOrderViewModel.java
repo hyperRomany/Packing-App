@@ -71,7 +71,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus() {
         return  mutableLiveData_UpdateStatus;
     }
-    public static MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
@@ -115,7 +115,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
 
 
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_ON_83() {
         return mutableLiveData_UpdateStatus_ON_83;
     }

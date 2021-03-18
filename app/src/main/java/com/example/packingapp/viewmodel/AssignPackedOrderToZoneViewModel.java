@@ -26,7 +26,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void fetchdata(String OrderNumber ) {
 
@@ -91,13 +91,13 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Zone_ON_83 = new MutableLiveData<>();
-    public static MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Zone_ON_83 (){
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Zone_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Zone_ON_83 (){
         return mutableLiveData_UpdateStatus_Zone_ON_83;
     };
 
 
-    public static MutableLiveData<String> mutableLiveDataError_Zone_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_Zone_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrderStatus_Zone_ON_83(String ORDER_NO, String ZONE, String Status,String ModifyedBy) {
 
@@ -117,7 +117,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         });
 
     }
-    public static MutableLiveData<ResponseDriver> mutableLiveData_ReadDriverIDS = new MutableLiveData<>();
+    public MutableLiveData<ResponseDriver> mutableLiveData_ReadDriverIDS = new MutableLiveData<>();
 
     public void GetDriversID(){
         ApiClient.build().GetDrivers_IDS()
@@ -133,7 +133,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
 
-    public static MutableLiveData<ResponseZoneName> mutableLiveData_readZones = new MutableLiveData<>();
+    public  MutableLiveData<ResponseZoneName> mutableLiveData_readZones = new MutableLiveData<>();
 
     public void GetZonessID(){
         ApiClient.build().readZone()
@@ -148,7 +148,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateDriverID_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateDriverID_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrder_DriverID_ON_83(String ORDER_NO, String DriverID,String ModifyedBy) {
 
@@ -175,7 +175,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public MutableLiveData<ResponseSms> getSmsLiveData() {
         return smsLiveData;
     }
-    public static MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
 
     public void SendSms(String number, String message) {
         ApiClient.build().sendSms(number,message)
@@ -192,11 +192,11 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
 
-    public static MutableLiveData<Response> runTimeSheetData = new MutableLiveData<>();
+    public MutableLiveData<Response> runTimeSheetData = new MutableLiveData<>();
     public MutableLiveData<Response> getSheetLiveData() {
         return runTimeSheetData ;
     }
-    public static MutableLiveData<String> mutableLiveDataError_SheetData = new MutableLiveData<>();
+    public MutableLiveData<String> mutableLiveDataError_SheetData = new MutableLiveData<>();
 
     public void SheetData(String id ,String ORDER_NOs ,String DRIVER_ID , String Username  ) {
 

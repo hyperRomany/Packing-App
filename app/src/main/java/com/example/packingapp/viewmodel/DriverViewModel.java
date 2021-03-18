@@ -72,7 +72,7 @@ public class DriverViewModel extends ViewModel {
                         });
 
     }
-    public static MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
+    public  MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
 
     public void fetchDataVehicle(){
         ApiClient.build().readVehicle()
@@ -86,7 +86,7 @@ public class DriverViewModel extends ViewModel {
 
                         });
     }
-    public static MutableLiveData<ResponseDriver> mutableLiveDataRead = new MutableLiveData<>();
+    public  MutableLiveData<ResponseDriver> mutableLiveDataRead = new MutableLiveData<>();
 
 
     public void fetchDataDriver(){

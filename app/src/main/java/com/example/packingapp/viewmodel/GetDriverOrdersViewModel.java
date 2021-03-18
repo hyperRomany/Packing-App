@@ -19,7 +19,7 @@ public class GetDriverOrdersViewModel extends ViewModel {
         return DriverOrdersReadyDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void ReadDriverRunsheetOrdersData(String DRIVER_ID,String ASSIGN_DATE,String STATUS) {
 
