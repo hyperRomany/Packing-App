@@ -51,7 +51,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Reason_ON_83() {
         return mutableLiveData_UpdateStatus_Reason_ON_83;
     }
-    public static MutableLiveData<String> mutableLiveDataError_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
 
     public void UpdateOrderStatus_Reason_Details_ON_83(List<DriverPackages_Details_DB> driverPackages_details_dbList) {
         HashMap<String, String> map = new HashMap<>();
@@ -88,7 +88,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     public  MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus (){
         return mutableLiveData_UpdateStatus;
     }
-    public static MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();

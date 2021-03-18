@@ -1,5 +1,5 @@
 package com.example.packingapp.viewmodel;
-  
+
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;

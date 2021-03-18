@@ -115,11 +115,11 @@ public class GetOrderDataViewModel extends ViewModel {
 
     }
 
-    public static MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
     public MutableLiveData<Message> getmutableLiveData_Details() {
         return mutableLiveData_Details;
     }
-    public static MutableLiveData<String> mutableLiveData_InsertD_Error = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveData_InsertD_Error = new MutableLiveData<>();
 
     public void InsertOrderdataDetails(String OrderNumber ,
                                        List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList ,
@@ -167,7 +167,7 @@ public class GetOrderDataViewModel extends ViewModel {
         }
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
