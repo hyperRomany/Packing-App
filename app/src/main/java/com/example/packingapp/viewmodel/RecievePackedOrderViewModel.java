@@ -80,7 +80,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
         ApiClient.build().UpdateOrderStatus(
 //                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
-                ORDER_NO,status
+                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
 
         )
                 .observeOn(AndroidSchedulers.mainThread())

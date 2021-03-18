@@ -26,14 +26,15 @@ public class GetOrderDataViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
     public MutableLiveData<String> getmutableLiveDataError() {
         return mutableLiveDataError;
     }
     public void fetchdata(String ORDER_NO) {
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
-        ApiClient.build().GetOrderData(ORDER_NO)
+        ApiClient.build().GetOrderData(ORDER_NO,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+                )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(responseGetOrderData -> {
@@ -176,7 +177,7 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.build().UpdateOrderStatus(
-                ORDER_NO,status
+                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
         )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

@@ -28,16 +28,17 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIRetrofit {
-
     //To Get orderdata
     @FormUrlEncoded
     @POST("GetMagentoOrderDetails.php")
-    Observable<ResponseGetOrderData> GetOrderData(@Field("number") String phone);
+    Observable<ResponseGetOrderData> GetOrderData(@Field("number") String phone,
+                                                  @Field("token") String token);
 
     @FormUrlEncoded
     @POST("UpdateMagentoOrder.php")
     Observable<ResponseUpdateStatus> UpdateOrderStatus(@Field("number") String phone,
-                                                       @Field("status") String status);
+                                                       @Field("status") String status,
+                                                       @Field("token") String token);
 
 
     @POST("Login/Auth.php")

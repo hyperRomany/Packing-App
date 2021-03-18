@@ -204,21 +204,10 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
-//        getOrderDataViewModel.getOrderDataLiveData().removeObservers(this);
-       // getOrderDataViewModel.getmutableLiveDataError().removeObservers(this);
-//        ViewModel.onCleared();
-        Log.e(TAG, "onStop: ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
         getOrderDataViewModel.getOrderDataLiveData().removeObservers(this);
         getOrderDataViewModel.getmutableLiveDataError().removeObservers(this);
-
-        Log.e(TAG, "onPause: ");
-
+        Log.e(TAG, "onStop: " );
+        super.onStop();
     }
 
     private void OberveFUN() {
@@ -236,7 +225,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
 //                    }
 //                });
 
-
         getOrderDataViewModel.getOrderDataLiveData().observe(GetOrderDatactivity.this,
                 new Observer<ResponseGetOrderData>() {
                     @Override
@@ -250,7 +238,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
                         }
-                        getOrderDataViewModel.getOrderDataLiveData().removeObservers(GetOrderDatactivity.this);
                     }
                 });
 
@@ -266,8 +253,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
                 }
-                getOrderDataViewModel.getmutableLiveDataError().removeObservers(GetOrderDatactivity.this);
-
             }
         });
 
@@ -320,7 +305,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void LoadNewPurchaseOrder() {
         if (!binding.editMagentoorder.getText().toString().isEmpty()) {
