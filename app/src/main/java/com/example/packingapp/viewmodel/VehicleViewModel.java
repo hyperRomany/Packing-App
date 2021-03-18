@@ -14,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class VehicleViewModel extends ViewModel {
-    public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Message> getDriverLiveData() {
         return mutableLiveData;
     }
@@ -38,7 +38,7 @@ public class VehicleViewModel extends ViewModel {
                         });
 
     }
-    public static MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
+    public MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
 
     public void fetchDataVehicle(){
         ApiClient.build().readVehicle()

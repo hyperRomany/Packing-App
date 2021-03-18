@@ -18,7 +18,7 @@ public class LoginViewModel extends ViewModel {
     public MutableLiveData<ResponseLogin> getSmsLiveData() {
         return smsLiveData;
     }
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void fetchdata(String username, String password) {
 
@@ -43,7 +43,7 @@ public class LoginViewModel extends ViewModel {
     public MutableLiveData<Message> getforgetpasswordLiveData() {
         return forgetpasswordLiveData;
     }
-    public static MutableLiveData<String> forgetpasswordmutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> forgetpasswordmutableLiveDataError = new MutableLiveData<>();
 
     public void forgetpassword(String username, String password, String Newpassword) {
 

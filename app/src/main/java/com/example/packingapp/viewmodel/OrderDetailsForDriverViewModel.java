@@ -19,7 +19,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
     public MutableLiveData<ResponseSms> getSmsLiveData() {
         return smsLiveData;
     }
-    public static MutableLiveData<String> mutableLiveData_sendSMS_Error = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveData_sendSMS_Error = new MutableLiveData<>();
 
     public void SendSms(String number, String message) {
        ApiClient.build().sendSms(number,message)
@@ -40,7 +40,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
         return DriverOrderReadyDetailsDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableDetailsLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableDetailsLiveDataError = new MutableLiveData<>();
 
     public void ReadDriverRunsheetOrdersData(String ORDER_NO) {
 
@@ -62,7 +62,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_ON_83 = new MutableLiveData<>();
 
     public void UpdateStatus_ON_83(String ORDER_NO, String Status,String ModifyedBy) {
 
@@ -81,8 +81,8 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_RescheduleTime_ON_83 = new MutableLiveData<>();
-    public static MutableLiveData<String> mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_RescheduleTime_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<String> mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError = new MutableLiveData<>();
 
     public void UpdateStatus_RescheduleTime_ON_83(String ORDER_NO, String STATUS , String  RescheduleTime,String ModifyedBy, String  RescheduleReasone ) {
 
@@ -101,8 +101,8 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
                             mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.setValue(throwable.getMessage());
                         });
     }
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String Status) {
 

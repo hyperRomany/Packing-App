@@ -67,12 +67,12 @@ public class GetOrderDataViewModel extends ViewModel {
         */
     }
 
-    public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
     public  MutableLiveData<Message> getmutableLiveData(){
         return mutableLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveData_InsertH_Error = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveData_InsertH_Error = new MutableLiveData<>();
 
     public void InsertOrderdataHeader(String ORDER_NO, String OUTBOUND_DELIVERY, String CUSTOMER_NAME,
                                       String CUSTOMER_PHONE, String CUSTOMER_CODE, String ADDRESS_GOVERN, String ADDRESS_CITY,

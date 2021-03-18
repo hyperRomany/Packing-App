@@ -20,8 +20,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class OrderDetailsForDriverViewModel_testArrayList extends ViewModel {
     private static final String TAG = "OrderDetailsForDriverVi";
-    public static MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
-    public static MutableLiveData<String> mutableLiveData_error = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData_Details = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveData_error = new MutableLiveData<>();
 
     public void InsertOrderdataDetails(String OrderNumber ,
                                        List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList ,

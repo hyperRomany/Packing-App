@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ConfirmPasscodeViewModel extends ViewModel {
     private static final String TAG = "ConfirmPasscodeViewMode";
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_PASSCODE_ON_83 = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_PASSCODE_ON_83 = new MutableLiveData<>();
 
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_PASSCODE_ON_83LiveData() {
         return mutableLiveData_UpdateStatus_PASSCODE_ON_83;
@@ -47,7 +47,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     }
 
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
+    public MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus_Reason_ON_83 = new MutableLiveData<>();
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus_Reason_ON_83() {
         return mutableLiveData_UpdateStatus_Reason_ON_83;
     }
@@ -84,7 +84,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
     }
 
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
     public  MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus (){
         return mutableLiveData_UpdateStatus;
     }

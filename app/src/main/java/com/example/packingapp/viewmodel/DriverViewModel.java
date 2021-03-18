@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DriverViewModel extends ViewModel {
 
-    public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Message> getDriverLiveData() {
         return mutableLiveData;
     }

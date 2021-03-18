@@ -18,7 +18,7 @@ public class ViewDialog_ReprintAWBViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void Insertdata(String ORDER_NO ,String TRACKING_NO ,String Username) {
 

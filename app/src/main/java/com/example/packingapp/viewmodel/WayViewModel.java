@@ -16,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class WayViewModel extends ViewModel {
-    public static MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
+    public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
 
     public void fetchdata(String nameArabic, String nameEnglish, String status, String estimationTime, String stations, String driverId, String Vechile_ID) {
         HashMap<String, String> map = new HashMap<>();
@@ -41,7 +41,7 @@ public class WayViewModel extends ViewModel {
 
     }
 
-    public static MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
+    public  MutableLiveData<ResponseVehicle> mutableLiveDataVehicle = new MutableLiveData<>();
 
     public void fetchDataVehicle(){
         ApiClient.build().readVehicle()
@@ -56,7 +56,7 @@ public class WayViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseDriver> mutableLiveDataRead = new MutableLiveData<>();
+    public  MutableLiveData<ResponseDriver> mutableLiveDataRead = new MutableLiveData<>();
 
     public void fetchDataDriver(){
         ApiClient.build().readDriver()
@@ -71,7 +71,7 @@ public class WayViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseWay> mutableLiveDataWay = new MutableLiveData<>();
+    public  MutableLiveData<ResponseWay> mutableLiveDataWay = new MutableLiveData<>();
 
     public void fetchDataWay(){
         ApiClient.build().readWay()

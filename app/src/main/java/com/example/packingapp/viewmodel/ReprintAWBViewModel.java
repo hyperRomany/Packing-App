@@ -18,7 +18,7 @@ public class ReprintAWBViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void fetchdata(String OrderNumber ,String TRACKING_NO) {
 

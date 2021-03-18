@@ -21,7 +21,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
         return OrderDataLiveData;
     }
 
-    public static MutableLiveData<String> mutableLiveDataError_fetch = new MutableLiveData<>();
+    public  MutableLiveData<String> mutableLiveDataError_fetch = new MutableLiveData<>();
 
     public void fetchdata(String OrderNumber) {
 
@@ -47,7 +47,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
         return OrderDataAndSMSDataLiveData;
     }
 
-    public static MutableLiveData<String> OrderDataAndSMSDatamutableLiveDataError_fetch = new MutableLiveData<>();
+    public  MutableLiveData<String> OrderDataAndSMSDatamutableLiveDataError_fetch = new MutableLiveData<>();
 
     public void fetchdataAndSMSData(String OrderNumber) {
 
@@ -67,7 +67,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus() {
         return  mutableLiveData_UpdateStatus;
     }

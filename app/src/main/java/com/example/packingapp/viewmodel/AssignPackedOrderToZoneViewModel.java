@@ -47,7 +47,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         });
     }
 
-    public static MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
+    public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus(){
         return mutableLiveData_UpdateStatus;
     }
