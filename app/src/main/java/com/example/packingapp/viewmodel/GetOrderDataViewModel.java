@@ -32,39 +32,23 @@ public class GetOrderDataViewModel extends ViewModel {
     }
     public void fetchdata(String ORDER_NO) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("number", ORDER_NO);
-        ApiClient.build().GetOrderData(ORDER_NO,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
-                )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(responseGetOrderData -> {
-                            OrderDataLiveData.setValue(responseGetOrderData);
-                            Log.e("responseGetOrderData",responseGetOrderData.getOrder_number());
-                        }
-                        ,throwable -> {
-                            mutableLiveDataError.setValue(throwable.getMessage());
-                            Log.d("Error",throwable.getMessage());
-                        });
-       /* HashMap<String, String> map = new HashMap<>();
         map.put("OrderNumber", ORDER_NO);
 
         ApiClient.buildRo().GetOrderData(
                 "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
-               // "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
+                // "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO
         )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(responseGetOrderData -> {
-                            OrderDataLiveData.setValue(responseGetOrderData);
-                            Log.d(TAG, "fetchdata: "+responseGetOrderData);
-                        },throwable -> {
-                            mutableLiveDataError.setValue(throwable.getMessage());
-                            Log.d("Error",throwable.getMessage());
+                    OrderDataLiveData.setValue(responseGetOrderData);
+                    Log.d(TAG, "fetchdata: "+responseGetOrderData);
+                },throwable -> {
+                    mutableLiveDataError.setValue(throwable.getMessage());
+                    Log.d("Error",throwable.getMessage());
 
-                        });
-
-        */
+                });
     }
 
     public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
@@ -171,26 +155,11 @@ public class GetOrderDataViewModel extends ViewModel {
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("number", ORDER_NO);
         map.put("status", status);
 
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
-        ApiClient.build().UpdateOrderStatus(
-                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
-        )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(responseSms -> {
-                            mutableLiveData_UpdateStatus.setValue(responseSms);
-
-                        }
-                        ,throwable -> {
-                            Log.d("Error_roub",throwable.getMessage());
-
-                        });
-
-       /* ApiClient.buildRo().UpdateOrderStatus(
+        ApiClient.buildRo().UpdateOrderStatus(
                 "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
 //                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
@@ -205,7 +174,7 @@ public class GetOrderDataViewModel extends ViewModel {
                         ,throwable -> {
                             Log.d("Error_rou",throwable.getMessage());
 
-                        });*/
+                        });
 
     }
 

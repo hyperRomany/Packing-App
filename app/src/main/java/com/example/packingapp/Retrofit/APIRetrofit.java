@@ -3,7 +3,6 @@ package com.example.packingapp.Retrofit;
 import com.example.packingapp.model.DriverModules.DriverPackages_Respones_Details_recycler;
 import com.example.packingapp.model.DriverModules.DriverPackages_Respones_Header_recycler;
 import com.example.packingapp.model.DriverModules.ResponeEndOfDay;
-import com.example.packingapp.model.GetOrderResponse.ResponseGetOrderData;
 import com.example.packingapp.model.Message;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
 import com.example.packingapp.model.RecievePacked.ResponseFetchRuntimesheetID;
@@ -29,16 +28,16 @@ import retrofit2.http.POST;
 
 public interface APIRetrofit {
     //To Get orderdata
-    @FormUrlEncoded
-    @POST("GetMagentoOrderDetails.php")
-    Observable<ResponseGetOrderData> GetOrderData(@Field("number") String phone,
-                                                  @Field("token") String token);
-
-    @FormUrlEncoded
-    @POST("UpdateMagentoOrder.php")
-    Observable<ResponseUpdateStatus> UpdateOrderStatus(@Field("number") String phone,
-                                                       @Field("status") String status,
-                                                       @Field("token") String token);
+//    @FormUrlEncoded
+//    @POST("GetMagentoOrderDetails.php")
+//    Observable<ResponseGetOrderData> GetOrderData(@Field("number") String phone,
+//                                                  @Field("token") String token);
+//
+//    @FormUrlEncoded
+//    @POST("UpdateMagentoOrder.php")
+//    Observable<ResponseUpdateStatus> UpdateOrderStatus(@Field("number") String phone,
+//                                                       @Field("status") String status,
+//                                                       @Field("token") String token);
 
 
     @POST("Login/Auth.php")

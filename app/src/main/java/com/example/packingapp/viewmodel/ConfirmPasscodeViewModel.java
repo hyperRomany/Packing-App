@@ -92,26 +92,11 @@ public class ConfirmPasscodeViewModel extends ViewModel {
 
     public void UpdateStatus(String ORDER_NO, String status) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("number", ORDER_NO);
         map.put("status", status);
+
         Log.e(TAG, "UpdateStatus:rob "+ ORDER_NO);
 
-        ApiClient.build().UpdateOrderStatus(
-//                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
-                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
-        )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(responseSms -> {
-                            mutableLiveData_UpdateStatus.setValue(responseSms);
-
-                        }
-                        ,throwable -> {
-                            Log.d("Error_roub",throwable.getMessage());
-
-                        });
-
-        /*ApiClient.buildRo().UpdateOrderStatus(
+        ApiClient.buildRo().UpdateOrderStatus(
                 "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71",
 //                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
                 ORDER_NO ,
@@ -126,7 +111,7 @@ public class ConfirmPasscodeViewModel extends ViewModel {
                         ,throwable -> {
                             Log.d("Error_rou",throwable.getMessage());
                             mutableLiveDataError_rou.setValue(throwable.getMessage());
-                        });*/
+                        });
 
     }
 

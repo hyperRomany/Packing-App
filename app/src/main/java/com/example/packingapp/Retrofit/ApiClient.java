@@ -10,8 +10,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static final String BASE_URL = "http://10.0.4.175/PackingApp/Packing_Api_Development_V1/";
-//        public static final String BASE_URL = "http://192.168.1.83/Packing_Api_Development_V1/";
+//    public static final String BASE_URL = "http://10.0.4.175/PackingApp/Packing_Api_Development_V1/";
+        public static final String BASE_URL = "http://192.168.1.83/Packing_Api_Development_V1/";
     //   public static final String BASE_URL = "http://192.168.1.50:81/";
     private static Gson gson = new GsonBuilder()
          .setLenient()
