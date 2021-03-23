@@ -21,11 +21,9 @@ public class LoginViewModel extends ViewModel {
     public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void fetchdata(String username, String password) {
-
         HashMap<String, String> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
-
         ApiClient.build().loginwithno(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -35,7 +33,6 @@ public class LoginViewModel extends ViewModel {
                         ,throwable -> {
                             mutableLiveDataError.setValue(throwable.getMessage());
                             Log.d("Error",throwable.getMessage());
-
                         });
     }
 

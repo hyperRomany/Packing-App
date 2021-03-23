@@ -124,6 +124,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe((ResponseZoneName responseZoneName) -> {
+
                             mutableLiveData_readZones.setValue(responseZoneName);
                         }
                         ,throwable -> {
