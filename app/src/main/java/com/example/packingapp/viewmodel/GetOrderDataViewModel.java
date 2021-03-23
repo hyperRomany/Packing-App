@@ -135,6 +135,9 @@ public class GetOrderDataViewModel extends ViewModel {
             String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"/"+name+"/"+itemsOrderDataDBDetailsList.get(i).getSku()
                     +"/"+(TotalPriceForBarcode)+"/"+itemsOrderDataDBDetailsList.get(i).getQuantity()
                     +"/"+itemsOrderDataDBDetailsList.get(i).getUnite();
+
+
+
             Log.e("data",itemsOrder);
             Log.e("OrderNumber",OrderNumber);
                 ApiClient.build().InsertOrderDataDetails(OrderNumber,itemsOrder)

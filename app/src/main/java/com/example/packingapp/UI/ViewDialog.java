@@ -55,6 +55,7 @@ private  String OrderNumber;
     private Button testButton;
     private ZebraPrinter printer;
     private TextView statusField;
+    List<TrackingnumbersListDB> TrackingnumberDB_list;
     Dialog dialog;
     Activity activity;
     byte[] configLabel="".getBytes();
@@ -217,7 +218,7 @@ private  String OrderNumber;
             if (printerStatus.isReadyToPrint) {
                 ArrayList<ItemsOrderDataDBDetails_Scanned> print = new ArrayList<>();
 
-                List<TrackingnumbersListDB> TrackingnumberDB_list=database.userDao().getTrackingnumberDB(OrderNumber);
+                TrackingnumberDB_list=database.userDao().getTrackingnumberDB(OrderNumber);
 
                 Log.e(TAG, "sendTestLabel:sizesca "+database.userDao().getDetailsTrackingnumberToUpload_scannedbyordernumber(OrderNumber).size() );
                 Log.e(TAG, "sendTestLabel:sizeTra "+TrackingnumberDB_list.size() );
@@ -308,12 +309,14 @@ private  String OrderNumber;
                     Log.e("when empty body size", "" + orderDataModuleDBHeaderkist.get(i).getName());
                 }
             }
+            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(OrderNumber);
+
+
             for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
                 totel += Double.valueOf(orderDataModuleDBHeaderkist.get(i).getPrice());
             }
             if (printerLanguage == PrinterLanguage.ZPL) {
 
-                    OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(OrderNumber);
                     try {
                         totel=Double.valueOf(new DecimalFormat("##0.00").format(totel));
                         Log.e(TAG, "getConfigLabel:AfterRound_tot "+totel );
@@ -347,11 +350,12 @@ private  String OrderNumber;
                                 "^CF0,25" +
                                 "^FO200,65^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_name() + "^FS" +
                                 "^FO200,90^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_phone() + "^FS" +
-                                "^FO100,150^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_detail() + "^FS" +
+                                "^FO50,150^CI28^AZN,0,25^FDA" + orderDataModuleDBHeader.getCustomer_address_detail().substring(0,orderDataModuleDBHeader.getCustomer_address_detail().length()/2) + "^FS" +
+                                "^FO60,170^CI28^AZN,0,25^FDA" + orderDataModuleDBHeader.getCustomer_address_detail().substring(orderDataModuleDBHeader.getCustomer_address_detail().length()/2,orderDataModuleDBHeader.getCustomer_address_detail().length()) + "^FS" +
                                 "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
                                 "^FO100,270^FD"+part2.substring(1)+"^FS" +
-                                "^FO600,230^CI28^AZN,20,15^FD ( التحقق من هوية العميل ) ^FS" +
+                                "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleDBHeader.getGrand_total()))+" ^FS" +
                                 "^FO400,230^CI28^AZN,0,25^FD (اجمالي قيمه الطلب ^FS" +
                                 "^CF0,25" +
                                 "^FO250,230^FD (" + orderDataModuleDBHeader.getGrand_total() + " ^FS" +
@@ -367,8 +371,8 @@ private  String OrderNumber;
 
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel /*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size() + "^FS\n" +
+                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel + (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())/*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +
@@ -545,6 +549,18 @@ private  String OrderNumber;
         }
         else
         {return "أون لاين";}
+    }
+
+
+    public String validPaymentMethod(String name)
+    {
+        if (name.equals("كاش")) {
+            return " ";
+        }
+        else
+        {
+            return " ( التحقق من هوية العميل ) ";
+        }
     }
 
     public String GetQty(List<ItemsOrderDataDBDetails_Scanned> orderDataModuleDBHeaderkist ,int i){

@@ -70,6 +70,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoadNewPurchaseOrder();
+
             }
         });
 
@@ -174,7 +175,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                                ordernumberselected_ForDetails=Ordernumber;
                                                                UploadHeader(Ordernumber);
 
-//                                                               UploadDetails(Ordernumber);
+                                                               //UploadDetails(Ordernumber);
 
                                                                alertDialog.dismiss();
 
@@ -214,8 +215,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        getOrderDataViewModel.getOrderDataLiveData().removeObservers(this);
-        getOrderDataViewModel.getmutableLiveDataError().removeObservers(this);
+      
 
         Log.e(TAG, "onPause: ");
 
@@ -250,7 +250,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
                         }
-                        getOrderDataViewModel.getOrderDataLiveData().removeObservers(GetOrderDatactivity.this);
                     }
                 });
 
@@ -266,8 +265,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
                 }
-                getOrderDataViewModel.getmutableLiveDataError().removeObservers(GetOrderDatactivity.this);
-
             }
         });
 
@@ -305,7 +302,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
             public void onChanged(Message message) {
                 Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onChanged: " + message.getMessage());
-
                 ViewDialog alert = new ViewDialog();
                 alert.showDialog(GetOrderDatactivity.this, ordernumberselected_ForDetails);
 
@@ -363,8 +359,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
         binding.progLoadingMagentoorder.setVisibility(View.VISIBLE);
         binding.btnLoadingNewPurchaseOrder.setEnabled(false);
         getOrderDataViewModel.fetchdata(binding.editMagentoorder.getText().toString());
-
-
     }
 
 
@@ -448,7 +442,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
 //todo  we need quere to get list if quantity scanned not equaled to required quantity
         Log.e(TAG, "UploadHeader:ordernumberselected "+ordernumberselected );
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
-
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
             List<String> NO_OF_PACKAGES =
                     database.userDao().getNoOfPackagesToUpload(orderDataModuleDBHeader.getOrder_number() + "%");

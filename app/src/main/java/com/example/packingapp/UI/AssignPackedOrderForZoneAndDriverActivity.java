@@ -308,11 +308,11 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
         assignPackedOrderToZoneViewModel.mutableLiveData_readZones.observe(AssignPackedOrderForZoneAndDriverActivity.this
                 , (ResponseZoneName responseZoneName) -> {
+                    Log.e("zone",String.valueOf(zones_list.size()));
                     if (zones_list.size() == 0) {
-                        for (int i = 0; i < responseDriver.getRecords().size(); i++) {
+                        for (int i = 0; i < responseZoneName.getRecords().size(); i++) {
                             if (i == 0)
                                 zones_list.add(getResources().getString(R.string.choice_zone));
-
                             zones_list.add(responseZoneName.getRecords().get(i).getNameEnglish());
                         }
                     }
@@ -1374,13 +1374,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
         int pos=0;
         for (int i=0;i<items.size();i++) {
-            canvas.drawText(items.get(i).getADDRESS_DETAILS(), 890.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0,items.get(i).getADDRESS_DETAILS().length()/2), 890.0f, 390+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length()/2,items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420+pos, paint);
             canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390+pos, paint);
             canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390+pos, paint);
 
             canvas.drawText("توصيل", 1750.0f, 390+pos, paint);
 
-            canvas.drawText("كاش", 1880.0f, 390+pos, paint);
+            canvas.drawText(checkPaymentMethod(items.get(i).getITEM_PRICE()), 1880.0f, 390+pos, paint);
             canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390+pos, paint);
             canvas.drawText(String.valueOf(i+1), 2910.0f, 390+pos, paint);
 
@@ -1405,6 +1406,14 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
         pdfDocument.close();
 
+    }
+    public String checkPaymentMethod(String name)
+    {
+        if (name.equals("0")) {
+            return "كاش";
+        }
+        else
+        {return "أون لاين";}
     }
 //TODO this for n of pages after calculte
    /* private void createPdf(String id , List<RecordsItem> items) {
