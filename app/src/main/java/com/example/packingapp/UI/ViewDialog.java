@@ -542,19 +542,20 @@ private  String OrderNumber;
     }
 
 
-    public String checkPaymentMethod(String name)
+    public String checkPaymentMethod(String Grand_total)
     {
-        if (name.equals("0")) {
+        if (Grand_total.equals("0")) {
             return "كاش";
         }
-        else
-        {return "أون لاين";}
+        else {
+            return "أون لاين";
+        }
     }
 
 
-    public String validPaymentMethod(String name)
+    public String validPaymentMethod(String Grand_total)
     {
-        if (name.equals("كاش")) {
+        if (Grand_total.equals("كاش")) {
             return " ";
         }
         else

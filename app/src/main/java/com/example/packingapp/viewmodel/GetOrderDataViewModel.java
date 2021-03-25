@@ -32,6 +32,21 @@ public class GetOrderDataViewModel extends ViewModel {
     }
     public void fetchdata(String ORDER_NO) {
         HashMap<String, String> map = new HashMap<>();
+        map.put("number", ORDER_NO);
+        ApiClient.build().GetOrderData(ORDER_NO,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseGetOrderData -> {
+                            OrderDataLiveData.setValue(responseGetOrderData);
+                            Log.e("responseGetOrderData",responseGetOrderData.getOrder_number());
+                        }
+                        ,throwable -> {
+                            mutableLiveDataError.setValue(throwable.getMessage());
+                            Log.d("Error",throwable.getMessage());
+                        });
+
+       /* HashMap<String, String> map = new HashMap<>();
         map.put("OrderNumber", ORDER_NO);
 
         ApiClient.buildRo().GetOrderData(
@@ -48,7 +63,7 @@ public class GetOrderDataViewModel extends ViewModel {
                     mutableLiveDataError.setValue(throwable.getMessage());
                     Log.d("Error",throwable.getMessage());
 
-                });
+                });*/
     }
 
     public  MutableLiveData<Message> mutableLiveData = new MutableLiveData<>();
@@ -157,7 +172,28 @@ public class GetOrderDataViewModel extends ViewModel {
     public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
+
         HashMap<String, String> map = new HashMap<>();
+        map.put("number", ORDER_NO);
+        map.put("status", status);
+
+        Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
+
+        ApiClient.build().UpdateOrderStatus(
+                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseSms -> {
+                            mutableLiveData_UpdateStatus.setValue(responseSms);
+
+                        }
+                        ,throwable -> {
+                            Log.d("Error_roub",throwable.getMessage());
+
+                        });
+
+      /*  HashMap<String, String> map = new HashMap<>();
         map.put("status", status);
 
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
@@ -177,7 +213,7 @@ public class GetOrderDataViewModel extends ViewModel {
                         ,throwable -> {
                             Log.d("Error_rou",throwable.getMessage());
 
-                        });
+                        });*/
 
     }
 

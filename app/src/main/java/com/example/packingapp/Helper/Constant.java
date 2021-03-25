@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class Constant {
     private static final String TAG = "Constant";
+
+
     public static boolean isOnline(Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

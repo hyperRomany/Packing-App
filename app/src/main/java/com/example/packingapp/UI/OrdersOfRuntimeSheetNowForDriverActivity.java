@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.example.packingapp.Adapter.DriverOrdersAdapter;
 import com.example.packingapp.Database.AppDatabase;
+import com.example.packingapp.Helper.Constant;
 import com.example.packingapp.Helper.ItemclickforRecycler;
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityOrdersOfRuntimeSheetNowForDriverBinding;
@@ -27,14 +28,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrdersOfRuntimeSheetNowForDriverActivity extends AppCompatActivity {
-private static final String TAG = "OrdersOfRuntimeSheetNow";
-ActivityOrdersOfRuntimeSheetNowForDriverBinding binding;
-DriverOrdersAdapter driverOrdersAdapter;
+    private static final String TAG = "OrdersOfRuntimeSheetNow";
+    ActivityOrdersOfRuntimeSheetNowForDriverBinding binding;
+    DriverOrdersAdapter driverOrdersAdapter;
     List<DriverPackages_Header_DB> driverPackages_Header_dbList;
-
     GetDriverOrdersViewModel getDriverOrdersViewModel ;
     AppDatabase database;
-
+    RecordsItem recordsItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +45,12 @@ DriverOrdersAdapter driverOrdersAdapter;
 
         setTitle(R.string.OrdersOfRuntimeSheetNowForDriverActivity_label);
 
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         database=AppDatabase.getDatabaseInstance(this);
-        RecordsItem recordsItem = database.userDao().getUserData_MU();
+         recordsItem = database.userDao().getUserData_MU();
         Log.e(TAG, "onCreate: "+recordsItem.getUser_id() );
-        getDriverOrdersViewModel.ReadDriverRunsheetOrdersData(recordsItem.getUser_id(),timeStamp,"out_for_delivery");
+
+        GetOrdersFUN();
         getDriverOrdersViewModel.DriverOrdersReadyDataLiveData().observe(OrdersOfRuntimeSheetNowForDriverActivity.this,
                 new Observer<DriverPackages_Respones_Header_recycler>() {
                     @Override
@@ -67,7 +67,25 @@ DriverOrdersAdapter driverOrdersAdapter;
                 });
 
 
+        binding.retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetOrdersFUN();
+            }
+        });
+    }
 
+    private void GetOrdersFUN() {
+        if (Constant.isOnline(OrdersOfRuntimeSheetNowForDriverActivity.this)) {
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+            binding.linearShoworders.setVisibility(View.VISIBLE);
+            binding.linearNoInternetConnection.setVisibility(View.GONE);
+            getDriverOrdersViewModel.ReadDriverRunsheetOrdersData(recordsItem.getUser_id(), timeStamp, "out_for_delivery");
+        }else {
+            binding.linearShoworders.setVisibility(View.GONE);
+            binding.linearNoInternetConnection.setVisibility(View.VISIBLE);
+        }
     }
 
     public void CreateORUpdateRecycleView(){

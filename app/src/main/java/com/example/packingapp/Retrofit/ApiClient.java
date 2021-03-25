@@ -12,9 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 //    public static final String BASE_URL = "http://10.0.4.175/PackingApp/Packing_Api_Development_V1/";
 
-//    public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V1/";
+    public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V1/";
+    public static String ApksURL_ًWithoutName="http://10.0.6.106/PackingApp/Packing_Api_Development_V1/Version/";
+//    public final static String ApksURL_ًWithoutName ="http://10.2.1.220:82/PPCAPK/";
 
-    public static final String BASE_URL = "http://192.168.1.83/Packing_Api_Development_V1/";
+//    public static final String BASE_URL = "http://192.168.1.83/Packing_Api_Development_V1/";
 
     //   public static final String BASE_URL = "http://192.168.1.50:81/";
     private static Gson gson = new GsonBuilder()

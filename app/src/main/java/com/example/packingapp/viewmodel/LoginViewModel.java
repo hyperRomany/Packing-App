@@ -3,6 +3,7 @@ package com.example.packingapp.viewmodel;
 import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
+import com.example.packingapp.model.APKVersion;
 import com.example.packingapp.model.Message;
 import com.example.packingapp.model.ResponseLogin;
 
@@ -32,6 +33,26 @@ public class LoginViewModel extends ViewModel {
                         }
                         ,throwable -> {
                             mutableLiveDataError.setValue(throwable.getMessage());
+                            Log.d("Error",throwable.getMessage());
+                        });
+    }
+
+    private MutableLiveData<APKVersion> versionLiveData = new MutableLiveData<>();
+    public MutableLiveData<APKVersion> getversionLiveData() {
+        return versionLiveData;
+    }
+    public  MutableLiveData<String> VersionmutableLiveDataError = new MutableLiveData<>();
+
+    public void GetVersion() {
+
+        ApiClient.build().GetVersion()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(apkVersion -> {
+                            versionLiveData.setValue(apkVersion);
+                        }
+                        ,throwable -> {
+                            VersionmutableLiveDataError.setValue(throwable.getMessage());
                             Log.d("Error",throwable.getMessage());
                         });
     }

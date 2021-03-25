@@ -2,7 +2,10 @@ package com.example.packingapp.UI;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
@@ -66,28 +69,50 @@ public class ReprintActivity extends AppCompatActivity {
 
             }
         });
-        binding.btnPrintAwb.setOnClickListener(new View.OnClickListener() {
+
+        binding.editTrackingnumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                if (!binding.editTrackingnumber.getText().toString().isEmpty() &&
-                        binding.editTrackingnumber.getText().toString().contains("-")) {
-                    
-                    reprintAWBViewModel.fetchdata(binding.editTrackingnumber.getText().toString()
-                                    .substring(0,binding.editTrackingnumber.getText().toString().indexOf("-")),
-                            binding.editTrackingnumber.getText().toString()
-                            );
-               
-                }else {
-                    if (binding.editTrackingnumber.getText().toString().isEmpty()) {
-                        binding.editTrackingnumber.setError(getString(R.string.enter));
-                        binding.editTrackingnumber.requestFocus();
-                    }else if (!binding.editTrackingnumber.getText().toString().contains("-")){
-                        binding.editTrackingnumber.setError(getString(R.string.enter_valid_tracking_number));
-                        binding.editTrackingnumber.requestFocus();
-                    }
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_GO
+                        || actionId == EditorInfo.IME_ACTION_NEXT
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        || keyEvent == null
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_NUMPAD_ENTER
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_DPAD_CENTER) {
+                    ReprintFUN();
                 }
+                return false;
             }
         });
 
+        binding.btnPrintAwb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReprintFUN();
+            }
+        });
+
+    }
+    public void ReprintFUN(){
+        if (!binding.editTrackingnumber.getText().toString().isEmpty() &&
+                binding.editTrackingnumber.getText().toString().contains("-")) {
+
+            reprintAWBViewModel.fetchdata(binding.editTrackingnumber.getText().toString()
+                            .substring(0,binding.editTrackingnumber.getText().toString().indexOf("-")),
+                    binding.editTrackingnumber.getText().toString()
+            );
+
+        }else {
+            if (binding.editTrackingnumber.getText().toString().isEmpty()) {
+                binding.editTrackingnumber.setError(getString(R.string.enter));
+                binding.editTrackingnumber.requestFocus();
+            }else if (!binding.editTrackingnumber.getText().toString().contains("-")){
+                binding.editTrackingnumber.setError(getString(R.string.enter_valid_tracking_number));
+                binding.editTrackingnumber.requestFocus();
+            }
+        }
     }
 }

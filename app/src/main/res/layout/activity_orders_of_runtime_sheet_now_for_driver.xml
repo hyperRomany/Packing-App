@@ -14,6 +14,7 @@
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         >-->
     <LinearLayout
+        android:id="@+id/linear_showorders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,6 +31,39 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/include_header_of_rv"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_no_internet_connection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/no_network_an"
+            app:tint="@color/txt_color" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_internetconnection"
+           android:textSize="@dimen/font_size_for_text_of_app"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/txt_color"/>
+        <TextView
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            android:textSize="@dimen/font_size_for_text_of_app"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/secod_red"/>
     </LinearLayout>
    <!-- </HorizontalScrollView>-->
 

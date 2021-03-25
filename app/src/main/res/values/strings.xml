@@ -216,5 +216,10 @@
     <string name="enter_confirm_new_password_err">ادخل كلمه المرور الجديده مره اخرى</string>
     <string name="confirm_new_password_err">تم ادخال كلمه مرور مختلفه</string>
     <string name="barcode_data">بيانات الباركود</string>
+    <string name="no_internetconnection">No Internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="unenabletogetlastversion">Unable To Get Last Version</string>
+    <string name="thereisnewversion">There is New Version</string>
+    <string name="cantgetlastversionfromserver">Unable to get last version from server</string>
 
 </resources>

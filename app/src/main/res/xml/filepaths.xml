@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <!--  <external-path
+         name="external"
+         path="."
+         />
+
+     <files-path
+          name="files"
+          path="."
+          />
+
+                <files-path name="my_images" path="images/"/>
+
+        <external-files-path name="my_images" path="Download/" />
+
+
+-->
+
+
+
+
+
+    <files-path name="my_images" path="myapp/"/>
+    <external-files-path name="my_image" path="Download/" />
+    <external-path
+        name="external"
+        path="."
+        />
+</paths>

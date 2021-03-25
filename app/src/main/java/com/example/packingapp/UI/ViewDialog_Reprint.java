@@ -363,11 +363,12 @@ public class ViewDialog_Reprint {
                                 "^CF0,25" +
                                 "^FO200,65^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getCUSTOMER_NAME() + "^FS" +
                                 "^FO200,90^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getCUSTOMER_PHONE() + "^FS" +
-                                "^FO50,150^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(0,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2)+""+orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length())+ "^FS" +
+                                "^FO50,150^CI28^AZN,0,25^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(0,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2) + "^FS" +
+                                "^FO60,170^CI28^AZN,0,25^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()) + "^FS" +
                                 "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
                                 "^FO100,270^FD"+part2.substring(1)+"^FS" +
-                                "^FO600,230^CI28^AZN,20,15^FD ( التحقق من هوية العميل ) ^FS" +
+                                "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL()))+" ^FS" +
                                 "^FO400,230^CI28^AZN,0,25^FD (اجمالي قيمه الطلب ^FS" +
                                 "^CF0,25" +
                                 "^FO250,230^FD " + orderDataModuleHeader_reprint.getGRAND_TOTAL() + " ^FS" +
@@ -383,7 +384,7 @@ public class ViewDialog_Reprint {
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getORDER_NO() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
                                 "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getSHIPPING_FEES() + "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + (totel + (orderDataModuleHeader_reprint.getSHIPPING_FEES()) /*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
+                                "^FO80,550^CI28^AZN,20,15^FD" + (totel /*+ (orderDataModuleHeader_reprint.getSHIPPING_FEES()) *//*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +
@@ -569,4 +570,15 @@ public class ViewDialog_Reprint {
         }
         return Qty;
     }
+    public String validPaymentMethod(String name)
+    {
+        if (name.equals("كاش")) {
+            return " ";
+        }
+        else
+        {
+            return " ( التحقق من هوية العميل ) ";
+        }
+    }
+
 }
