@@ -109,6 +109,8 @@
     <string name="Supervisor">اداره حركه السيارات</string>
     <string name="newOrder">ادخل امر شراء جديد</string>
     <string name="edit">إنهاء التعديل</string>
+    <string name="edit1">تعديل محتويات الشحنة</string>
+
     <string name="edit_qty">تعديل</string>
 
     <string name="loadnewOrder">تغليف شحنة جديدة</string>
@@ -221,5 +223,7 @@
     <string name="unenabletogetlastversion">Unable To Get Last Version</string>
     <string name="thereisnewversion">There is New Version</string>
     <string name="cantgetlastversionfromserver">Unable to get last version from server</string>
+    <string name="cantaddthisordertoserver">لايمكن اضافه البيانات للسيرفير</string>
+    <string name="addqtymorethanzero">لا يمكن تعديل الكميه الى 0 أو أقل</string>
 
 </resources>

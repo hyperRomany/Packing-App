@@ -371,8 +371,8 @@ private  String OrderNumber;
 
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
                                 "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size() + "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel + (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())/*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
+                                "^FO80,550^CI28^AZN,20,15^FD" + ( totel /*+ (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())*//*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +
@@ -545,10 +545,10 @@ private  String OrderNumber;
     public String checkPaymentMethod(String Grand_total)
     {
         if (Grand_total.equals("0")) {
-            return "كاش";
+            return "أون لاين";
         }
         else {
-            return "أون لاين";
+            return "كاش";
         }
     }
 

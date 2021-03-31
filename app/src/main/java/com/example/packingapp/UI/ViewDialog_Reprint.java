@@ -557,10 +557,10 @@ public class ViewDialog_Reprint {
     public String checkPaymentMethod(String name)
     {
         if (name.equals("0")) {
-            return "كاش";
+            return "أون لاين";
         }
         else
-        {return "أون لاين";}
+        {return "كاش";}
     }
 
     public String GetQty(List<ItemsOrderDataDBDetails> orderDataModuleDBHeaderkist , int i){

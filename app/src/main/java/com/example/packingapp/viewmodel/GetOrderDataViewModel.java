@@ -143,7 +143,7 @@ public class GetOrderDataViewModel extends ViewModel {
                         ShippingfeesPerItem;
             }else {
                  TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() +
-                        (itemsOrderDataDBDetailsList.get(i).getQuantity() * ShippingfeesPerItem);
+                        (itemsOrderDataDBDetailsList.get(i).getQuantity() /* ShippingfeesPerItem*/);
             }
            String name= itemsOrderDataDBDetailsList.get(i).getName();
 

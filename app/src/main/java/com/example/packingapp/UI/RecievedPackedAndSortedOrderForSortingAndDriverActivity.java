@@ -167,6 +167,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                                     CreateORUpdateRecycleView();
                                     binding.editTrackingnumber.setError(null);
                                     binding.editTrackingnumber.setText("");
+                                    binding.editTrackingnumber.requestFocus();
                                 }
                             })
                             .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
@@ -255,6 +256,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                                 Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "This Order in " + responseGetOrderData.getSTATUS() + " State", Toast.LENGTH_SHORT).show();
                                 binding.editTrackingnumber.setError(null);
                                 binding.editTrackingnumber.setText("");
+                                binding.editTrackingnumber.requestFocus();
                             }
                         }
                     }
@@ -308,6 +310,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                         Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "This Order in " + responseGetOrderData.getSTATUS() + " State", Toast.LENGTH_SHORT).show();
                         binding.editTrackingnumber.setError(null);
                         binding.editTrackingnumber.setText("");
+                        binding.editTrackingnumber.requestFocus();
                     }
                 }
 
@@ -416,7 +419,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
 
             }
         });
-        recievePackedOrderViewModel.mutableLiveDataError_SendSms.observe(this, new Observer<String>() {
+        recievePackedOrderViewModel.getmutableLiveDataError_SendSms().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Log.e(TAG, "onChanged: " + s);
@@ -453,6 +456,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
 
                 if (recievePackedlist.size() == 0) {
                     binding.editTrackingnumber.setError(null);
+                    binding.editTrackingnumber.requestFocus();
 
                     GETOrderData(OrderNumber);
                     Log.e(TAG, "onClick: Ord " + OrderNumber);
@@ -470,6 +474,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                         database.userDao().insertRecievePacked(new RecievePackedModule(
                                 recievePackedlist.get(0).getORDER_NO(), recievePackedlist.get(0).getNO_OF_PACKAGES(),
                                 binding.editTrackingnumber.getText().toString()));
+
                         CreateORUpdateRecycleView();
                         Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
 //                        Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
@@ -478,6 +483,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                         //      Log.e(TAG, "onClick: Trac " + binding.editTrackingnumber.getText().toString());
                         binding.editTrackingnumber.setError(null);
                         binding.editTrackingnumber.setText("");
+                        binding.editTrackingnumber.requestFocus();
                     } else {
                         if (database.userDao().getRecievePacked_Tracking_Number(binding.editTrackingnumber.getText().toString())
                                 .size() > 0) {
@@ -544,6 +550,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
 
             binding.editTrackingnumber.setError(null);
             binding.editTrackingnumber.setText("");
+            binding.editTrackingnumber.requestFocus();
             CreateORUpdateRecycleView();
             Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
 //            Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
@@ -569,6 +576,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                     responseGetOrderData.getCUSTOMER_NAME(), responseGetOrderData.getCUSTOMER_PHONE(), responseGetOrderData.getGRAND_TOTAL()));
 
             binding.editTrackingnumber.setError(null);
+            binding.editTrackingnumber.requestFocus();
             binding.editTrackingnumber.setText("");
             CreateORUpdateRecycleView();
             Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();

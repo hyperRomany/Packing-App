@@ -282,13 +282,15 @@ public class EditPackageItemsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // promptsView.
 
-                if (!edit_qty.getText().toString().isEmpty()) {
+                if (!edit_qty.getText().toString().isEmpty() &&
+                        Double.valueOf(edit_qty.getText().toString())>0 ) {
 
                     if (!barcode.substring(0,2).equalsIgnoreCase("23")) {
-                        ForSearch(barcode,
+                            ForSearch(barcode,
                                 Float.valueOf(
                                         edit_qty.getText().toString()
                                 ));
+
                     }else {
                         Toast.makeText(context, "هذا الصنف موزون .. لايمكن تعديله", Toast.LENGTH_SHORT).show();
                     }
@@ -297,6 +299,8 @@ public class EditPackageItemsActivity extends AppCompatActivity {
                 }else{
                     if (edit_qty.getText().toString().isEmpty()){
                         edit_qty.setError(getResources().getString(R.string.enter_qyt));
+                    }else if (Double.valueOf(edit_qty.getText().toString())<=0){
+                        edit_qty.setError(getResources().getString(R.string.addqtymorethanzero));
                     }
                 }
             }

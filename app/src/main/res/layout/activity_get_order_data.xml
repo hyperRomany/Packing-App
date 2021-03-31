@@ -105,7 +105,7 @@
             android:background="@drawable/buttonshap"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="@string/edit"
+            android:text="@string/edit1"
             android:textColor="@color/textcolor_btns"
             android:textSize="@dimen/font_size_for_button_of_app"
             />

@@ -58,7 +58,7 @@ public class DriverOrdersAdapter extends RecyclerView.Adapter<DriverOrdersAdapte
         holder.txt_phone_number.setText(packages_db.getCustomer_phone());
 
         holder.txt_customer_name.setText(packages_db.getCustomer_name());
-        holder.txt_customer_address.setText(packages_db.getCustomer_address_city());
+        holder.txt_customer_address.setText(packages_db.getCustomer_address_detail());
 
         //android:textIsSelectable="true"
 //        holder.txt_ean11.setTextIsSelectable(true);

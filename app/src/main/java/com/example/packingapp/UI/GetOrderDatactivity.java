@@ -291,6 +291,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 if (s.contains("HTTP 400")) {
                     Toast.makeText(GetOrderDatactivity.this, String.format("%s",
                             getString(R.string.missingdata)), Toast.LENGTH_SHORT).show();
+                } else if (s.contains("HTTP 503")) {
+                    Toast.makeText(GetOrderDatactivity.this, String.format("%s",
+                            getString(R.string.cantaddthisordertoserver)), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GetOrderDatactivity.this, s, Toast.LENGTH_SHORT).show();
                 }
@@ -423,7 +426,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     .getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
            // String OrderNumber = database.userDao().getOrderNumber();
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(ordernumberselected);
-
             float SumOfQTY = database.userDao().SumOfQTYFromDetials();
             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();

@@ -21,6 +21,7 @@ import com.example.packingapp.R;
 import com.example.packingapp.databinding.ActivityAssignItemsToPackageBinding;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
+import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.Product;
 import com.example.packingapp.model.TrackingnumbersListDB;
 
@@ -101,8 +102,10 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, OrderNumber + "-01"));
                           //  database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                             for (int i=0;i<Adapterlist.size();i++) {
+                                float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
+
                                 ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
-                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
+                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),price,
                                         Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
                                 Log.e(TAG, "onClick:insert getScanned_quantity1: "+Adapterlist.get(i).getQuantity() );
 
@@ -120,9 +123,15 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                                 database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, Trackingnumber));
 //                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                                 for (int i=0;i<Adapterlist.size();i++) {
+                                    float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
+
                                     ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
-                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
-                                            Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
+                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,
+                                            Adapterlist.get(i).getName(),
+                                            price,
+                                            Adapterlist.get(i).getQuantity(),
+                                            Adapterlist.get(i).getSku(),
+                                            Adapterlist.get(i).getUnite(),Trackingnumber);
                                     Log.e(TAG, "onClick:insert getScanned_quantity2: "+Adapterlist.get(i).getQuantity() );
 
                                     database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
@@ -133,8 +142,10 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                                 database.userDao().Insertrackingnumber(new TrackingnumbersListDB(OrderNumber, Trackingnumber));
 //                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                                 for (int i=0;i<Adapterlist.size();i++) {
+                                    float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
+
                                     ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
-                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),Adapterlist.get(i).getPrice(),
+                                            = new ItemsOrderDataDBDetails_Scanned(OrderNumber,Adapterlist.get(i).getName(),price,
                                             Adapterlist.get(i).getQuantity(),Adapterlist.get(i).getSku(),Adapterlist.get(i).getUnite(),Trackingnumber);
                                     Log.e(TAG, "onClick:insert getScanned_quantity3: "+Adapterlist.get(i).getQuantity() );
 
@@ -156,8 +167,10 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             itemsOrderDataDBDetailsList_scanned = database.userDao().getItem_scanned(OrderNumber ,Adapterlist.get(i).getSku());
                             if (itemsOrderDataDBDetailsList_scanned.size() ==0 ) {
                                 Log.e(TAG, "onClick: insert "+ Adapterlist.get(i).getSku() );
+                                float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
+
                                 ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
-                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber, Adapterlist.get(i).getName(), Adapterlist.get(i).getPrice(),
+                                        = new ItemsOrderDataDBDetails_Scanned(OrderNumber, Adapterlist.get(i).getName(), price,
                                         Adapterlist.get(i).getQuantity(), Adapterlist.get(i).getSku(), Adapterlist.get(i).getUnite(),
                                         AddNewPackageORAddForExistPackage);
                                 Log.e(TAG, "onClick:insert getScanned_quantity1: " + Adapterlist.get(i).getQuantity());
@@ -344,11 +357,30 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     if (itemsOrderDataDBDetailsList.get(0).getQuantity() > (SumofScannedqty+adapterQTY)){
                        // if (adapterQTY>0){
 //                          QTY=adapterQTY+0.2f;
+                        float price=0;
+
+
                         QTY=adapterQTY+1;
+
+                      //  if (adapterQTY == 0){
+                            OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
+
+                            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+                            Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
+                            float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
+                            Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
+                            float ShippingfeesPerItem = Shippingfees / SumOfQTY;
+                            Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
+
+                            price=(itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity())+ShippingfeesPerItem;
+                      //  }
+                        Log.e(TAG, "SearchOfBarcode:price for item "+price );
+
                         ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                 = new ItemsOrderDataDBDetails_Scanned(OrderNumber,itemsOrderDataDBDetailsList.get(0).getName(),
-                                itemsOrderDataDBDetailsList.get(0).getPrice(),
+                                price,
                                 QTY,itemsOrderDataDBDetailsList.get(0).getSku(),itemsOrderDataDBDetailsList.get(0).getUnite());
+
                         Log.e(TAG, "SearchOfBarcode:QTY "+QTY );
 //                        if (Adapterlist.size()>0) {
 //                            Adapterlist.remove(postion);
@@ -446,13 +478,14 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // promptsView.
 
-                if (!edit_qty.getText().toString().isEmpty()) {
+                if (!edit_qty.getText().toString().isEmpty() &&
+                        Double.valueOf(edit_qty.getText().toString())>0 ) {
 
                     if (!barcode.substring(0,2).equalsIgnoreCase("23")) {
-                        ForSearch(barcode,
-                                Float.valueOf(
-                                        edit_qty.getText().toString()
-                                ));
+                            ForSearch(barcode,
+                                    Float.valueOf(
+                                            edit_qty.getText().toString()
+                                    ));
                     }else {
                         Toast.makeText(context, getResources().getString(R.string.this_is_weight_Item_cant_edit), Toast.LENGTH_SHORT).show();
 //                        Constant.ToastDialoge(getResources().getString(R.string.this_is_weight_Item_cant_edit) , AssignItemToPackagesActivity.this);
@@ -463,6 +496,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                 }else{
                     if (edit_qty.getText().toString().isEmpty()){
                         edit_qty.setError(getResources().getString(R.string.enter_qyt));
+                    }else if (Double.valueOf(edit_qty.getText().toString())<=0){
+                        edit_qty.setError(getResources().getString(R.string.addqtymorethanzero));
                     }
                 }
             }

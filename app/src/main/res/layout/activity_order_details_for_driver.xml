@@ -7,13 +7,16 @@
     android:layout_width="match_parent"
     android:id="@+id/main_content"
     >
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     tools:context=".UI.OrderDetails_forDriverActivity"
     >
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/linear_customer_data"
         android:layout_width="match_parent"
@@ -235,6 +238,6 @@
         />
     </LinearLayout>
     </HorizontalScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+</ScrollView>
 </FrameLayout>

@@ -148,7 +148,10 @@ public class RecievePackedOrderViewModel extends ViewModel {
     public MutableLiveData<ResponseSms> getSmsLiveData() {
         return smsLiveData;
     }
-    public static MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
+    public MutableLiveData<String> mutableLiveDataError_SendSms = new MutableLiveData<>();
+    public MutableLiveData<String> getmutableLiveDataError_SendSms() {
+        return mutableLiveDataError_SendSms;
+    }
 
     public void SendSms(String number, String message) {
         ApiClient.build().sendSms(number,message)
