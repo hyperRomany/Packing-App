@@ -108,7 +108,7 @@
     <string name="Driver">مندوب التوصيل</string>
     <string name="Supervisor">اداره حركه السيارات</string>
     <string name="newOrder">ادخل امر شراء جديد</string>
-    <string name="edit">إنهاء التعديل</string>
+    <string name="edit">تعديل محتويات شحنة</string>
     <string name="edit1">تعديل محتويات الشحنة</string>
 
     <string name="edit_qty">تعديل</string>
@@ -139,7 +139,7 @@
     <string name="invaliduser">برجاء التاكد من اسم المستخدم ورقم السري</string>
     <string name="not_enter">لم يتم أدخال</string>
     <string name="enterbefor">تم أدخال هذا من قبل</string>
-    <string name="invalidnumber">تم أدخال رقم غير صحيح</string>
+    <string name="invalidnumber">رقم الشحنة غير صحيح</string>
     <string name="statusnotUpdate">لم يتم تعديل الحاله</string>
     <string name="tracking_number_server">رقم تتبع الشحنه غير موجود علي السيرفر</string>
     <string name="order_not_found">Order not found</string>
@@ -171,7 +171,7 @@
     <string name="OrdersOfRuntimeSheetNowForDriverActivity_label"><![CDATA[Driver->DriverOrders]]></string>
     <string name="OrderDetails_forDriverActivity_label"><![CDATA[Driver->DriverOrders->OrderDetails]]></string>
     <string name="enter_more_thanrequired">تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب</string>
-    <string name="choice_ordernumber_that_youneed_to_print">اختر الشحنة التى تريد طباعتها</string>
+    <string name="choice_ordernumber_that_youneed_to_print">إختر الطلب الذى تريد طباعة شحناتة</string>
     <string name="choice_lastordernumber_that_youneed_to_load">اختر الامر السابق الذى تريد تحميله</string>
     <string name="add_items_topakage">إضافة العنصر للشحنة</string>
     <string name="title_dialoge_missuing_barcode">عناصر لم يتم إضافتها لشحنة</string>

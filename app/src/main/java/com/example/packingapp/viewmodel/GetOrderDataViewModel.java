@@ -139,8 +139,8 @@ public class GetOrderDataViewModel extends ViewModel {
 //TODO itemsOrderDataDBDetailsList.get(i).getPrice() + (itemsOrderDataDBDetailsList.get(i).getQuantity()*ShippingfeesPerItem)
             Float TotalPriceForBarcode=0f;
             if (itemsOrderDataDBDetailsList.get(i).getSku().substring(0,2).equalsIgnoreCase("23")){
-                TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() +
-                        ShippingfeesPerItem;
+                TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() /*+
+                        ShippingfeesPerItem*/;
             }else {
                  TotalPriceForBarcode = itemsOrderDataDBDetailsList.get(i).getPrice() +
                         (itemsOrderDataDBDetailsList.get(i).getQuantity() /* ShippingfeesPerItem*/);

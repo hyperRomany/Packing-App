@@ -133,12 +133,12 @@ public interface UserDao {
 
 //TODO use query to validation
     @Query("select order2  , sku2, ifnull(qty2,0) as'sumqty2',ifnull(qty1,0) as 'sumqty1' ,ifnull(qty2,0)-ifnull(qty1,0) as 'diff' from \n" +
-            "(SELECT Order_number as 'order2',sku as'sku2', sum(ifnull(quantity,0))as 'qty2' from ItemsOrderDataDBDetails\n" +
+            "(SELECT Order_number as 'order2',sku as'sku2', round(sum(ifnull(quantity,0)) ,2) as 'qty2' from ItemsOrderDataDBDetails\n" +
             "where Order_number=:Ordernumber group by sku\n" +
             ")as b\n" +
             "left outer join \n" +
             "(\n" +
-            "SELECT Order_number as 'order1' ,sku as 'sku1', sum(ifnull(quantity,0))as 'qty1' from ItemsOrderDataDBDetails_Scanned \n" +
+            "SELECT Order_number as 'order1' ,sku as 'sku1', round(sum(ifnull(quantity,0)),2) as 'qty1' from ItemsOrderDataDBDetails_Scanned \n" +
             "where Order_number=:Ordernumber group by sku\n" +
             ")as a \n" +
             "on ( order2 = order1 and sku1 = sku2)\n" +

@@ -1,6 +1,7 @@
 package com.example.packingapp.UI;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 
 import com.example.packingapp.Database.AppDatabase;
@@ -25,6 +26,7 @@ public class EndOfDayActivity extends AppCompatActivity {
     ActivityEndOfDayBinding binding;
     List<EndOfDayModule> FailedList ,SuccessList;
     Double FailedValue=0.0,SuccessValue=0.0;
+    String FailedName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,8 @@ public class EndOfDayActivity extends AppCompatActivity {
                         for (int i=0;i<responeEndOfDay.getEndOfDayModule().size();i++){
                             if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("rejected_under_inspection")){
                                 FailedList.add(responeEndOfDay.getEndOfDayModule().get(i));
+                                FailedName +=responeEndOfDay.getEndOfDayModule().get(i).getTRACKING_NO()+"\n";
+                            Log.e(TAG, "onChanged:FailedName "+FailedName );
                                 FailedValue +=Double.valueOf(responeEndOfDay.getEndOfDayModule().get(i).getITEM_PRICE());
                             } else if (responeEndOfDay.getEndOfDayModule().get(i).getSTATUS().equalsIgnoreCase("has_been_delivered")) {
                                 SuccessList.add(responeEndOfDay.getEndOfDayModule().get(i));
@@ -64,7 +68,9 @@ public class EndOfDayActivity extends AppCompatActivity {
                         binding.txtSuccessValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(SuccessValue+FailedValue))));
                         binding.txtRequiredValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(SuccessValue))));
                         binding.txtFailedValue.setText(String.valueOf(Double.valueOf(new DecimalFormat("##0.00").format(FailedValue))));
-                        binding.txtNumberFailedValue.setText(String.valueOf(FailedList.size()));
+//                        binding.txtNumberFailedValue.setText(String.valueOf(FailedList.size()));
+                        binding.txtNumberFailedValue.setText(FailedName);
+                        binding.txtNumberFailedValue.setMovementMethod(new ScrollingMovementMethod());
 
                     }
                 });

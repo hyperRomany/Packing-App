@@ -66,13 +66,18 @@
     <TextView
         android:id="@+id/txt_number_failed_value"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:maxHeight="200dp"
         android:gravity="center"
         android:text="@string/failed_number_header_of_driver"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_for_text_of_app"
-
-        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_header" />
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_header"
+        android:scrollbarSize="@dimen/font_size_for_text_of_app"
+        android:fadeScrollbars="false"
+        />
 
 
     <TextView
@@ -83,7 +88,8 @@
         android:text="@string/required_header_of_driver"
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_for_text_of_app"
-        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_value" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_number_failed_value"
+       />
 
     <TextView
         android:id="@+id/txt_required_value"

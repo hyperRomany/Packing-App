@@ -2,6 +2,7 @@ package com.example.packingapp.UI;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -212,5 +213,12 @@ public class EditPackagesForRecievingActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent GoBack=new Intent(EditPackagesForRecievingActivity.this,RecievedPackedAndSortedOrderForSortingAndDriverActivity.class);
+        startActivity(GoBack);
     }
 }

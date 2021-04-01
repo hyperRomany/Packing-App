@@ -419,7 +419,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
     private void UploadDetails(String ordernumberselected) {
         //todo  we need quere to get list if quantity scanned not equaled to required quantity
-
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
 
             List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList = database.userDao()
@@ -443,6 +442,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
     public void UploadHeader(String ordernumberselected) {
 //todo  we need quere to get list if quantity scanned not equaled to required quantity
         Log.e(TAG, "UploadHeader:ordernumberselected "+ordernumberselected );
+//        Log.e(TAG, "UploadHeader:qty1 "+database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).get(0).getSumqty1() );
+//        Log.e(TAG, "UploadHeader:qty2 "+database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).get(0).getSumqty2() );
+
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
             List<String> NO_OF_PACKAGES =

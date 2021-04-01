@@ -1410,10 +1410,10 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     public String checkPaymentMethod(String name)
     {
         if (name.equals("0")) {
-            return "كاش";
+            return "أون لاين";
         }
         else
-        {return "أون لاين";}
+        {return "كاش";}
     }
 //TODO this for n of pages after calculte
    /* private void createPdf(String id , List<RecordsItem> items) {

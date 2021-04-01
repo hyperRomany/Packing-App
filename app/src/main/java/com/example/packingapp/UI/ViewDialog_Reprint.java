@@ -331,7 +331,10 @@ public class ViewDialog_Reprint {
 
                 totel=Double.valueOf(new DecimalFormat("##0.00").format(totel));
                         Log.e(TAG, "getConfigLabel:AfterRound_tot "+totel );
-                        Log.e(TAG, "getConfigLabel:AfterRound_qty "+totel_Qty );
+                        Log.e(TAG, "getConfigLabel:beforeRound_qty "+totel_Qty );
+
+                    totel_Qty=Double.valueOf(new DecimalFormat("##0.000").format(totel_Qty));
+                    Log.e(TAG, "getConfigLabel:AfterRound_qty "+totel_Qty );
 
                         String string = DetailsList.get(0).getTrackingNumber();
                         String[] parts = string.split("-");

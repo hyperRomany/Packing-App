@@ -117,6 +117,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 Intent GoToEditRecievedPackages = new Intent(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this,
                         EditPackagesForRecievingActivity.class);
                 startActivity(GoToEditRecievedPackages);
+                finish();
             }
         });
 
@@ -475,21 +476,25 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                                 recievePackedlist.get(0).getORDER_NO(), recievePackedlist.get(0).getNO_OF_PACKAGES(),
                                 binding.editTrackingnumber.getText().toString()));
 
-                        CreateORUpdateRecycleView();
-                        Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
 //                        Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
 
                         //    GETOrderData(binding.editTrackingnumber.getText().toString());
                         //      Log.e(TAG, "onClick: Trac " + binding.editTrackingnumber.getText().toString());
-                        binding.editTrackingnumber.setError(null);
+                      //  binding.editTrackingnumber.setError(null);
                         binding.editTrackingnumber.setText("");
                         binding.editTrackingnumber.requestFocus();
+                        CreateORUpdateRecycleView();
+                        Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
+
                     } else {
                         if (database.userDao().getRecievePacked_Tracking_Number(binding.editTrackingnumber.getText().toString())
                                 .size() > 0) {
-                            binding.editTrackingnumber.setError(getResources().getString(R.string.enterbefor));
+
                             binding.editTrackingnumber.setText("");
+                            binding.editTrackingnumber.setError(getResources().getString(R.string.enterbefor));
+                            Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
                             binding.editTrackingnumber.requestFocus();
+
                         } else {
                             binding.editTrackingnumber.setError(getResources().getString(R.string.invalidnumber));
                             binding.editTrackingnumber.setText("");
@@ -504,6 +509,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
             binding.editTrackingnumber.setError(getString(R.string.enter_tracking_number));
             binding.editTrackingnumber.setText("");
             binding.editTrackingnumber.requestFocus();
+
         }
     }
 
@@ -551,6 +557,7 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
             binding.editTrackingnumber.setError(null);
             binding.editTrackingnumber.setText("");
             binding.editTrackingnumber.requestFocus();
+
             CreateORUpdateRecycleView();
             Toast.makeText(RecievedPackedAndSortedOrderForSortingAndDriverActivity.this, "تم", Toast.LENGTH_SHORT).show();
 //            Constant.ToastDialoge("تم" , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
@@ -584,6 +591,9 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
 
 
         } else {
+            binding.editTrackingnumber.setError(getResources().getString(R.string.invalidnumber));
+            binding.editTrackingnumber.requestFocus();
+            binding.editTrackingnumber.setText("");
             Toast.makeText(context, getResources().getString(R.string.invalidnumber), Toast.LENGTH_SHORT).show();
 //            Constant.ToastDialoge( getResources().getString(R.string.invalidnumber) , context);
         }
