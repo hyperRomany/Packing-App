@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/txt_color"
             android:text="Customerphone"
-            android:textSize="@dimen/font_size_for_text_of_app"/>
+            android:textSize="@dimen/font_size_for_text_of_app" />
         <TextView
             android:id="@+id/txt_customeraddress"
             android:layout_width="wrap_content"

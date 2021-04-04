@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 //       TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Ubuntu-Light.ttf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
         TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Cairo-Light.otf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
 
-        binding.txtVerion.setText("V "+GetVersionOfApp());
+        binding.txtVerion.setText("V "+GetVersionOfApp() +"  "+ApiClient.MAgentoType);
 
         lgoinViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         database=AppDatabase.getDatabaseInstance(this);

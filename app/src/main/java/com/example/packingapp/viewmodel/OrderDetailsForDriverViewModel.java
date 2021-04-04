@@ -111,7 +111,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
         Log.e("TAG", "UpdateStatus:ro "+ORDER_NO );
         map.put("status", Status);
         ApiClient.build().UpdateOrderStatus(
-                ORDER_NO,Status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+                ORDER_NO,Status,ApiClient.MAgentoToken
 
         )
                 .observeOn(AndroidSchedulers.mainThread())

@@ -59,7 +59,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
         ApiClient.build().UpdateOrderStatus(
 //                "Bearer 0xqbwza6gbcmupei31qhwex07prjyis6",
-                ORDER_NO,Status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+                //lnv0klr00jkprbugmojf3smj4i5gnn71
+                //riohauug3nhyxtztgn2i8fkwuk3zzpjs
+                ORDER_NO,Status,ApiClient.MAgentoToken
         )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

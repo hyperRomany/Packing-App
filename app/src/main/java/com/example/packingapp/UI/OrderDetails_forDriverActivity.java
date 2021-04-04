@@ -276,6 +276,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
         //TODO adding my number to send sms and make call
         CustomerPhone=driverPackages_header_db.getCustomer_phone();
         CustomerPhone=CustomerPhone.replace("+2","");
+        CustomerPhone="5"+CustomerPhone;
         Log.e(TAG, "onCreate:vvv "+ CustomerPhone);
 
         binding.imgBtnCall.setOnClickListener(new View.OnClickListener() {

@@ -33,7 +33,9 @@ public class GetOrderDataViewModel extends ViewModel {
     public void fetchdata(String ORDER_NO) {
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
-        ApiClient.build().GetOrderData(ORDER_NO,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+        //lnv0klr00jkprbugmojf3smj4i5gnn71
+        //riohauug3nhyxtztgn2i8fkwuk3zzpjs
+        ApiClient.build().GetOrderData(ORDER_NO,ApiClient.MAgentoToken
         )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -180,7 +182,7 @@ public class GetOrderDataViewModel extends ViewModel {
         Log.e(TAG, "UpdateStatus: "+ ORDER_NO);
 
         ApiClient.build().UpdateOrderStatus(
-                ORDER_NO,status,"Bearer lnv0klr00jkprbugmojf3smj4i5gnn71"
+                ORDER_NO,status,ApiClient.MAgentoToken
         )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
