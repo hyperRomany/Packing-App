@@ -17,7 +17,7 @@ import java.util.HashMap;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers; 
+import io.reactivex.schedulers.Schedulers;
 
 public class AssignPackedOrderToZoneViewModel extends ViewModel {
     private static final String TAG = "AssignPackedOrderToZone";

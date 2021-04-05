@@ -296,6 +296,9 @@ private  String OrderNumber;
 
             double totel = 0.0;
             double totel_Qty = 0.0;
+
+
+
          //   List<TrackingnumbersListDB> trackingnumbersListDBS = database.userDao().countShipment();
             List<ItemsOrderDataDBDetails_Scanned> orderDataModuleDBHeaderkist = DetailsList;
             ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned =
@@ -310,6 +313,12 @@ private  String OrderNumber;
                 }
             }
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(OrderNumber);
+
+
+            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+            Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
+            float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
+            float itemPrice=Shippingfees/SumOfQTY;
 
 
             for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
@@ -373,8 +382,8 @@ private  String OrderNumber;
                                 "^FO540,505^CI28^AZN,20,15^FD" + totel_Qty + "^FS" +
 
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
-                                "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees() + "^FS\n" +
+                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel - (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size()))+ "^FS" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size() + "^FS\n" +
                                 "^FO80,550^CI28^AZN,20,15^FD" + ( totel /*+ (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())*//*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +

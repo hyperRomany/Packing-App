@@ -385,8 +385,8 @@ public class ViewDialog_Reprint {
                      //         "^FO540,505^CI28^AZN,20,15^FD" + database.userDao().getDetailsTrackingnumberToUpload(DetailsList.get(0).getTrackingNumber()).size() + "^FS" +
                                 "^FO540,505^CI28^AZN,20,15^FD" + totel_Qty + "^FS" +
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getORDER_NO() + "^FS" +
-                                "^FO80,465^CI28^AZN,20,15^FD" + totel + "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getSHIPPING_FEES() + "^FS\n" +
+                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel-(Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Double.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())))+ "^FS" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Double.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())+ "^FS\n" +
                                 "^FO80,550^CI28^AZN,20,15^FD" + (totel /*+ (orderDataModuleHeader_reprint.getSHIPPING_FEES()) *//*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
