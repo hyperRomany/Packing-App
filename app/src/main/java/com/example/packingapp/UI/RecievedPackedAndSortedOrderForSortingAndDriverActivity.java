@@ -536,11 +536,14 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
 
     private void GETOrderData(String ordernumber) {
         if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("RecievePacked")) {
+            Log.e("Error",ordernumber);
             recievePackedOrderViewModel.fetchdata(ordernumber);
 
         } else if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")) {
             recievePackedOrderViewModel.fetchdataAndSMSData(ordernumber);
         }
+        Log.e("Error",ordernumber);
+
     }
 
     private void AfterGetOrderData(RecievePackedModule responseGetOrderData, String trackingnumber) {
