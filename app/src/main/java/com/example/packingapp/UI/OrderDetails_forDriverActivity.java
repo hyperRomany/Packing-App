@@ -53,6 +53,7 @@ ActivityOrderDetailsForDriverBinding binding;
 private static final int REQUEST_PHONE_CALL = 1;
     OrderDetailsForDriverViewModel orderDetailsForDriverViewModel;
     String CustomerPhone="01065551910";
+    String CustomerPhoneZoiperCall="501065551910";
     Context context=OrderDetails_forDriverActivity.this;
     List<DriverPackages_Details_DB> driverPackages_details_dbList;
     List<DriverPackages_Details_DB> driverPackages_details_dbList_Reject;
@@ -276,14 +277,14 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
         //TODO adding my number to send sms and make call
         CustomerPhone=driverPackages_header_db.getCustomer_phone();
         CustomerPhone=CustomerPhone.replace("+2","");
-        CustomerPhone="5"+CustomerPhone;
+        CustomerPhoneZoiperCall="5"+CustomerPhone;
         Log.e(TAG, "onCreate:vvv "+ CustomerPhone);
 
         binding.imgBtnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" +CustomerPhone ));
+                intent.setData(Uri.parse("tel:" +CustomerPhoneZoiperCall ));
                 startActivity(intent);
             }
         });
@@ -348,7 +349,8 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
     }
 
     private void SendSMS(String CustomerPhone ,String SMSBody) {
-
+        Log.e(TAG, "SendSMS: "+CustomerPhone );
+        Log.e(TAG, "SendSMS:SMSBody "+SMSBody );
         orderDetailsForDriverViewModel.SendSms(CustomerPhone , SMSBody);
 
         orderDetailsForDriverViewModel.getSmsLiveData().observe(OrderDetails_forDriverActivity.this, new Observer<ResponseSms>() {
@@ -385,7 +387,6 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 //                }
             }
         });
-
     }
 
     public void CreateORUpdateRecycleView(){

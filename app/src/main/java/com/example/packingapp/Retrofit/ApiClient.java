@@ -12,14 +12,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     //public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V2/";
 
-   // public static final String MAgentoType = "mcprod";
+//    public static final String MAgentoType = "mcprod";
     public static final String MAgentoType = "mcstaging";
 //    public static final String DataBasename = "PackingApp_PROD";
     public static final String DataBasename = "PackingApp";
+//
 
 
-
-    //public static final String MAgentoToken = "Bearer riohauug3nhyxtztgn2i8fkwuk3zzpjs";
+//    public static final String MAgentoToken = "Bearer riohauug3nhyxtztgn2i8fkwuk3zzpjs";
     public static final String MAgentoToken = "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71";
 
 //    public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V1_prod/";
