@@ -15,14 +15,15 @@ public class ApiClient {
     //public static final String MAgentoType = "mcprod";
     public static final String MAgentoType = "mcstaging";
 
-   // public static final String MAgentoToken = "Bearer riohauug3nhyxtztgn2i8fkwuk3zzpjs";
+
+    // public static final String MAgentoToken = "Bearer riohauug3nhyxtztgn2i8fkwuk3zzpjs";
     public static final String MAgentoToken = "Bearer lnv0klr00jkprbugmojf3smj4i5gnn71";
 
 //    public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V1_prod/";
 //    public static String ApksURL_ًWithoutName="http://10.0.6.106/PackingApp/Packing_Api_Development_V1_prod/Version/";
 
     public static final String BASE_URL = "http://10.0.6.106/PackingApp/Packing_Api_Development_V2/";
-    public static String ApksURL_ًWithoutName="http://10.0.6.106/PackingApp/Packing_Api_Development_V2/Version/";
+    public static String ApksURL_ًWithoutName="http://10.0.6.106/PackingApp/Packing_Api_Development_V1/Version/";
  
 //    public final static String ApksURL_ًWithoutName ="http://10.2.1.220:82/PPCAPK/";
 
