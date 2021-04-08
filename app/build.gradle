@@ -13,7 +13,6 @@ android {
         versionCode 9
         versionName "1.8"
         multiDexEnabled true
-
     }
 
     buildTypes {

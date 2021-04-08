@@ -68,6 +68,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
     String TrackingnumberToReject;
     List<String> TrackingnumberToReject_list;
     int postion_ToReject;
+    Boolean SendPasscode=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +107,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                 Random random = new Random();
                 int randomNumber = random.nextInt(1280 - 65) + 65;
                 Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
+                SendPasscode =true;
                 //ToDo Don't SendPasscode For Test Get asscode From log
                 SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
 
@@ -332,6 +334,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                // promptsView.
 
                 if (!edit_smsInput.getText().toString().isEmpty()) {
+                    SendPasscode=false;
                     SendSMS(CustomerPhone, edit_smsInput.getText().toString());
                     alertDialog.dismiss();
 
@@ -358,22 +361,25 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
             public void onChanged(ResponseSms responseSms) {
                 Toast.makeText(OrderDetails_forDriverActivity.this,
                         responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
-                ConfirmPasscodeFragment detialsfragment=new ConfirmPasscodeFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("Orderclicked",Orderclicked);
+                if (SendPasscode ==true) {
+                    ConfirmPasscodeFragment detialsfragment = new ConfirmPasscodeFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Orderclicked", Orderclicked);
 //                bundle.putString("UserName",UserName);
 //                bundle.putString("Branch",Branch);
-                // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
+                    // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
 
-                detialsfragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_content,detialsfragment);
+                    detialsfragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_content, detialsfragment);
 
-                // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
-                // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                    // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
+                    // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
 
+                }
+                SendPasscode = false;
             }
         });
         orderDetailsForDriverViewModel.mutableLiveData_sendSMS_Error.observe(this, new Observer<String>() {

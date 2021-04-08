@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/main_background_color"
+    tools:context=".UI.GetOrderDatactivity">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,7 +29,7 @@
             android:id="@+id/textInputLayout1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="2.7"
             android:padding="2dp"
             android:textColorHint="@color/txt_color_hint"
             >
@@ -41,7 +49,7 @@
         <Button
             android:id="@+id/btn_loading_new_purchase_order"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.3"
             android:layout_height="wrap_content"
             android:text="@string/search"
             android:background="@drawable/buttonshap"
@@ -50,7 +58,8 @@
             android:paddingStart="20dp"
             android:textSize="@dimen/font_size_for_button_of_app"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -205,3 +214,4 @@
 
     </LinearLayout>
 </LinearLayout>
+</ScrollView>

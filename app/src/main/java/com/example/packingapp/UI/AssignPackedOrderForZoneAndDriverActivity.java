@@ -1374,8 +1374,9 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
         int pos=0;
         for (int i=0;i<items.size();i++) {
-            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0,items.get(i).getADDRESS_DETAILS().length()/2), 890.0f, 390+pos, paint);
-            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length()/2,items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0,items.get(i).getADDRESS_DETAILS().length()/3), 890.0f, 360+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length()/3,(items.get(i).getADDRESS_DETAILS().length()/3)*2), 890.0f, 395+pos, paint);
+            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring((items.get(i).getADDRESS_DETAILS().length()/3)*2,items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420+pos, paint);
             canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390+pos, paint);
             canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390+pos, paint);
 
