@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/main_background_color"
+    tools:context=".UI.GetOrderDatactivity"
+
+        >
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         android:background="@color/main_background_color"
-        tools:context=".UI.GetOrderDatactivity">
+        android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="30dp"
@@ -52,7 +62,7 @@
 
                 <Button
                     android:id="@+id/btn_loading_new_purchase_order"
-                    android:layout_width="220dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/loadnewOrder"
                     android:background="@drawable/buttonshap"
@@ -64,7 +74,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/groubeshap"
@@ -74,7 +84,7 @@
 
                 <Button
                     android:id="@+id/btn_loading_last_purchase_order"
-                    android:layout_width="220dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/loadlastOrder"
                     android:background="@drawable/buttonshap"
@@ -86,7 +96,7 @@
 
            <Button
             android:id="@+id/btn_print_awb"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/print"
             android:background="@drawable/buttonshap"
@@ -99,7 +109,7 @@
 
         <Button
             android:id="@+id/btn_edit_packages"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/buttonshap"
@@ -114,4 +124,4 @@
 
 
 </LinearLayout>
-
+</ScrollView>
