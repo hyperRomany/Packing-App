@@ -175,7 +175,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                                ordernumberselected_ForDetails=Ordernumber;
                                                                UploadHeader(Ordernumber);
 
-                                                               //UploadDetails(Ordernumber);
+                                                              // UploadDetails(Ordernumber);
 
                                                                alertDialog.dismiss();
 
@@ -420,7 +420,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
     private void UploadDetails(String ordernumberselected) {
         //todo  we need quere to get list if quantity scanned not equaled to required quantity
         if (database.userDao().getAllItemsNotScannedORLessRequiredQTY(ordernumberselected).size() == 0) {
-
             List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList = database.userDao()
                     .getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
            // String OrderNumber = database.userDao().getOrderNumber();
@@ -431,6 +430,10 @@ public class GetOrderDatactivity extends AppCompatActivity {
             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
             float ShippingfeesPerItem = Shippingfees / SumOfQTY;
             Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
+
+            Log.e("ordernumberselected",ordernumberselected);
+            Log.e("list",String.valueOf(itemsOrderDataDBDetailsList));
+            Log.e("list",String.valueOf(ShippingfeesPerItem));
 
             getOrderDataViewModel.InsertOrderdataDetails(ordernumberselected, itemsOrderDataDBDetailsList, ShippingfeesPerItem);
 

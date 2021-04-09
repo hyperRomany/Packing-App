@@ -1,5 +1,6 @@
 package com.example.packingapp.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
@@ -21,7 +22,8 @@ public class GetDriverOrdersViewModel extends ViewModel {
 
     public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
-    public void ReadDriverRunsheetOrdersData(String DRIVER_ID,String ASSIGN_DATE,String STATUS) {
+    @SuppressLint("LongLogTag")
+    public void ReadDriverRunsheetOrdersData(String DRIVER_ID, String ASSIGN_DATE, String STATUS) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("DRIVER_ID", DRIVER_ID);

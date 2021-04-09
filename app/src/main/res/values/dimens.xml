@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="font_size_for_text_of_app">18sp</dimen>
-    <dimen name="font_size_for_button_of_app">20sp</dimen>
+    <dimen name="font_size_for_button_of_app">18sp</dimen>
 
     <dimen name="_87sdp">87dp</dimen>
     <dimen name="_16sdp">16dp</dimen>

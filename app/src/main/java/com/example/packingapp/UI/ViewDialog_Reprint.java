@@ -304,7 +304,7 @@ public class ViewDialog_Reprint {
             PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
             SGD.SET("device.languages", "zpl", connection);
 
-            double totel = 0.0;
+            float totel = 0;
             double totel_Qty = 0.0;
          //   List<TrackingnumbersListDB> trackingnumbersListDBS = database.userDao().countShipment();
             List<ItemsOrderDataDBDetails> orderDataModuleDBHeaderkist = DetailsList;
@@ -320,7 +320,7 @@ public class ViewDialog_Reprint {
                 }
             }
             for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
-                totel += Double.valueOf(orderDataModuleDBHeaderkist.get(i).getPrice());
+                totel += Float.valueOf(orderDataModuleDBHeaderkist.get(i).getPrice());
             }
             if (printerLanguage == PrinterLanguage.ZPL) {
 
@@ -329,7 +329,7 @@ public class ViewDialog_Reprint {
 
                 try {
 
-                totel=Double.valueOf(new DecimalFormat("##0.00").format(totel));
+                totel=Float.valueOf(new DecimalFormat("##0.00").format(totel));
                         Log.e(TAG, "getConfigLabel:AfterRound_tot "+totel );
                         Log.e(TAG, "getConfigLabel:beforeRound_qty "+totel_Qty );
 
@@ -385,8 +385,8 @@ public class ViewDialog_Reprint {
                      //         "^FO540,505^CI28^AZN,20,15^FD" + database.userDao().getDetailsTrackingnumberToUpload(DetailsList.get(0).getTrackingNumber()).size() + "^FS" +
                                 "^FO540,505^CI28^AZN,20,15^FD" + totel_Qty + "^FS" +
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getORDER_NO() + "^FS" +
-                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel-(Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Double.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())))+ "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Double.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())+ "^FS\n" +
+                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel-(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())))+ "^FS" +
+                                "^FO80,505^CI28^AZN,20,15^FD" + Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())+ "^FS\n" +
                                 "^FO80,550^CI28^AZN,20,15^FD" + (totel /*+ (orderDataModuleHeader_reprint.getSHIPPING_FEES()) *//*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +

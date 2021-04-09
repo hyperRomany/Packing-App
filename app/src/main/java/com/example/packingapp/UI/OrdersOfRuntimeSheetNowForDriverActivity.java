@@ -59,8 +59,9 @@ public class OrdersOfRuntimeSheetNowForDriverActivity extends AppCompatActivity 
 //                        DriverPackages_DB driverPackages_respones_recycler1=
 //                                new  DriverPackages_DB(driverPackages_respones_recycler.getOrderNumber(),
 //                                        driverPackages_respones_recycler.getCUSTOMER_PHONE());
+                        database.userDao().deleteDriverPackages_Header_DB();
+                        driverPackages_Header_dbList.clear();
                         database.userDao().insertDriverOrders(driverPackages_respones_Header_recycler.getRecords());
-
                         driverPackages_Header_dbList.addAll(driverPackages_respones_Header_recycler.getRecords());
                         driverOrdersAdapter.notifyDataSetChanged();
                     }

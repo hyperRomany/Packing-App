@@ -128,6 +128,9 @@ public interface UserDao {
     @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned where Order_number =:Order_number")
     void deleteAllOrderItems_scanned(String Order_number);
 
+    @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned where Order_number =:Order_number")
+    void DriverOrders(String Order_number);
+
     @Query("SELECT * FROM itemsOrderDataDBDetails where TrackingNumber =:tracking")
     Observable<List<ItemsOrderDataDBDetails>> getAllItem(String tracking);
 

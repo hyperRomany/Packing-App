@@ -294,7 +294,7 @@ private  String OrderNumber;
             PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
             SGD.SET("device.languages", "zpl", connection);
 
-            double totel = 0.0;
+            float totel = 0;
             double totel_Qty = 0.0;
 
 
@@ -322,12 +322,12 @@ private  String OrderNumber;
 
 
             for (int i = 0; i < orderDataModuleDBHeaderkist.size(); i++) {
-                totel += Double.valueOf(orderDataModuleDBHeaderkist.get(i).getPrice());
+                totel += Float.valueOf(orderDataModuleDBHeaderkist.get(i).getPrice());
             }
             if (printerLanguage == PrinterLanguage.ZPL) {
 
                     try {
-                        totel=Double.valueOf(new DecimalFormat("##0.00").format(totel));
+                        totel=Float.valueOf(new DecimalFormat("##0.00").format(totel));
                         Log.e(TAG, "getConfigLabel:AfterRound_tot "+totel );
                         Log.e(TAG, "getConfigLabel:AfterRound_qty "+totel_Qty );
 
@@ -382,7 +382,7 @@ private  String OrderNumber;
                                 "^FO540,505^CI28^AZN,20,15^FD" + totel_Qty + "^FS" +
 
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getOrder_number() + "^FS" +
-                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel - (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size()))+ "^FS" +
+                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf((totel - (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())))+ "^FS" +
                                 "^FO80,505^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size() + "^FS\n" +
                                 "^FO80,550^CI28^AZN,20,15^FD" + ( totel /*+ (orderDataModuleDBHeader.getShipping_fees()/TrackingnumberDB_list.size())*//*+ Double.valueOf(orderDataModuleDBHeader.getShipping_fees())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +

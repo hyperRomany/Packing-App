@@ -183,8 +183,8 @@
             android:background="@drawable/bg_btn_show"
             android:textColor="@color/textcolor_btns"
             android:layout_marginTop="20dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
+            android:paddingEnd="18dp"
+            android:paddingStart="18dp"
             android:textSize="@dimen/font_size_for_button_of_app"
 
             />
@@ -200,7 +200,7 @@
             android:paddingBottom="5dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <TextView
@@ -261,8 +261,8 @@
                     android:text="@string/enter"
                     android:background="@drawable/buttonshap"
                     android:textColor="@color/textcolor_btns"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
                     android:textSize="@dimen/font_size_for_text_of_app"
                     android:layout_marginStart="15dp"
                     android:layout_marginLeft="15dp" />
