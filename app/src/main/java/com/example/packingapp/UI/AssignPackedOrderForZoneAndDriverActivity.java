@@ -1410,7 +1410,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     }
     public String checkPaymentMethod(String name)
     {
-        if (name.equals("0")) {
+        if (name.equals("0") || name.equals("0.000")) {
             return "أون لاين";
         }
         else

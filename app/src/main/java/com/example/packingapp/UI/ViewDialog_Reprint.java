@@ -304,8 +304,9 @@ public class ViewDialog_Reprint {
             PrinterLanguage printerLanguage = printer.getPrinterControlLanguage();
             SGD.SET("device.languages", "zpl", connection);
 
-            float totel = 0;
-            double totel_Qty = 0.0;
+            float totel = 0 ;
+            double totel_Qty = 0.0 ,GrandTotal_round=0.0 ;
+
          //   List<TrackingnumbersListDB> trackingnumbersListDBS = database.userDao().countShipment();
             List<ItemsOrderDataDBDetails> orderDataModuleDBHeaderkist = DetailsList;
             ItemsOrderDataDBDetails ItemsOrderDataDBDetails =
@@ -336,6 +337,7 @@ public class ViewDialog_Reprint {
                     totel_Qty=Double.valueOf(new DecimalFormat("##0.000").format(totel_Qty));
                     Log.e(TAG, "getConfigLabel:AfterRound_qty "+totel_Qty );
 
+                    GrandTotal_round=Double.valueOf(new DecimalFormat("##0.00").format(Double.valueOf(orderDataModuleHeader_reprint.getGRAND_TOTAL())));
                         String string = DetailsList.get(0).getTrackingNumber();
                         String[] parts = string.split("-");
                         String part1 = parts[0]; // 004
@@ -359,22 +361,23 @@ public class ViewDialog_Reprint {
                                 "^FO500,50^GB1,160,1^FS" +
                                 "^CF0,25" +
                                 "^FO590,65^CI28^AZN,0,25^FDهايبروان^FS" +
-                                "^FO600,105^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_CITY() + "^FS" +
-                                "^FO600,160^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_GOVERN() + "^FS" +
+                                "^FO515,105^CI28^AZN,17,17^FD" + orderDataModuleHeader_reprint.getADDRESS_CITY() + "^FS" +
+                                "^FO515,160^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getADDRESS_GOVERN() + "^FS" +
                                 "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
                                 "^FO450,270^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getNO_OF_PACKAGES() + "^FS" +  //no_of_package
                                 "^CF0,25" +
-                                "^FO200,65^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getCUSTOMER_NAME() + "^FS" +
-                                "^FO200,90^CI28^AZN,0,25^FD" + orderDataModuleHeader_reprint.getCUSTOMER_PHONE() + "^FS" +
-                                "^FO50,150^CI28^AZN,0,25^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(0,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2) + "^FS" +
-                                "^FO60,170^CI28^AZN,0,25^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()) + "^FS" +
+                                "^FO50,65^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getCUSTOMER_NAME() + "^FS" +
+                                "^FO50,90^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getCUSTOMER_PHONE() + "^FS" +
+                                "^FO50,150^CI28^AZN,20,15^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(0,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2) + "^FS" +
+                                "^FO60,170^CI28^AZN,20,15^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()) + "^FS" +
                                 "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
                                 "^FO100,270^FD"+part2.substring(1)+"^FS" +
                                 "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL()))+" ^FS" +
-                                "^FO400,230^CI28^AZN,0,25^FD (اجمالي قيمه الطلب ^FS" +
+                                "^FO400,230^CI28^AZN,20,15^FD (المطلوب تحصيله من العميل ^FS" +
                                 "^CF0,25" +
-                                "^FO250,230^FD " + orderDataModuleHeader_reprint.getGRAND_TOTAL() + " ^FS" +
+                                "^FO250,230^FD   " + new DecimalFormat("##0.00").format(Double.valueOf(orderDataModuleHeader_reprint.getGRAND_TOTAL()) ) + " ^FS" +
+                                "^FO250,230^CI28^AZN,20,15^FD (  ^FS" +
                                 "^FO100,230^CI28^AZN,20,15^FD " + checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL()) + " ^FS" +
                                 "^CF0,25" +
                                 "^FO200,465^CI28^AZN,20,15^FDاجمالي الطلب^FS" +
@@ -385,9 +388,9 @@ public class ViewDialog_Reprint {
                      //         "^FO540,505^CI28^AZN,20,15^FD" + database.userDao().getDetailsTrackingnumberToUpload(DetailsList.get(0).getTrackingNumber()).size() + "^FS" +
                                 "^FO540,505^CI28^AZN,20,15^FD" + totel_Qty + "^FS" +
                                 "^FO500,465^CI28^AZN,20,15^FD" + orderDataModuleHeader_reprint.getORDER_NO() + "^FS" +
-                                "^FO80,465^CI28^AZN,20,15^FD" + String.valueOf(totel-(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())))+ "^FS" +
-                                "^FO80,505^CI28^AZN,20,15^FD" + Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())+ "^FS\n" +
-                                "^FO80,550^CI28^AZN,20,15^FD" + (totel /*+ (orderDataModuleHeader_reprint.getSHIPPING_FEES()) *//*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
+                                "^FO"+ (30+(120-(String.valueOf(new DecimalFormat("##0.00").format(Double.valueOf(totel-(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES()))))).length()*10)))+",465^CI28^AZN,20,15^FD" + new DecimalFormat("##0.00").format(Double.valueOf(totel-(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES()))) )+ "^FS" +
+                                "^FO"+(30+(120-(String.valueOf(new DecimalFormat("##0.00").format(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES())) ).length()*10)))+",505^CI28^AZN,20,15^FD" + new DecimalFormat("##0.00").format(Float.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES()) /Float.valueOf(orderDataModuleHeader_reprint.getNO_OF_PACKAGES()) )+ "^FS\n" +
+                                "^FO"+(30+(120-(String.valueOf(totel ).length()*10)))+",550^CI28^AZN,20,15^FD" + (totel /*+ (orderDataModuleHeader_reprint.getSHIPPING_FEES()) *//*+ Double.valueOf(orderDataModuleHeader_reprint.getSHIPPING_FEES())*/ )+ "^FS\n" +
                                 "^FO590,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO200,610^CI28^AZN,20,15^FDاسم المنتج^FS" +
                                 "^FO405,610^CI28^AZN,20,15^FDالكميه^FS" +
@@ -422,36 +425,36 @@ public class ViewDialog_Reprint {
                                 "^FO420,1000^CI28^AZN,20,15^FD" + GetQty(orderDataModuleDBHeaderkist,24)  + "^FS" +
                                 "^FO420,1030^CI28^AZN,20,15^FD" + GetQty(orderDataModuleDBHeaderkist,26)  + "^FS" +
                                 "^FO420,1060^CI28^AZN,20,15^FD" + GetQty(orderDataModuleDBHeaderkist,28) + "^FS" +
-                                "^FO500,640^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(0).getName())) + "^FS" +
-                                "^FO500,670^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(2).getName())) + "^FS" +
-                                "^FO500,700^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(4).getName())) + "^FS" +
-                                "^FO500,730^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(6).getName())) + "^FS" +
-                                "^FO500,760^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(8).getName())) + "^FS" +
-                                "^FO500,790^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(10).getName())) + "^FS" +
-                                "^FO500,820^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(12).getName())) + "^FS" +
-                                "^FO500,850^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(14).getName())) + "^FS" +
-                                "^FO500,880^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(16).getName())) + "^FS" +
-                                "^FO500,910^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(18).getName())) + "^FS" +
-                                "^FO500,940^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(20).getName())) + "^FS" +
-                                "^FO500,970^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(22).getName())) + "^FS" +
-                                "^FO500,1000^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(24).getName())) + "^FS" +
-                                "^FO500,1030^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(26).getName())) + "^FS" +
-                                "^FO500,1060^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(28).getName())) + "^FS" +
-                                "^FO130,640^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(1).getName())) + "^FS" +
-                                "^FO130,670^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(3).getName())) + "^FS" +
-                                "^FO130,700^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(5).getName())) + "^FS" +
-                                "^FO130,730^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(7).getName())) + "^FS" +
-                                "^FO130,760^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(9).getName())) + "^FS" +
-                                "^FO130,790^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(11).getName())) + "^FS" +
-                                "^FO130,820^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(13).getName())) + "^FS" +
-                                "^FO130,850^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(15).getName())) + "^FS" +
-                                "^FO130,880^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(17).getName())) + "^FS" +
-                                "^FO130,910^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(19).getName())) + "^FS" +
-                                "^FO130,940^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(21).getName())) + "^FS" +
-                                "^FO130,970^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(23).getName())) + "^FS" +
-                                "^FO130,1000^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(25).getName())) + "^FS" +
-                                "^FO130,1030^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(27).getName())) + "^FS" +
-                                "^FO130,1060^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(29).getName())) + "^FS" +
+                                "^FO465,640^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(0).getName())) + "^FS" +
+                                "^FO465,670^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(2).getName())) + "^FS" +
+                                "^FO465,700^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(4).getName())) + "^FS" +
+                                "^FO465,730^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(6).getName())) + "^FS" +
+                                "^FO465,760^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(8).getName())) + "^FS" +
+                                "^FO465,790^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(10).getName())) + "^FS" +
+                                "^FO465,820^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(12).getName())) + "^FS" +
+                                "^FO465,850^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(14).getName())) + "^FS" +
+                                "^FO465,880^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(16).getName())) + "^FS" +
+                                "^FO465,910^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(18).getName())) + "^FS" +
+                                "^FO465,940^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(20).getName())) + "^FS" +
+                                "^FO465,970^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(22).getName())) + "^FS" +
+                                "^FO465,1000^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(24).getName())) + "^FS" +
+                                "^FO465,1030^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(26).getName())) + "^FS" +
+                                "^FO465,1060^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(28).getName())) + "^FS" +
+                                "^FO95,640^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(1).getName())) + "^FS" +
+                                "^FO95,670^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(3).getName())) + "^FS" +
+                                "^FO95,700^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(5).getName())) + "^FS" +
+                                "^FO95,730^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(7).getName())) + "^FS" +
+                                "^FO95,760^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(9).getName())) + "^FS" +
+                                "^FO95,790^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(11).getName())) + "^FS" +
+                                "^FO95,820^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(13).getName())) + "^FS" +
+                                "^FO95,850^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(15).getName())) + "^FS" +
+                                "^FO95,880^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(17).getName())) + "^FS" +
+                                "^FO95,910^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(19).getName())) + "^FS" +
+                                "^FO95,940^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(21).getName())) + "^FS" +
+                                "^FO95,970^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(23).getName())) + "^FS" +
+                                "^FO95,1000^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(25).getName())) + "^FS" +
+                                "^FO95,1030^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(27).getName())) + "^FS" +
+                                "^FO95,1060^CI28^AZN,20,15^FD" + maxLength(checkNull(orderDataModuleDBHeaderkist.get(29).getName())) + "^FS" +
                                 "^FO30,260^GB750,40,1^FS" +
                                 "^FO500,260^GB1,40,1^FS" +
                                 "^FO400,260^GB1,40,1^FS" +
@@ -559,7 +562,7 @@ public class ViewDialog_Reprint {
 
     public String checkPaymentMethod(String name)
     {
-        if (name.equals("0")) {
+        if (name.equals("0.000")) {
             return "أون لاين";
         }
         else
