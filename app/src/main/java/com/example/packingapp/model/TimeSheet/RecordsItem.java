@@ -17,12 +17,13 @@ public class RecordsItem {
 	private String ORDER_NO;
 	@SerializedName("ADDRESS_DETAILS")
 	private String ADDRESS_DETAILS;
-
 	@SerializedName("ITEM_PRICE")
 	private String ITEM_PRICE;
-
 	@SerializedName("CUSTOMER_PHONE")
 	private String CUSTOMER_PHONE;
+
+
+
 
 	public String getCUSTOMER_PHONE() {
 		return CUSTOMER_PHONE;
