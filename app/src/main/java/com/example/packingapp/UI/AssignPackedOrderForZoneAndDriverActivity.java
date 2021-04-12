@@ -51,12 +51,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import androidx.annotation.RequiresApi;
@@ -608,7 +605,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                                     Log.i(TAG, "onClick:for SheetData "+Drivers_IDs_list.get(binding.spinerDriverId.getSelectedItemPosition()) );
                                     Log.i(TAG, "onClick:for SheetData "+database.userDao().getUserData_MU().getUser_id() );
 
-                                    OdersNumber+=recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO()+",";
+                                    OdersNumber+="'"+recievePackedORDER_NO_Distinctlist.get(i).getORDER_NO()+"',";
                                     Log.e(TAG, "onClick:OdersNumber "+OdersNumber );
                                 }
 //                                    if (i>0&& Response_id_for_runtimesheet_Orders.size()>0) {

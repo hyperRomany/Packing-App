@@ -207,7 +207,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void SheetData(String id , String ORDER_NOs , String DRIVER_ID , String Username  ) {
-        ORDER_NOs="'"+ORDER_NOs+"'";
+
 
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
