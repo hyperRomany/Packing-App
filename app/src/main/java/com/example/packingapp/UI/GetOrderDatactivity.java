@@ -368,7 +368,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
     private void ActionAfterGetData(ResponseGetOrderData responseGetOrderData) {
 
         OrderDataModuleDBHeader orderDataModuleDBHeader = new OrderDataModuleDBHeader(
-                responseGetOrderData.getOrder_number(),
+                responseGetOrderData.getOrder_number().replace("-","*"),
                 responseGetOrderData.getOutBound_delivery(),
                 responseGetOrderData.getCustomer().getName(),
                 responseGetOrderData.getCustomer().getPhone_number(),
@@ -390,7 +390,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
         // TODO Need to insert order number in details table
         for (int i = 0; i < responseGetOrderData.getItemsOrderDataDBDetails().size(); i++) {
             //responseGetOrderData.getOrder_number()
-            ItemsOrderDataDBDetails itemsOrderDataDBDetails = new ItemsOrderDataDBDetails(responseGetOrderData.getOrder_number(),
+            ItemsOrderDataDBDetails itemsOrderDataDBDetails = new ItemsOrderDataDBDetails(
+                    responseGetOrderData.getOrder_number().replace("-","*"),
                     responseGetOrderData.getItemsOrderDataDBDetails().get(i).getName(),
                     responseGetOrderData.getItemsOrderDataDBDetails().get(i).getPrice(),
                     responseGetOrderData.getItemsOrderDataDBDetails().get(i).getQuantity(),
@@ -413,7 +414,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
         Intent i = new Intent(getApplicationContext(), AssignItemToPackagesActivity.class);
         i.putExtra("AddNewPackageORAddForExistPackage", "New");
-        i.putExtra("OrderNumber", responseGetOrderData.getOrder_number());
+        i.putExtra("OrderNumber", responseGetOrderData.getOrder_number().replace("-","#"));
         startActivity(i);
     }
 
@@ -424,7 +425,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     .getDetailsTrackingnumberToUpload_scannedbyordernumber(ordernumberselected);
            // String OrderNumber = database.userDao().getOrderNumber();
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(ordernumberselected);
-            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+            float SumOfQTY = database.userDao().SumOfQTYFromDetials(ordernumberselected);
             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);

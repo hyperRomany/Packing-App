@@ -114,7 +114,7 @@ public class SendSMSActivity extends AppCompatActivity {
             // String OrderNumber = database.userDao().getOrderNumber();
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(ordernumberselected);
 
-            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+            float SumOfQTY = database.userDao().SumOfQTYFromDetials(ordernumberselected);
             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);

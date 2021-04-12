@@ -22,6 +22,7 @@ import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails;
 import com.example.packingapp.model.GetOrderResponse.ItemsOrderDataDBDetails_Scanned;
 import com.example.packingapp.model.PackedPackageItemsModule;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -415,16 +416,30 @@ public class EditPackageItemsActivity extends AppCompatActivity {
               //  Log.e(TAG, "SearchOfBarcode:SumofScannedqty "+SumofScannedqty );
                 if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Qty_add)){
 //                if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Qty_add)){
+                    List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList_scanned_toQTY =new ArrayList<>();
+                    itemsOrderDataDBDetailsList_scanned_toQTY = database.userDao().GetItemScanedQTY(ordernumber , TrackingNumber ,
+                            itemsOrderDataDBDetailsList.get(0).getSku() );
 
-                    // if (adapterQTY>0){
-//                          QTY=adapterQTY+0.2f;
+                    float price_forOneQTY=itemsOrderDataDBDetailsList_scanned.get(0).getPrice()/( itemsOrderDataDBDetailsList_scanned.get(0).getQuantity() );
+//                    Log.e(TAG, "ForSearch:Qty_add+lastscanned "+Qty_add + itemsOrderDataDBDetailsList_scanned_toQTY.get(0).getQuantity() );
+                   // price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+//                    QTY=Float.valueOf(new DecimalFormat("##0.000").format(Adapterlist.get(i).getQuantity()));
+                    Log.e(TAG, "ForSearch: priceforOneQTY"+price_forOneQTY );
+
                     QTY=Qty_add;
+
+                    float price=price_forOneQTY * (Qty_add);
+                    Log.e(TAG, "ForSearch: priceforQTY"+price );
+                    price=Float.valueOf(new DecimalFormat("##0.000").format(price));
+                    QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
                     ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                             = new ItemsOrderDataDBDetails_Scanned(ordernumber,itemsOrderDataDBDetailsList.get(0).getName(),
-                            itemsOrderDataDBDetailsList.get(0).getPrice(),
+                            price,
                             QTY,itemsOrderDataDBDetailsList.get(0).getSku(),itemsOrderDataDBDetailsList.get(0).getUnite());
                     Log.e(TAG, "SearchOfBarcode:QTY "+QTY );
-                    database.userDao().updateQTYforListOfItems(ordernumber , TrackingNumber ,  QTY ,itemsOrderDataDBDetailsList.get(0).getSku() );
+                    Log.e(TAG, "SearchOfBarcode:price "+price );
+                    Log.e(TAG, "SearchOfBarcode:sku "+itemsOrderDataDBDetailsList.get(0).getSku() );
+                    database.userDao().updateQTY_PriceforListOfItems(ordernumber , TrackingNumber ,  QTY , price, itemsOrderDataDBDetailsList.get(0).getSku() );
 
 //                    packedPackageItemsAdapter.notifyDataSetChanged();
                     CreateORUpdateRecycleView();

@@ -174,6 +174,7 @@ public class GetOrderDataViewModel extends ViewModel {
     public  MutableLiveData<ResponseUpdateStatus> mutableLiveData_UpdateStatus = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
+        ORDER_NO =ORDER_NO.replace("*","-");
 
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);

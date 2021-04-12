@@ -41,7 +41,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/txt_enter_number"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:textColor="@color/txt_color"
                             android:textColorHint="@color/txt_color_hint"
                             android:textSize="@dimen/font_size_for_text_of_app"

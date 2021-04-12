@@ -181,7 +181,7 @@ FragmentConfirmPasscodeBinding binding;
                 //ToDo Last Function
                 Log.e(TAG, "onChanged:goback " );
 
-                new AlertDialog.Builder( getContext())
+                AlertDialog a = new AlertDialog.Builder( getContext())
                         .setTitle(getString(R.string.order_status_updated_last))
                         .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -205,7 +205,8 @@ FragmentConfirmPasscodeBinding binding;
 //                                })
                         .show();
 
-
+                a.setCanceledOnTouchOutside(false);
+                a.setCancelable(false);
 
             }
         });

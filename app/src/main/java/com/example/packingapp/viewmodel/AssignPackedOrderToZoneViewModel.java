@@ -53,6 +53,8 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     }
 
     public void UpdateStatus(String ORDER_NO, String Status) {
+        ORDER_NO =ORDER_NO.replace("*","-");
+
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
         map.put("status", Status);
@@ -204,7 +206,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public MutableLiveData<String> mutableLiveDataError_SheetData = new MutableLiveData<>();
 
     public void SheetData(String id ,String ORDER_NOs ,String DRIVER_ID , String Username  ) {
-
+        ORDER_NOs="'"+ORDER_NOs+"'";
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("Query", "select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +

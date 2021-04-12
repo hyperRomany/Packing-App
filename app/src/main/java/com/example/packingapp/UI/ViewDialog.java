@@ -315,7 +315,7 @@ private  String OrderNumber;
             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(OrderNumber);
 
 
-            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+            float SumOfQTY = database.userDao().SumOfQTYFromDetials(OrderNumber);
             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
             float itemPrice=Shippingfees/SumOfQTY;
@@ -366,7 +366,7 @@ private  String OrderNumber;
                                 "^FO60,170^CI28^AZN,20,15^FDA" + orderDataModuleDBHeader.getCustomer_address_detail().substring(orderDataModuleDBHeader.getCustomer_address_detail().length()/2,orderDataModuleDBHeader.getCustomer_address_detail().length()) + "^FS" +
                                 "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
-                                "^FO100,270^FD"+part2.substring(1)+"^FS" +
+                                "^FO100,270^FD"+part2.substring(0)+"^FS" +
                                 "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleDBHeader.getGrand_total()))+" ^FS" +
                                 "^FO400,230^CI28^AZN,20,15^FD (المطلوب تحصيله من العميل ^FS" +
                                 "^CF0,25" +

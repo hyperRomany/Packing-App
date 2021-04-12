@@ -9,6 +9,8 @@ import android.util.Log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.app.AlertDialog;
+
 public class Constant {
     private static final String TAG = "Constant";
 
@@ -40,7 +42,7 @@ public class Constant {
     public static void ToastDialoge(String status , Context context) {
      //   Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
 
-        new androidx.appcompat.app.AlertDialog.Builder( context)
+        AlertDialog a=new AlertDialog.Builder( context)
                 .setTitle(status)
                 .setPositiveButton("موافق", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -54,5 +56,7 @@ public class Constant {
 //                                    }
 //                                })
                 .show();
+        a.setCanceledOnTouchOutside(false);
+        a.setCancelable(false);
     }
 }

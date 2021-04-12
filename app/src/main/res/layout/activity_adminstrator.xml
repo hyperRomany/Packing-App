@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.AdminstratorActivity"
     android:orientation="vertical"
+    android:gravity="center">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
     android:paddingEnd="40dp"
+    android:layout_gravity="center"
     android:paddingStart="40dp">
 
     <Button
@@ -60,12 +66,24 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/btn_reprint"
+        android:id="@+id/btn_reprint_AWB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/font_size_for_button_of_app"
         android:text="@string/reprinter"
 
+        android:background="@drawable/buttonshap"
+        android:textColor="@color/textcolor_btns"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_reprint_runsheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_size_for_button_of_app"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/reprinter_runsheet"
         android:background="@drawable/buttonshap"
         android:textColor="@color/textcolor_btns"
         android:visibility="gone"/>
@@ -84,3 +102,4 @@
         android:visibility="gone"/>
 
 </LinearLayout>
+</ScrollView>

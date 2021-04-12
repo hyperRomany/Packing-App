@@ -25,7 +25,6 @@
     <string name="message_not_equalfornoofpaclkageandcountoftrackingnumbers_driver">يوجد شحنات أخرى لم يتم إضافتها لقائمة التوصيل</string>
 
 
-
     <string name="message_equalfornoofpaclkageandcountoftrackingnumbers">No of tracking number that entered is equal packed package</string>
     <string name="there_is_no_trackednumber_scanned">أدخل رقم التتبع أولاً</string>
     <string name="updte_zone_if_exist">"تم أدخال المنطقه مختلفه عما تم من قبل..هل تريد التعديل "</string>
@@ -151,6 +150,8 @@
     <string name="show_last_assign">حذف</string>
     <string name="recall_assign_orders_to_driver">إستدعاء</string>
     <string name="reprinter">إعادة طباعة بوليصة شحن</string>
+    <string name="reprinter_runsheet">إعادة طباعة RunSheet</string>
+
     <string name="customer_phone">أسم العميل</string>
     <string name="customer_address">العنوان</string>
     <string name="confirm_reschedule">تأكيد التاجيل</string>

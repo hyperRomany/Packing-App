@@ -42,7 +42,9 @@ ActivityAdminstratorBinding binding;
             }else if (modulesIDSList.get(i).getModules_ID().equalsIgnoreCase("6")){
                 binding.btnSupervisor.setVisibility(View.VISIBLE);
             }else if (modulesIDSList.get(i).getModules_ID().equalsIgnoreCase("7")){
-                binding.btnReprint.setVisibility(View.VISIBLE);
+                binding.btnReprintAWB.setVisibility(View.VISIBLE);
+            }else if (modulesIDSList.get(i).getModules_ID().equalsIgnoreCase("8")){
+                binding.btnReprintRunsheet.setVisibility(View.VISIBLE);
             }
 
 
@@ -82,13 +84,22 @@ ActivityAdminstratorBinding binding;
             }
         });
 
-        binding.btnReprint.setOnClickListener(new View.OnClickListener() {
+        binding.btnReprintAWB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ReprintActivity.class);
+                Intent i = new Intent(getApplicationContext(), ReprintActivityAWB.class);
                 startActivity(i);
             }
         });
+
+        binding.btnReprintRunsheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ReprintActivityRunTimeSheet.class);
+                startActivity(i);
+            }
+        });
+
         binding.btnSupervisor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

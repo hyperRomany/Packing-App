@@ -341,8 +341,13 @@ public class ViewDialog_Reprint {
                         String string = DetailsList.get(0).getTrackingNumber();
                         String[] parts = string.split("-");
                         String part1 = parts[0]; // 004
+                    Log.e(TAG, "getConfigLabel: "+part1 );
                         String part2 = parts[1];
-                        String name ="";
+                    Log.e(TAG, "getConfigLabel: "+part2 );
+                    Log.e(TAG, "getConfigLabel: "+parts.length );
+
+
+                    String name ="";
                         name = "^XA" +
                                 "^CWZ,E:TT0003M_.TTF^FS" +
                                 "^CF0,5" +
@@ -372,7 +377,7 @@ public class ViewDialog_Reprint {
                                 "^FO60,170^CI28^AZN,20,15^FDA" + orderDataModuleHeader_reprint.getADDRESS_DETAILS().substring(orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()/2,orderDataModuleHeader_reprint.getADDRESS_DETAILS().length()) + "^FS" +
                                 "^CF0,25" +
                                 "^FO250,270^CI28^AZN,20,15^FDرقم الشحنه^FS" +
-                                "^FO100,270^FD"+part2.substring(1)+"^FS" +
+                                "^FO100,270^FD"+part2.substring(0)+"^FS" +
                                 "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL()))+" ^FS" +
                                 "^FO400,230^CI28^AZN,20,15^FD (المطلوب تحصيله من العميل ^FS" +
                                 "^CF0,25" +

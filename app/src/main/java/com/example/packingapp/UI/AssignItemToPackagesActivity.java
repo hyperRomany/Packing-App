@@ -104,7 +104,10 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                           //  database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                             for (int i=0;i<Adapterlist.size();i++) {
                                 float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
-                                price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                                Log.e(TAG, "onClick:price "+price );
+                                price =Float.valueOf(new DecimalFormat("##0.000").format(price));
+                                Log.e(TAG, "onClick:price "+price );
+                                Log.e(TAG, "onClick:getQuantity "+Adapterlist.get(i).getQuantity() );
 
                                 float QTY=0;
                                 QTY=Float.valueOf(new DecimalFormat("##0.000").format(Adapterlist.get(i).getQuantity()));
@@ -129,7 +132,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 //                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                                 for (int i=0;i<Adapterlist.size();i++) {
                                     float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
-                                    price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                                    price=Float.valueOf(new DecimalFormat("##0.000").format(price));
 
                                     float QTY=0;
                                     QTY=Float.valueOf(new DecimalFormat("##0.000").format(Adapterlist.get(i).getQuantity()));
@@ -152,7 +155,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 //                                database.userDao().updatetrackingnumberforListOfItems(Trackingnumber, ListOfBarcodesToAssign);
                                 for (int i=0;i<Adapterlist.size();i++) {
                                     float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
-                                    price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                                    price=Float.valueOf(new DecimalFormat("##0.000").format(price));
 
                                     float QTY=0;
                                     QTY=Float.valueOf(new DecimalFormat("##0.000").format(Adapterlist.get(i).getQuantity()));
@@ -181,7 +184,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             if (itemsOrderDataDBDetailsList_scanned.size() ==0 ) {
                                 Log.e(TAG, "onClick: insert "+ Adapterlist.get(i).getSku() );
                                 float price=Adapterlist.get(i).getPrice()*Adapterlist.get(i).getQuantity();
-                                price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                                price=Float.valueOf(new DecimalFormat("##0.000").format(price));
                                 float QTY=0;
                                 QTY=Float.valueOf(new DecimalFormat("##0.000").format(Adapterlist.get(i).getQuantity()));
                                 ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
@@ -193,8 +196,27 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                                 database.userDao().InsertItemsDetails_scanned(itemsOrderDataDBDetails_scanned);
                             }else {
                                 Log.e(TAG, "onClick: update "+ Adapterlist.get(i).getSku() );
-                                database.userDao().updateQTYforListOfItems(OrderNumber , AddNewPackageORAddForExistPackage , (itemsOrderDataDBDetailsList_scanned.get(0).getQuantity()
+                                float price_forOneQTY=itemsOrderDataDBDetailsList_scanned.get(0).getPrice()/
+                                        ( itemsOrderDataDBDetailsList_scanned.get(0).getQuantity() );
+                                Log.e(TAG, "ForSearch: priceforoneQTY"+price_forOneQTY );
+
+                                float QTY=(itemsOrderDataDBDetailsList_scanned.get(0).getQuantity()
+                                        + Adapterlist.get(i).getQuantity());
+                                Log.e(TAG, "ForSearch: totalQTY"+QTY );
+
+                                float price=price_forOneQTY * (QTY);
+                                Log.e(TAG, "ForSearch: priceforQTY"+price );
+                                price=Float.valueOf(new DecimalFormat("##0.000").format(price));
+                                QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
+
+                                database.userDao().updateQTY_PriceforListOfItems(OrderNumber , AddNewPackageORAddForExistPackage ,
+                                        QTY , price, Adapterlist.get(i).getSku() );
+
+                                database.userDao().updateQTYforListOfItems(OrderNumber , AddNewPackageORAddForExistPackage ,
+                                        (itemsOrderDataDBDetailsList_scanned.get(0).getQuantity()
                                         + Adapterlist.get(i).getQuantity()) , Adapterlist.get(i).getSku() );
+
+
                             }
                         }
 
@@ -308,7 +330,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
 
                             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
 
-                            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+                            float SumOfQTY = database.userDao().SumOfQTYFromDetials(OrderNumber);
                             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
                             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
                             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
@@ -316,7 +338,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
 
                             price=(itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity())+ShippingfeesPerItem;
-                            price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                            price=Float.valueOf(new DecimalFormat("##0.000").format(price));
                             QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
                             Log.e(TAG, "SearchOfBarcode:QTY " + QTY);
                             ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
@@ -394,7 +416,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                       //  if (adapterQTY == 0){
                             OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
 
-                            float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+                            float SumOfQTY = database.userDao().SumOfQTYFromDetials(OrderNumber);
                             Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
                             float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
                             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
@@ -404,7 +426,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             price=(itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity())+ShippingfeesPerItem;
                       //  }
                         Log.e(TAG, "SearchOfBarcode:price for item "+price );
-                        price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                        price=Float.valueOf(new DecimalFormat("##0.000").format(price));
                         QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
                         ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                 = new ItemsOrderDataDBDetails_Scanned(OrderNumber,itemsOrderDataDBDetailsList.get(0).getName(),
@@ -671,7 +693,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     float price=0f;
                     OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getordernumberData(OrderNumber);
 
-                    float SumOfQTY = database.userDao().SumOfQTYFromDetials();
+                    float SumOfQTY = database.userDao().SumOfQTYFromDetials(OrderNumber);
                     Log.e(TAG, "UploadDetails:SumOfQTY " + SumOfQTY);
                     float Shippingfees = orderDataModuleDBHeader.getShipping_fees();
                     Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
@@ -679,7 +701,8 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
 
                     price=(itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity())+ShippingfeesPerItem;
-                    price=Float.valueOf(new DecimalFormat("##0.00").format(price));
+                    Log.e(TAG, "UploadDetails:price " + price);
+                    price=Float.valueOf(new DecimalFormat("##0.000").format(price));
                     QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
                     ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                             = new ItemsOrderDataDBDetails_Scanned(OrderNumber,itemsOrderDataDBDetailsList.get(0).getName(),

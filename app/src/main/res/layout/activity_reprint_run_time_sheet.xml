@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.ReprintActivityRunTimeSheet"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:background="@color/main_background_color"
+    >
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textColorHint="@color/txt_color_hint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <EditText
+            android:id="@+id/edit_runsheetnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_tracking_number"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/txt_color"
+            android:textColorHint="@color/txt_color_hint"
+            android:textSize="@dimen/font_size_for_text_of_app" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btn_print_awb"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/buttonshap"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/print"
+        android:textColor="@color/textcolor_btns"
+        android:textSize="@dimen/font_size_for_button_of_app"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

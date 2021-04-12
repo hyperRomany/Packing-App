@@ -105,7 +105,7 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
     public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String Status) {
-
+        ORDER_NO =ORDER_NO.replace("*","-");
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
         Log.e("TAG", "UpdateStatus:ro "+ORDER_NO );

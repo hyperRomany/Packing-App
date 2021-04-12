@@ -207,6 +207,13 @@ public interface UserDao {
     @Query("UPDATE ItemsOrderDataDBDetails_Scanned SET quantity = :quantity WHERE Order_number=:Order_number and TrackingNumber =:TrackingNumber and sku in (:items) ")
     void updateQTYforListOfItems(String Order_number ,String TrackingNumber ,  float quantity , String items);
 
+    @Query("UPDATE ItemsOrderDataDBDetails_Scanned SET quantity = :quantity , price = :price WHERE Order_number=:Order_number and TrackingNumber =:TrackingNumber and sku in (:items) ")
+    void updateQTY_PriceforListOfItems(String Order_number ,String TrackingNumber ,  float quantity , float price , String items);
+
+
+    @Query("SELECT * FROM ItemsOrderDataDBDetails_Scanned  WHERE Order_number=:Order_number and TrackingNumber =:TrackingNumber and sku in (:items) ")
+    List<ItemsOrderDataDBDetails_Scanned> GetItemScanedQTY(String Order_number ,String TrackingNumber  , String items);
+
     @Query("DELETE FROM ItemsOrderDataDBDetails_Scanned  WHERE Order_number=:Order_number and sku in (:items) ")
     void DeleteTrackingNumberFromDetailstable_using_sku( String Order_number , List<String> items);
 
@@ -347,8 +354,8 @@ public interface UserDao {
     @Query("SELECT * FROM DriverPackages_Details_DB WHERE  ORDER_NO =:OrderNumber")
     List<DriverPackages_Details_DB> getAllPckagesForUpload(String OrderNumber);
 
-    @Query("select sum(quantity) FROM itemsOrderDataDBDetails ")
-    float SumOfQTYFromDetials();
+    @Query("select sum(quantity) FROM itemsOrderDataDBDetails WHERE  Order_number =:OrderNumber")
+    float SumOfQTYFromDetials(String OrderNumber);
 
     @Query("SELECT * FROM RecievePackedModule")
     List<RecievePackedModule> getRecievePackedModule();

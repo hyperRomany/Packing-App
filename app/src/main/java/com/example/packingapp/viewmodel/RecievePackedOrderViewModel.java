@@ -74,6 +74,8 @@ public class RecievePackedOrderViewModel extends ViewModel {
     public  MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String status) {
+        ORDER_NO =ORDER_NO.replace("*","-");
+
         HashMap<String, String> map = new HashMap<>();
         map.put("number", ORDER_NO);
         map.put("status", status);
