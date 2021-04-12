@@ -36,7 +36,7 @@ public class ApiClient {
     private static Gson gson = new GsonBuilder()
          .setLenient()
          .create();
- 
+
     public static APIRetrofit build() {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

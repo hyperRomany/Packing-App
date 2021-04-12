@@ -50,8 +50,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -159,6 +165,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             @Override
             public void onChanged(Response response) {
                 if (response.getRecords().size() > 0) {
+
+                    Log.e("response",response.toString());
                     List<String>  recievePackedORDER_NO_Distinctlist_for_for_loop =  database.userDao().GetDistinctordernumbersFromRecievePackedModule_FOR_FORLoop();
                    // for (int i=0;i<recievePackedORDER_NO_Distinctlist_for_for_loop.size();i++) {
                     //if (){
@@ -1307,143 +1315,35 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
     
     // TODO this last version but with one page
      private void createPdf(String id , List<RecordsItem> items) {
+         List<RecordsItem> data=items;
+         ArrayList<String> outBounds=new ArrayList<>();
+         for (int i =0;i<items.size();i++)
+         {
+             outBounds.add(items.get(i).getOUTBOUND_DELIVERY());
+         }
 
+        Float total = 0f;
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         PdfDocument pdfDocument = new PdfDocument();
-        Paint paint = new Paint();
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        paint.setTextSize(30.0f);
-        PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, 1).create());
-        Canvas canvas = page.getCanvas();
-        canvas.drawText( "إقرار إستلام /Receiving Avowal"  +" رقم  " +id , 1250.0f, 60.0f, paint);
-
-        canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ",
-                1150.0f, 100.0f, paint);
-        canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل",
-                500.0f, 140.0f, paint);
-        canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله",
-                550.0f, 180.0f, paint);
-        canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ",
-                550.0f, 220.0f, paint);
-        canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ",
-                1000.0f, 260.0f, paint);
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2.0f);
-        Paint paint2 = paint;
-
-        //bottom potion of header liner
-        canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
-        paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setStyle(Paint.Style.FILL);
-
-        canvas.drawText("S/م", 2925.0f, 310.0f, paint);
-        canvas.drawLine(2870.0f, 280.0f, 2870.0f, 1800.0f, paint2);
-        canvas.drawText("outBound", 2852.0f, 310.0f, paint);
-        canvas.drawLine(2650.0f, 280.0f, 2650.0f, 1800.0f, paint2);
-        canvas.drawText("رقم الشحنة", 2400.0f, 310.0f, paint);
-        canvas.drawLine(2100.0f, 280.0f, 2100.0f, 1800.0f, paint2);
-        canvas.drawText("قيمة الشحنة", 2095.0f, 310.0f, paint);
-        canvas.drawLine(1920.0f, 280.0f, 1920.0f, 1800.0f, paint2);
-        canvas.drawText("طريقة الدفع", 1905.0f, 310.0f, paint);
-        canvas.drawLine(1755.0f, 280.0f, 1755.0f, 1800.0f, paint2);
-        canvas.drawText("نوع الشحنه", 1750.0f, 310.0f, paint);
-        canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
-        canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
-        canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
-        canvas.drawText("تلفون العميل",1160.0f , 310.0f, paint);
-        canvas.drawLine(920.0f, 280.0f, 920.0f, 1800.0f, paint2);
-        canvas.drawText("عنوان العميل", 740.0f, 310.0f, paint);
-
-       /* canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
-        canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
-        canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
-        canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
-*/
-
-        canvas.drawLine(430.0f, 280.0f, 430.0f, 1800.0f, paint2);
-        canvas.drawText("ملاحظات", 290.0f, 310.0f, paint);
-
-        //bottom of header row  line
-        canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
-
-        canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 1850.0f, paint);
-        canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 1850.0f, paint);
-
-        canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
-        int pos=0;
-        for (int i=0;i<items.size();i++) {
-            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0,items.get(i).getADDRESS_DETAILS().length()/3), 890.0f, 360+pos, paint);
-            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length()/3,(items.get(i).getADDRESS_DETAILS().length()/3)*2), 890.0f, 395+pos, paint);
-            canvas.drawText(items.get(i).getADDRESS_DETAILS().substring((items.get(i).getADDRESS_DETAILS().length()/3)*2,items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420+pos, paint);
-            canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390+pos, paint);
-            canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390+pos, paint);
-
-            canvas.drawText("توصيل", 1750.0f, 390+pos, paint);
-
-            canvas.drawText(checkPaymentMethod(items.get(i).getITEM_PRICE()), 1880.0f, 390+pos, paint);
-            canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390+pos, paint);
-            canvas.drawText(String.valueOf(i+1), 2910.0f, 390+pos, paint);
-
-            canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390+pos, paint);
-
-
-            try {
-                testCODE93(canvas, 2120.0f, 340+pos, items.get(i).getTRACKING_NO());
-                canvas.drawLine(30.0f, 430.0f+pos, 2940.0f, 430.0f+pos, paint2);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            pos+=100;
-        }
-        pdfDocument.finishPage(page);
-        try {
-            pdfDocument.writeTo(new FileOutputStream(new File(Environment.getExternalStorageDirectory(), "/HyperOne.pdf")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        pdfDocument.close();
-
-    }
-    public String checkPaymentMethod(String name)
-    {
-        if (name.equals("0") || name.equals("0.000")) {
-            return "أون لاين";
-        }
-        else
-        {return "كاش";}
-    }
-//TODO this for n of pages after calculte
-   /* private void createPdf(String id , List<RecordsItem> items) {
-
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-        PdfDocument pdfDocument = new PdfDocument();
-// use mode items list for 17 and
-        //Log.e(TAG, "createPdf:17% "+(17 % 17) );
-        //Log.e(TAG, "createPdf:17/ "+(17 /17) );
-
-        //Log.e(TAG, "createPdf:18% "+(18 % 17) );
-       // Log.e(TAG, "createPdf:18/ "+(18 /17) );
-
-        int noOfPages=items.size() /17 ;
+        int noOfPages=data.size() /17 ;
         Log.e(TAG, "createPdf:noOfPagesBefore % "+noOfPages );
-        if (items.size() %17 >0){
-            noOfPages++;
+        if (noOfPages==0)
+        {
+            noOfPages=1;
+        }
+        if (data.size() %17 > 0){
+            Integer.valueOf(noOfPages);
         }
         Log.e(TAG, "createPdf:noOfPages "+noOfPages );
 
         for (int j=0;j < noOfPages;j++) {
             Paint paint = new Paint();
-            paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             paint.setTextSize(30.0f);
-
-            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, j+1).create());
+            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, noOfPages).create());
             Canvas canvas = page.getCanvas();
-            canvas.drawText("إقرار إستلام /Receiving Avowal" + " رقم  " + id , 1250.0f, 60.0f, paint);
+            canvas.drawText("إقرار إستلام /Receiving Avowal" + " رقم  " + id, 1250.0f, 60.0f, paint);
 
             canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ",
                     1150.0f, 100.0f, paint);
@@ -1459,6 +1359,7 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(2.0f);
             Paint paint2 = paint;
+
 
             //bottom potion of header liner
             canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
@@ -1479,12 +1380,18 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
             canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
             canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
-            canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
-            canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
-            canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
+            canvas.drawText("تلفون العميل", 1160.0f, 310.0f, paint);
+            canvas.drawLine(920.0f, 280.0f, 920.0f, 1800.0f, paint2);
+            canvas.drawText("عنوان العميل", 740.0f, 310.0f, paint);
 
-            canvas.drawLine(550.0f, 280.0f, 550.0f, 1800.0f, paint2);
-            canvas.drawText("ملاحظات", 300.0f, 310.0f, paint);
+       /* canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
+        canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
+        canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
+        canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
+*/
+
+            canvas.drawLine(430.0f, 280.0f, 430.0f, 1800.0f, paint2);
+            canvas.drawText("ملاحظات", 290.0f, 310.0f, paint);
 
             //bottom of header row  line
             canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
@@ -1494,30 +1401,44 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
 
             canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
             int pos = 0;
-            Log.e(TAG, "createPdf:noOfPages-1 "+ ((noOfPages-1)*17) );
-            Log.e(TAG, "createPdf:noOfPages-1 "+ (j*17) );
-            for (int i = (j*17); i < items.size(); i++) {
-                canvas.drawText(items.get(i).getADDRESS_CITY(), 1220.0f, 390 + pos, paint);
-                canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
-                canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 850.0f, 390 + pos, paint);
-
-                canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
-
-                canvas.drawText("كاش", 1880.0f, 390 + pos, paint);
-                canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
-                canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
-
-                canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
 
 
-                try {
-                    testCODE93(canvas, 2120.0f, 340 + pos, items.get(i).getTRACKING_NO());
-                    canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
+            Map<String, List<RecordsItem>> personByAge = new HashMap<>();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                personByAge = items.stream()
+                        .collect(Collectors.groupingBy(RecordsItem::getOUTBOUND_DELIVERY));
 
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+            }
+            ArrayList<String> list = removeDuplicates(outBounds);
+            Log.e("out", list.toString());
+            for (int x = 0; x < list.size(); x++) {
+                total = 0f;
+                Log.e("out4", personByAge.get(list.get(x)).toString());
+                items.clear();
+                items = personByAge.get(list.get(x));
+                for (int i = 0; i < personByAge.get(list.get(x)).size(); i++) {
+                    Log.e("out2", list.get(x));
+                    canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0, items.get(i).getADDRESS_DETAILS().length() / 3), 890.0f, 360 + pos, paint);
+                    canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length() / 3, (items.get(i).getADDRESS_DETAILS().length() / 3) * 2), 890.0f, 395 + pos, paint);
+                    canvas.drawText(items.get(i).getADDRESS_DETAILS().substring((items.get(i).getADDRESS_DETAILS().length() / 3) * 2, items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420 + pos, paint);
+                    canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390 + pos, paint);
+                    canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
+                    canvas.drawText(checkPaymentMethod(items.get(i).getITEM_PRICE()), 1880.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
+                    canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
+                    total += Float.valueOf(items.get(i).getITEM_PRICE());
+                    try {
+                        testCODE93(canvas, 2120.0f, 340 + pos, items.get(i).getTRACKING_NO());
+                        canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    pos += 100;
                 }
+                canvas.drawText(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getGRAND_TOTAL(), 2090.0f, 420 + pos, paint);
+                canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
                 pos += 100;
             }
 
@@ -1531,7 +1452,135 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         }
         pdfDocument.close();
 
-    }*/
+        }
+
+
+    public String checkPaymentMethod(String name)
+    {
+        if (name.equals("0") || name.equals("0.000")) {
+            return "أون لاين";
+        }
+        else
+        {return "كاش";}
+    }
+//TODO this for n of pages after calculte
+//    private void createPdf(String id , List<RecordsItem> items) {
+//
+//        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//        PdfDocument pdfDocument = null;
+//            pdfDocument = new PdfDocument();
+//
+//// use mode items list for 17 and
+//        //Log.e(TAG, "createPdf:17% "+(17 % 17) );
+//        //Log.e(TAG, "createPdf:17/ "+(17 /17) );
+//
+//        //Log.e(TAG, "createPdf:18% "+(18 % 17) );
+//       // Log.e(TAG, "createPdf:18/ "+(18 /17) );
+//
+//        int noOfPages=items.size() /17 ;
+//        Log.e(TAG, "createPdf:noOfPagesBefore % "+noOfPages );
+//        if (items.size() %17 >0){
+//            noOfPages++;
+//        }
+//        Log.e(TAG, "createPdf:noOfPages "+noOfPages );
+//
+//        for (int j=0;j < noOfPages;j++) {
+//            Paint paint = new Paint();
+//            paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+//            paint.setTextSize(30.0f);
+//
+//            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, j+1).create());
+//            Canvas canvas = page.getCanvas();
+//            canvas.drawText("إقرار إستلام /Receiving Avowal" + " رقم  " + id , 1250.0f, 60.0f, paint);
+//
+//            canvas.drawText("التاريخ/Date : " + currentDate + "           الوقت/Time : " + currentTime + " ",
+//                    1150.0f, 100.0f, paint);
+//            canvas.drawText("استلمت أنا ....................................... رقم قومي .............................  مندوب (شركة هايبروان للتجارة) البضاعة الموجودة بالشحنات المذكورأرقامها بالأسفل",
+//                    500.0f, 140.0f, paint);
+//            canvas.drawText("وذلك لتسليمها لعملاء الشركة وتحصيل قيمتها منهم على أن ألتزم برد الطلبيات التي لم تسلم للعملاء لمخزن الشركة بنفس حالة إستلامها وتسديد ما أقوم بتحصيله",
+//                    550.0f, 180.0f, paint);
+//            canvas.drawText("من العملاء لخزينة الشركة وتعتبر البضاعة وما أقوم بتحصيله من العملاء هو أمانة في ذمتي أتعهد بتسليمها للشركة, وإذا أخلللت بذلك أكون مبددا وخائنا للأمانة . ",
+//                    550.0f, 220.0f, paint);
+//            canvas.drawText("وأتحمل كافة المسئولية الجنائية والمدنية المترتبة على ذلك. ",
+//                    1000.0f, 260.0f, paint);
+//
+//            paint.setStyle(Paint.Style.STROKE);
+//            paint.setStrokeWidth(2.0f);
+//            Paint paint2 = paint;
+//
+//            //bottom potion of header liner
+//            canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
+//            paint.setTextAlign(Paint.Align.RIGHT);
+//            paint.setStyle(Paint.Style.FILL);
+//
+//            canvas.drawText("S/م", 2925.0f, 310.0f, paint);
+//            canvas.drawLine(2870.0f, 280.0f, 2870.0f, 1800.0f, paint2);
+//            canvas.drawText("outBound", 2852.0f, 310.0f, paint);
+//            canvas.drawLine(2650.0f, 280.0f, 2650.0f, 1800.0f, paint2);
+//            canvas.drawText("رقم الشحنة", 2400.0f, 310.0f, paint);
+//            canvas.drawLine(2100.0f, 280.0f, 2100.0f, 1800.0f, paint2);
+//            canvas.drawText("قيمة الشحنة", 2095.0f, 310.0f, paint);
+//            canvas.drawLine(1920.0f, 280.0f, 1920.0f, 1800.0f, paint2);
+//            canvas.drawText("طريقة الدفع", 1905.0f, 310.0f, paint);
+//            canvas.drawLine(1755.0f, 280.0f, 1755.0f, 1800.0f, paint2);
+//            canvas.drawText("نوع الشحنه", 1750.0f, 310.0f, paint);
+//            canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
+//            canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
+//            canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
+//            canvas.drawText("عنوان العميل", 1160.0f, 310.0f, paint);
+//            canvas.drawLine(900.0f, 280.0f, 900.0f, 1800.0f, paint2);
+//            canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
+//
+//            canvas.drawLine(550.0f, 280.0f, 550.0f, 1800.0f, paint2);
+//            canvas.drawText("ملاحظات", 300.0f, 310.0f, paint);
+//
+//            //bottom of header row  line
+//            canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
+//
+//            canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 1850.0f, paint);
+//            canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 1850.0f, paint);
+//
+//            canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
+//            int pos = 0;
+//            Log.e(TAG, "createPdf:noOfPages-1 "+ ((noOfPages-1)*17) );
+//            Log.e(TAG, "createPdf:noOfPages-1 "+ (j*17) );
+//            for (int i = (j*17); i < items.size(); i++) {
+//                canvas.drawText(items.get(i).getADDRESS_CITY(), 1220.0f, 390 + pos, paint);
+//                canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
+//                canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 850.0f, 390 + pos, paint);
+//
+//                canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
+//
+//                canvas.drawText("كاش", 1880.0f, 390 + pos, paint);
+//                canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
+//                canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
+//
+//                canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
+//
+//
+//                try {
+//                    testCODE93(canvas, 2120.0f, 340 + pos, items.get(i).getTRACKING_NO());
+//                    canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                pos += 100;
+//            }
+//
+//
+//            pdfDocument.finishPage(page);
+//            try {
+//                pdfDocument.writeTo(new FileOutputStream(new File(Environment.getExternalStorageDirectory(), "/HyperOne.pdf")));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        pdfDocument.close();
+//
+//    }
 
     private static void testCODE93(Canvas canvas , float left, float top,String trackingnumber) throws Exception
     {
@@ -1618,6 +1667,26 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
         // show it
         alertDialog.show();
 
+    }
+
+    public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list)
+    {
+
+        // Create a new ArrayList
+        ArrayList<T> newList = new ArrayList<T>();
+
+        // Traverse through the first list
+        for (T element : list) {
+
+            // If this element is not present in newList
+            // then add it
+            if (!newList.contains(element)) {
+                newList.add(element);
+            }
+        }
+
+        // return the new list
+        return newList;
     }
 
 }
