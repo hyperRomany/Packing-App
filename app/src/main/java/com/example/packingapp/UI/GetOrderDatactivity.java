@@ -245,11 +245,11 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         binding.btnLoadingNewPurchaseOrder.setEnabled(true);
 
                         Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
-//                        //if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
+                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
                             ActionAfterGetData(responseGetOrderData);
-//                        //} else {
-//                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
-//                        //}
+                        } else {
+                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

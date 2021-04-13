@@ -336,11 +336,15 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             Log.e(TAG, "UploadDetails:Shippingfees " + Shippingfees);
                             float ShippingfeesPerItem = Shippingfees / SumOfQTY;
                             Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + ShippingfeesPerItem);
+                            Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + itemsOrderDataDBDetailsList.get(0).getQuantity());
+                            Log.e(TAG, "UploadDetails:ShippingfeesPerItem " + (itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity()));
 
                             price=(itemsOrderDataDBDetailsList.get(0).getPrice()/itemsOrderDataDBDetailsList.get(0).getQuantity())+ShippingfeesPerItem;
                             price=Float.valueOf(new DecimalFormat("##0.000").format(price));
                             QTY=Float.valueOf(new DecimalFormat("##0.000").format(QTY));
                             Log.e(TAG, "SearchOfBarcode:QTY " + QTY);
+                            Log.e(TAG, "SearchOfBarcode:price " + price);
+
                             ItemsOrderDataDBDetails_Scanned itemsOrderDataDBDetails_scanned
                                     = new ItemsOrderDataDBDetails_Scanned(OrderNumber, itemsOrderDataDBDetailsList.get(0).getName(),
                                     price,
