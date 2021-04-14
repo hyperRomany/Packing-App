@@ -275,7 +275,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 Log.e(TAG, "onChanged: " + message.getMessage());
                 Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.doneforheader), Toast.LENGTH_SHORT).show();
 
-//                OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
+//              OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(ordernumberselected);
 
                 UploadDetails(ordernumberselected_ForDetails);
                 //TODO Update status on magento

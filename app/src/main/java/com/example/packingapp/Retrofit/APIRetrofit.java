@@ -147,6 +147,8 @@ public interface APIRetrofit {
     @POST("Ordernumber/Read_ForRunTimeSheet.php")
     Observable<Response> ReadRunTimeSheet(@Body Map<String, String> mobile);
 
+    @POST("Ordernumber/Reprint_ForRuntimeSheet.php")
+    Observable<Response> ReprintRunTimeSheet(@Body Map<String, String> mobile);
 
     @POST("Ordernumber/Retrieve_ForRunTimeSheet.php")
     Observable<ResponseFetchRuntimesheetID> RetrieveRunTimeSheet(@Body Map<String, String> mobile);

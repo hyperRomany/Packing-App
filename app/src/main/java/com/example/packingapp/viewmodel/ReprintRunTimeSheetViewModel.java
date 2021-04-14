@@ -24,20 +24,8 @@ public class ReprintRunTimeSheetViewModel extends ViewModel {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
-//        map.put("Query", "select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +
-//                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
-//                " from (select ORDER_NO as ORDER_NO_H , CUSTOMER_NAME , GRAND_TOTAL,\n" +
-//                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
-//                " from "+ApiClient.DataBasename+".HEADER group by ORDER_NO ) as h\n" +
-//                " left outer join \n" +
-//                " (SELECT ORDER_NO as ORDER_NO_D  , sum(ITEM_PRICE) ITEM_PRICE , TRACKING_NO from  "+ApiClient.DataBasename+".DETAILS group by TRACKING_NO) as d \n" +
-//                " on ORDER_NO_H=ORDER_NO_D\n" +
-//                "where  ORDER_NO_H in( "+ORDER_NOs +")");
-//
 
-//        map.put("DRIVER_ID", DRIVER_ID);
-//        map.put("Username", Username);
-        ApiClient.build().ReadRunTimeSheet(map)
+        ApiClient.build().ReprintRunTimeSheet(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe((@SuppressLint("CheckResult") Response responseSms) -> {
