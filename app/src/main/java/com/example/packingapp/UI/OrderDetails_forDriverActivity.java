@@ -90,6 +90,8 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 
         GetCustomerDate_to_Text();
         PhoneAndSmsActions();
+        Random random = new Random();
+        int randomNumber = random.nextInt(1280 - 65) + 65;
 
         binding.btnRescheduleDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +106,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
         binding.btnSendPasscodeToConfirmDeleivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Random random = new Random();
-                int randomNumber = random.nextInt(1280 - 65) + 65;
+
                 Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
                 SendPasscode =true;
                 //ToDo Don't SendPasscode For Test Get asscode From log
