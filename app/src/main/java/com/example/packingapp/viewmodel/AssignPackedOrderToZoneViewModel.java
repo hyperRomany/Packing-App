@@ -28,7 +28,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
 
     public  MutableLiveData<String> mutableLiveDataError = new MutableLiveData<>();
 
-    public void fetchdata(String OrderNumber ) {
+    public void fetchdata(String OrderNumber) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", OrderNumber);

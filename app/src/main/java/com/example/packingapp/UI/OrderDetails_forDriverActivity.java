@@ -108,7 +108,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
             public void onClick(View v) {
 
                 Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
-                SendPasscode =true;
+                SendPasscode =true; 
                 //ToDo Don't SendPasscode For Test Get asscode From log
                 SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
 
