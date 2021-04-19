@@ -4,6 +4,7 @@ package com.example.packingapp.UI.Fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import com.example.packingapp.UI.DriverMainActivity;
 import com.example.packingapp.UI.OrderDetails_forDriverActivity;
 import com.example.packingapp.databinding.FragmentConfirmPasscodeBinding;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
+import com.example.packingapp.model.DriverModules.DriverPackages_Header_DB;
 import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
+import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 import com.example.packingapp.viewmodel.ConfirmPasscodeViewModel;
 
@@ -169,6 +172,32 @@ FragmentConfirmPasscodeBinding binding;
         });
 
         ObserveFUN();
+        ResendPaascodWithCounter();
+    }
+
+    private void ResendPaascodWithCounter() {
+        new CountDownTimer(10000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                binding.txtCounter.setText(getResources().getString(R.string.resend_within) + millisUntilFinished / 1000);
+                binding.txtCounter.setTextColor(getResources().getColor(R.color.txt_color));
+            }
+
+            public void onFinish() {
+                binding.txtResend.setVisibility(View.VISIBLE);
+                binding.txtCounter.setVisibility(View.GONE);
+            }
+        }.start();
+
+        binding.txtResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DriverPackages_Header_DB> driverPackages_header_dbs= database.userDao().CheckifThereIsPasscodeORNot(Orderclicked);
+                Log.e(TAG, "onClick:getCustomer_phone "+driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") );
+                Log.e(TAG, "onClick:getPasscode "+driverPackages_header_dbs.get(0).getPasscode() );
+                SendSMS(driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") , "Your OTP Is " + driverPackages_header_dbs.get(0).getPasscode());
+            }
+        });
     }
 
     private void ObserveFUN() {
@@ -297,7 +326,35 @@ FragmentConfirmPasscodeBinding binding;
 //                }
             }
         });
+
+        confirmPasscodeViewModel.getSmsLiveData().observe(getViewLifecycleOwner(), new Observer<ResponseSms>() {
+            @Override
+            public void onChanged(ResponseSms responseSms) {
+                Toast.makeText(getActivity(),
+                        responseSms.getSMSStatus().toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        confirmPasscodeViewModel.mutableLiveData_sendSMS_Error.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged:sensms "+s );
+                Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+
+//                if (s.equals("HTTP 503 Service Unavailable")) {
+//                    Toast.makeText(OrderDetails_forDriverActivity.this, getResources().getString(R.string.invaliduser), Toast.LENGTH_LONG).show();
+//                }
+            }
+        });
+
     }
+
+    private void SendSMS(String CustomerPhone ,String SMSBody) {
+        Log.e(TAG, "SendSMS: "+CustomerPhone );
+        Log.e(TAG, "SendSMS:SMSBody "+SMSBody );
+        confirmPasscodeViewModel.SendSms(CustomerPhone , SMSBody);
+    }
+
 
     public void UpdateStatus_Passcode_Header_ON_83(String Status) {
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){

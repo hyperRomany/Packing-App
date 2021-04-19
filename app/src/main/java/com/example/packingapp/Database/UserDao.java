@@ -328,6 +328,9 @@ public interface UserDao {
     @Query("UPDATE DriverPackages_Header_DB SET Passcode =:Passcode WHERE  ORDER_NO =:OrderNumber ")
     void UpdatePasscode(String OrderNumber ,String Passcode);
 
+    @Query("SELECT * FROM DriverPackages_Header_DB WHERE  ORDER_NO =:OrderNumber ")
+    List<DriverPackages_Header_DB> CheckifThereIsPasscodeORNot(String OrderNumber );
+
     @Query("SELECT Passcode FROM DriverPackages_Header_DB where ORDER_NO =:ORDER_NO")
     String getPasscode(String ORDER_NO);
 

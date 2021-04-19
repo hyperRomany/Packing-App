@@ -226,5 +226,9 @@
     <string name="cantgetlastversionfromserver">Unable to get last version from server</string>
     <string name="cantaddthisordertoserver">لايمكن اضافه البيانات للسيرفير</string>
     <string name="addqtymorethanzero">لا يمكن تعديل الكميه الى 0 أو أقل</string>
+    <string name="resend_within">ارسال بعد</string>
+    <string name="counter">counter</string>
+    <string name="send">ارسال الكود</string>
+    <string name="outbounddeleveryequalnull">OutBound delevery equal null</string>
 
 </resources>

@@ -215,8 +215,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-      
-
         Log.e(TAG, "onPause: ");
 
     }
@@ -245,8 +243,14 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         binding.btnLoadingNewPurchaseOrder.setEnabled(true);
 
                         Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
+                 //       Log.e(TAG, "onChanged: " + responseGetOrderData.getOutBound_delivery());
+
                         if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
-                            ActionAfterGetData(responseGetOrderData);
+                            if (responseGetOrderData.getOutBound_delivery() !=null) {
+                                ActionAfterGetData(responseGetOrderData);
+                            }else {
+                                Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.outbounddeleveryequalnull), Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
                         }

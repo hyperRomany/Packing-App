@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.packingapp.Retrofit.ApiClient;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
+import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
 
 import java.util.HashMap;
@@ -138,5 +139,23 @@ public class ConfirmPasscodeViewModel extends ViewModel {
 
     }
 
+    private MutableLiveData<ResponseSms> smsLiveData = new MutableLiveData<>();
+    public MutableLiveData<ResponseSms> getSmsLiveData() {
+        return smsLiveData;
+    }
+    public  MutableLiveData<String> mutableLiveData_sendSMS_Error = new MutableLiveData<>();
 
+    public void SendSms(String number, String message) {
+        ApiClient.build().sendSms(number,message)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(responseSms -> {
+                            smsLiveData.setValue(responseSms);
+                        }
+                        ,throwable -> {
+                            Log.d("Error_Vof ",throwable.getMessage());
+                            mutableLiveData_sendSMS_Error.setValue(throwable.getMessage());
+                        }
+                );
+    }
 }
