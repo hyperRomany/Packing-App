@@ -201,6 +201,7 @@
     <string name="Added">تم</string>
     <string name="version">Version</string>
     <string name="reject_packages">رفض</string>
+    <string name="rejectall_packages">رفض الكل</string>
     <string name="package_price">السعر</string>
     <string name="customer_data">بيانات العميل</string>
     <string name="failed_number_header_of_driver">اجمالى عدد ماتم رفضه</string>

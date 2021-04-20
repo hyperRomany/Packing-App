@@ -26,6 +26,7 @@ import com.example.packingapp.databinding.ActivityOrderDetailsForDriverBinding;
 import com.example.packingapp.model.DriverModules.DriverPackages_Details_DB;
 import com.example.packingapp.model.DriverModules.DriverPackages_Header_DB;
 import com.example.packingapp.model.DriverModules.DriverPackages_Respones_Details_recycler;
+import com.example.packingapp.model.GetOrderResponse.OrderDataModuleDBHeader;
 import com.example.packingapp.model.RecievePacked.RecievePackedModule;
 import com.example.packingapp.model.ResponseSms;
 import com.example.packingapp.model.ResponseUpdateStatus;
@@ -90,7 +91,8 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 
         GetCustomerDate_to_Text();
         PhoneAndSmsActions();
-
+        Random random = new Random();
+        int randomNumber = random.nextInt(1280 - 65) + 65;
 
         binding.btnRescheduleDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,35 +108,48 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
             @Override
             public void onClick(View v) {
 
-                if (database.userDao().CheckifThereIsPasscodeORNot(Orderclicked).get(0).getPasscode() == null) {
-                    Random random = new Random();
-                    int randomNumber = random.nextInt(1280 - 65) + 65;
+                Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
+                SendPasscode =true; 
+                //ToDo Don't SendPasscode For Test Get asscode From log
+                SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
 
-                    Log.e(TAG, "onClick:randomNumber  " + String.valueOf(randomNumber));
-                    SendPasscode = true;
-                    //ToDo Don't Send Passcod For Test Get passcod From log
-                    SendSMS(CustomerPhone, "Your OTP Is " + String.valueOf(randomNumber));
-                    database.userDao().UpdatePasscode(Orderclicked, String.valueOf(randomNumber));
-                }else {
-                    ConfirmPasscodeFragment detialsfragment = new ConfirmPasscodeFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Orderclicked", Orderclicked);
-//                bundle.putString("UserName",UserName);
-//                bundle.putString("Branch",Branch);
-                    // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
+                database.userDao().UpdatePasscode(Orderclicked,String.valueOf(randomNumber));
 
-                    detialsfragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_content, detialsfragment);
+            }
+        });
 
-                    // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
-                    // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    SendPasscode = false;
+        binding.btnRejectallDeleivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DriverPackages_Details_DB> Trackingnumbers_List = driverOrderpackagesAdapter.ReturnListOfPackages();
+                TrackingnumberToReject_list=new ArrayList<>();
+                if (Trackingnumbers_List.size() != 0) {
+                    for (int i = 0; i < Trackingnumbers_List.size(); i++) {
+                        TrackingnumberToReject_list.add(Trackingnumbers_List.get(i).getTRACKING_NO());
+                        postion_ToReject=i;
+                    }
+                    Log.e("TAG",TrackingnumberToReject_list.toString());
+                    RejectDialog(TrackingnumberToReject_list,postion_ToReject);
                 }
             }
         });
+
+        orderDetailsForDriverViewModel.getmutableLiveData_UpdateStatus_PASSCODE_ON_83LiveData().observe(this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus responseUpdateStatus) {
+                List<DriverPackages_Details_DB> driverPackages_details_dbList  =database.userDao().getAllPckagesForUpload(Orderclicked);
+
+                UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+                UpdateStatus("rejected_under_inspection");
+            }
+        });
+        orderDetailsForDriverViewModel.getmutableLiveData_UpdateStatus_Reason_ON_83().observe(this, new Observer<ResponseUpdateStatus>() {
+            @Override
+            public void onChanged(ResponseUpdateStatus responseUpdateStatus) {
+                //finish();
+            }
+        });
+
 
         binding.btnRejectDeleivery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +174,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                                 Toast.makeText(OrderDetails_forDriverActivity.this, R.string.you_choice_noting, Toast.LENGTH_LONG).show();
                             } else if (CountChecked >= 1) {  //&& !BarCodeChecked.isEmpty()
                                RejectDialog(TrackingnumberToReject_list,postion_ToReject);
-
+                               UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
                             }
 
                         } /*else
@@ -515,8 +530,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 //                    driverOrderpackagesAdapter_Reject.notifyDataSetChanged();
                     CreateORUpdateRecycleView();
                     CreateORUpdateRecycleView_Reject();
-
-
+                    UpdateStatus_Passcode_Header_ON_83("rejected_under_inspection");
                     alertDialog.dismiss();
 
                 }else{
@@ -542,7 +556,18 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 
 
     }
+    public void UpdateStatus(String status){
+//        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
+        OrderDataModuleDBHeader orderDataModuleDBHeader = database.userDao().getHeaderToUpload(Orderclicked);
+        orderDetailsForDriverViewModel.UpdateStatus(
+                Orderclicked,
+                status
+        );
 
+//        }else {
+//            Toast.makeText(GetOrderDatactivity.this, "توجد عناصر لم يتم تعبئتها", Toast.LENGTH_SHORT).show();
+//        }
+    }
     public void UpdateStatus(){
 //        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
 
@@ -682,5 +707,37 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
         alertDialog.show();
     }
 
+    public void UpdateStatus_Passcode_Header_ON_83(String Status) {
+//        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
+        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
+        if (Orderclicked != null) {
+            orderDetailsForDriverViewModel.UpdateOrderStatus_Passcode_Header_ON_83(
+                    Orderclicked,
+                    "null", Status,database.userDao().getUserData_MU().getUser_id()
+            );
+            Log.e(TAG, "UpdateStatus_zone_ON_83 zzzo : " + Orderclicked);
+            Log.e(TAG, "UpdateStatus_zone_ON_83 zzzsta : " + Status);
+
+
+        } else {
+            Toast.makeText(this, "لم الرفع .. أضغط مره أخرى ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void UpdateStatus_Reason_Details_ON_83(List<DriverPackages_Details_DB> driverPackages_details_dbList) {
+//        if (database.userDao().getAllItemsWithoutTrackingnumber().size() == 0){
+        List<RecievePackedModule> orderDataModuleDBHeaderkist = database.userDao().getorderNORecievePackedModule();
+
+        if (Orderclicked != null) {
+            orderDetailsForDriverViewModel.UpdateOrderStatus_Reason_Details_ON_83(driverPackages_details_dbList);
+            Log.e(TAG, "UpdateStatus_zone_ON_83 ErrorDet : " + driverPackages_details_dbList.size());
+
+
+        } else {
+            Toast.makeText(OrderDetails_forDriverActivity.this, "لم يتم الرفع .. أضغط مره أخرى ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }
