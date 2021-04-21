@@ -45,6 +45,7 @@ FragmentConfirmPasscodeBinding binding;
     String Orderclicked="";
     private static final String TAG = "ConfirmPasscodeFragment";
     String Passcode="";
+    CountDownTimer yourCountDownTimer;
     public ConfirmPasscodeFragment() {
         // Required empty public constructor
     }
@@ -110,6 +111,7 @@ FragmentConfirmPasscodeBinding binding;
                  //   mainActivity.CreateORUpdateRecycleView(2);
                     Log.e("nnnnnnnnn","");
                 }
+                yourCountDownTimer.cancel();
 //                Intent goback=new Intent(getActivity(), MainActivity.class);
 //                goback.putExtra("UserName",UserName);
 //                goback.putExtra("Branch",Branch);
@@ -176,7 +178,7 @@ FragmentConfirmPasscodeBinding binding;
     }
 
     private void ResendPaascodWithCounter() {
-        new CountDownTimer(60000, 1000) {
+        yourCountDownTimer=  new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 binding.txtCounter.setText(getResources().getString(R.string.resend_within) + millisUntilFinished / 1000);
