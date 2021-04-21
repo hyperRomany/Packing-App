@@ -1,6 +1,7 @@
 package com.example.packingapp.UI.Fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,8 +46,12 @@ FragmentConfirmPasscodeBinding binding;
     String Orderclicked="";
     private static final String TAG = "ConfirmPasscodeFragment";
     String Passcode="";
-    public ConfirmPasscodeFragment() {
+    Context context;
+    //Activity activity;
+    public ConfirmPasscodeFragment(/*Context context1 ,Activity activity1*/) {
         // Required empty public constructor
+      //  this.context=context1;
+      //  this.activity=activity1;
     }
 
 
@@ -176,6 +181,8 @@ FragmentConfirmPasscodeBinding binding;
     }
 
     private void ResendPaascodWithCounter() {
+        binding.txtResend.setVisibility(View.GONE);
+        binding.txtCounter.setVisibility(View.VISIBLE);
         new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -186,6 +193,7 @@ FragmentConfirmPasscodeBinding binding;
             public void onFinish() {
                 binding.txtResend.setVisibility(View.VISIBLE);
                 binding.txtCounter.setVisibility(View.GONE);
+
             }
         }.start();
 
@@ -196,6 +204,7 @@ FragmentConfirmPasscodeBinding binding;
                 Log.e(TAG, "onClick:getCustomer_phone "+driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") );
                 Log.e(TAG, "onClick:getPasscode "+driverPackages_header_dbs.get(0).getPasscode() );
                 SendSMS(driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") , "Your OTP Is " + driverPackages_header_dbs.get(0).getPasscode());
+                ResendPaascodWithCounter();
             }
         });
     }
