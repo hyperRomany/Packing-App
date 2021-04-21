@@ -178,6 +178,8 @@ FragmentConfirmPasscodeBinding binding;
     }
 
     private void ResendPaascodWithCounter() {
+        binding.txtResend.setVisibility(View.GONE);
+        binding.txtCounter.setVisibility(View.VISIBLE);
         yourCountDownTimer=  new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -198,6 +200,7 @@ FragmentConfirmPasscodeBinding binding;
                 Log.e(TAG, "onClick:getCustomer_phone "+driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") );
                 Log.e(TAG, "onClick:getPasscode "+driverPackages_header_dbs.get(0).getPasscode() );
                 SendSMS(driverPackages_header_dbs.get(0).getCustomer_phone().replace("+2","") , "Your OTP Is " + driverPackages_header_dbs.get(0).getPasscode());
+                ResendPaascodWithCounter();
             }
         });
     }
