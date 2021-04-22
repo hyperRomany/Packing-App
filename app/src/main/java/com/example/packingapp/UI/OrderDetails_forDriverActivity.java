@@ -50,10 +50,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class OrderDetails_forDriverActivity extends AppCompatActivity {
     private static final String TAG = "OrderDetails_forDriverA";
-ActivityOrderDetailsForDriverBinding binding;
-private static final int REQUEST_PHONE_CALL = 1;
+    ActivityOrderDetailsForDriverBinding binding;
+    private static final int REQUEST_PHONE_CALL = 1;
     OrderDetailsForDriverViewModel orderDetailsForDriverViewModel;
     String CustomerPhone="01065551910";
+    int reject=1;
     String CustomerPhoneZoiperCall="501065551910";
     Context context=OrderDetails_forDriverActivity.this;
     List<DriverPackages_Details_DB> driverPackages_details_dbList;
@@ -64,7 +65,7 @@ private static final int REQUEST_PHONE_CALL = 1;
     DriverOrderpackages_rejectAdapter driverOrderpackagesAdapter_Reject;
     int mHOUR ,mMINUTE;
     int mAM_PM;
-List<String> Reject_Resons_list ,Reschedule_Resons_list;
+    List<String> Reject_Resons_list ,Reschedule_Resons_list;
     int CountChecked;
     String TrackingnumberToReject;
     List<String> TrackingnumberToReject_list;
@@ -130,6 +131,7 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                     }
                     Log.e("TAG",TrackingnumberToReject_list.toString());
                     RejectDialog(TrackingnumberToReject_list,postion_ToReject);
+                    reject=0;
                 }
             }
         });
@@ -174,7 +176,6 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                                 Toast.makeText(OrderDetails_forDriverActivity.this, R.string.you_choice_noting, Toast.LENGTH_LONG).show();
                             } else if (CountChecked >= 1) {  //&& !BarCodeChecked.isEmpty()
                                RejectDialog(TrackingnumberToReject_list,postion_ToReject);
-                               UpdateStatus_Reason_Details_ON_83(driverPackages_details_dbList);
                             }
 
                         } /*else
@@ -188,8 +189,6 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
         if (database.userDao().getAllPckagesForUpload(Orderclicked).size() ==0) {
             Log.e(TAG, "onCreate:getAllPckagesForUpload = zero ");
             orderDetailsForDriverViewModel.ReadDriverRunsheetOrdersData(Orderclicked);
-
-
         }
         Log.e(TAG, "onCreate: "+ Orderclicked);
         driverPackages_details_dbList=new ArrayList<>();
@@ -238,7 +237,6 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
                         Toast.makeText(OrderDetails_forDriverActivity.this, ""+message.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onChanged:update "+message.getMessage() );
                         UpdateStatus();
-
                     }
                 });
         orderDetailsForDriverViewModel.mutable_UpdateStatus_RescheduleTime_ON_83LiveDataError.observe(this, new Observer<String>() {
@@ -530,7 +528,10 @@ List<String> Reject_Resons_list ,Reschedule_Resons_list;
 //                    driverOrderpackagesAdapter_Reject.notifyDataSetChanged();
                     CreateORUpdateRecycleView();
                     CreateORUpdateRecycleView_Reject();
-                    UpdateStatus_Passcode_Header_ON_83("rejected_under_inspection");
+                    if(reject==0) {
+                        UpdateStatus_Passcode_Header_ON_83("rejected_under_inspection");
+                        reject=1;
+                    }
                     alertDialog.dismiss();
 
                 }else{

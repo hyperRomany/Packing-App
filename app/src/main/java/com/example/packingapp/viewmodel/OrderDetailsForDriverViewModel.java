@@ -196,7 +196,6 @@ public class OrderDetailsForDriverViewModel extends ViewModel {
         if (driverPackages_details_dbList.size()>0) {
             for (int i = 0; i < driverPackages_details_dbList.size(); i++)
             {
-
                 String text=driverPackages_details_dbList.get(i).getTRACKING_NO()
                         +"/"+driverPackages_details_dbList.get(i).getREASON()
                         +"/"+driverPackages_details_dbList.get(i).getSTATUS();
