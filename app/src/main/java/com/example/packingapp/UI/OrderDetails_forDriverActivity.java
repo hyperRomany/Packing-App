@@ -92,8 +92,8 @@ public class OrderDetails_forDriverActivity extends AppCompatActivity {
 
         GetCustomerDate_to_Text();
         PhoneAndSmsActions();
-        Random random = new Random();
-        int randomNumber = random.nextInt(1280 - 65) + 65;
+//        Random random = new Random();
+//        int randomNumber = random.nextInt(1280 - 65) + 65;
 
         binding.btnRescheduleDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,13 +109,38 @@ public class OrderDetails_forDriverActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
-                SendPasscode =true; 
-                //ToDo Don't SendPasscode For Test Get asscode From log
-                SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
+//                Log.e(TAG, "onClick:randomNumber  "+ String.valueOf(randomNumber) );
+//                SendPasscode =true;
+//                //ToDo Don't SendPasscode For Test Get asscode From log
+//                SendSMS(CustomerPhone, "Your OTP Is "+String.valueOf(randomNumber));
+                if (database.userDao().CheckifThereIsPasscodeORNot(Orderclicked).get(0).getPasscode() == null) {
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(1280 - 65) + 65;
 
-                database.userDao().UpdatePasscode(Orderclicked,String.valueOf(randomNumber));
+                    Log.e(TAG, "onClick:randomNumber  " + String.valueOf(randomNumber));
+                    SendPasscode = true;
+                    //ToDo Don't Send Passcod For Test Get passcod From log
+                    SendSMS(CustomerPhone, "Your OTP Is " + String.valueOf(randomNumber));
+                    database.userDao().UpdatePasscode(Orderclicked, String.valueOf(randomNumber));
+                }else {
+                    ConfirmPasscodeFragment detialsfragment = new ConfirmPasscodeFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Orderclicked", Orderclicked);
+//                bundle.putString("UserName",UserName);
+//                bundle.putString("Branch",Branch);
+                    // bundle.putSerializable("LastOrderIdArray",LastOrderArry);
 
+//                    database.userDao().UpdatePasscode(Orderclicked,String.valueOf(randomNumber));
+                    detialsfragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_content, detialsfragment);
+
+                    // databaseHelper.update_PDNEWQTY(Po_Item_List.get(position).
+                    // getBarcode1(),String.valueOf(Double.valueOf(Po_Item_List.get(position).getQuantity1())-1));
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    SendPasscode = false;
+                }
             }
         });
 
