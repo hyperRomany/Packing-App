@@ -149,9 +149,9 @@ public class GetOrderDataViewModel extends ViewModel {
             }
            String name= itemsOrderDataDBDetailsList.get(i).getName();
 
-            String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"/"+name+"/"+itemsOrderDataDBDetailsList.get(i).getSku()
-                    +"/"+(TotalPriceForBarcode)+"/"+itemsOrderDataDBDetailsList.get(i).getQuantity()
-                    +"/"+itemsOrderDataDBDetailsList.get(i).getUnite();
+            String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"%"+name+"%"+itemsOrderDataDBDetailsList.get(i).getSku()
+                    +"%"+(TotalPriceForBarcode)+"%"+itemsOrderDataDBDetailsList.get(i).getQuantity()
+                    +"%"+itemsOrderDataDBDetailsList.get(i).getUnite();
 
 
 
