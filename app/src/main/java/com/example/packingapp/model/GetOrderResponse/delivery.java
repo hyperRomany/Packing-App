@@ -10,6 +10,16 @@ public class delivery {
     @SerializedName("time")
     private String time;
 
+    @SerializedName("method")
+    private String method;
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
     public String getDate() {
         return date;

@@ -50,6 +50,42 @@ public class OrderDataModuleHeader_Reprint {
 	@SerializedName("SHIPPING_FEES")
 	private String SHIPPING_FEES;
 
+	@ColumnInfo(name = "Payment_Method")
+	@SerializedName("Payment_Method")
+	private String Payment_Method;
+
+	@ColumnInfo(name = "Delivery_Method")
+	@SerializedName("Delivery_Method")
+	private String Delivery_Method;
+
+	@ColumnInfo(name = "Reedemed_Points_Amount")
+	@SerializedName("Reedemed_Points_Amount")
+	private String Reedemed_Points_Amount;
+
+	public String getPayment_Method() {
+		return Payment_Method;
+	}
+
+	public void setPayment_Method(String payment_Method) {
+		Payment_Method = payment_Method;
+	}
+
+	public String getDelivery_Method() {
+		return Delivery_Method;
+	}
+
+	public void setDelivery_Method(String delivery_Method) {
+		Delivery_Method = delivery_Method;
+	}
+
+	public String getReedemed_Points_Amount() {
+		return Reedemed_Points_Amount;
+	}
+
+	public void setReedemed_Points_Amount(String reedemed_Points_Amount) {
+		Reedemed_Points_Amount = reedemed_Points_Amount;
+	}
+
 	public OrderDataModuleHeader_Reprint() {
 	}
 

@@ -1420,8 +1420,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     canvas.drawText(items.get(i).getADDRESS_DETAILS().substring((items.get(i).getADDRESS_DETAILS().length() / 3) * 2, items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420 + pos, paint);
                     canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
                     canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390 + pos, paint);
-                    canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
-                    canvas.drawText(checkPaymentMethod(items.get(i).getITEM_PRICE()), 1880.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getDelivery_Method(), 1720.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getPayment_Method(), 1980.0f, 390 + pos, paint);
                     canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
                     canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
                     canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
@@ -1435,6 +1435,8 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
                     pos += 100;
                 }
                 canvas.drawText(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getGRAND_TOTAL(), 2090.0f, 420 + pos, paint);
+                canvas.drawText(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getReedemed_Points_Amount(), 1905.0f, 420 + pos, paint);
+                Log.e("point",Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getReedemed_Points_Amount());
                 canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
                 pos += 100;
             }

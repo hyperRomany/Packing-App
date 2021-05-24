@@ -383,7 +383,7 @@ public class ViewDialog_Reprint {
                                 "^CF0,25" +
                                 "^FO250,230^FD   " + new DecimalFormat("##0.00").format(Double.valueOf(orderDataModuleHeader_reprint.getGRAND_TOTAL()) ) + " ^FS" +
                                 "^FO250,230^CI28^AZN,20,15^FD (  ^FS" +
-                                "^FO100,230^CI28^AZN,20,15^FD " + checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL()) + " ^FS" +
+                                "^FO100,230^CI28^AZN,20,15^FD " + /*checkPaymentMethod(orderDataModuleHeader_reprint.getGRAND_TOTAL())*/orderDataModuleHeader_reprint.getPayment_Method() + " ^FS" +
                                 "^CF0,25" +
                                 "^FO200,465^CI28^AZN,20,15^FDاجمالي الطلب^FS" +
                                 "^FO200,505^CI28^AZN,20,15^FDتكلفه الشحن^FS" +

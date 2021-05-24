@@ -20,7 +20,7 @@ public class ReprintRunTimeSheetViewModel extends ViewModel {
     }
     public MutableLiveData<String> mutableLiveDataError_SheetData = new MutableLiveData<>();
 
-    public void SheetData(String id  ) {
+    public void SheetData(String id) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);

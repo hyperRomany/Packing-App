@@ -80,6 +80,34 @@ public class OrderDataModuleDBHeader {
 	@SerializedName("Out_From_Loc")
 	private String Out_From_Loc;
 
+	@ColumnInfo(name = "reedemed_points_amount")
+	@SerializedName("reedemed_points_amount")
+	private String reedemed_points_amount;
+
+	@ColumnInfo(name = "payment_method")
+	@SerializedName("payment_method")
+	private String payment_method;
+
+	@ColumnInfo(name = "delivery_method")
+	@SerializedName("delivery_method")
+	private String delivery_method;
+
+	public String getPayment_method() {
+		return payment_method;
+	}
+
+	public void setPayment_method(String payment_method) {
+		this.payment_method = payment_method;
+	}
+
+	public String getDelivery_method() {
+		return delivery_method;
+	}
+
+	public void setDelivery_method(String delivery_method) {
+		this.delivery_method = delivery_method;
+	}
+
 	public OrderDataModuleDBHeader() {
 	}
 
@@ -93,7 +121,7 @@ public class OrderDataModuleDBHeader {
 								   String customer_address_detail, String delivery_date,
 								   String delivery_time,
 								   String grand_total, float shipping_fees,
-								   String picker_confirmation_time, String currency,String Out_From_Loc) {
+								   String picker_confirmation_time, String currency,String Out_From_Loc,String reedemPonit,String payment_method,String delivery_method) {
 		this.Order_number = order_number;
 		this.OutBound_delivery = OutBound_delivery;
 		this.Customer_name = customer_name;
@@ -110,6 +138,17 @@ public class OrderDataModuleDBHeader {
 		this.picker_confirmation_time = picker_confirmation_time;
 		this.currency = currency;
 		this.Out_From_Loc= Out_From_Loc;
+		reedemed_points_amount=reedemPonit;
+		this.payment_method=payment_method;
+		this.delivery_method=delivery_method;
+	}
+
+	public String getReedemed_points_amount() {
+		return reedemed_points_amount;
+	}
+
+	public void setReedemed_points_amount(String reedemed_points_amount) {
+		this.reedemed_points_amount = reedemed_points_amount;
 	}
 
 	public float getShipping_fees() {
