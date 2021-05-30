@@ -46,6 +46,19 @@ public class ResponseGetOrderData {
     private String payment_method;
 
     public String getPayment_method() {
+
+        if (payment_method.equals("cashondelivery"))
+        {
+            return "الدفع عند الاستلام";
+        }
+        else if (payment_method.equals("cardondelivery"))
+        {
+            return "البطاقة عند الاستلام";
+        }
+        else if (payment_method.equals("robusta_accept_cc"))
+        {
+            return "بطاقة الإئتمان";
+        }
         return payment_method;
     }
 

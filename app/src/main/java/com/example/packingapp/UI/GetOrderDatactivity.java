@@ -242,15 +242,15 @@ public class GetOrderDatactivity extends AppCompatActivity {
                         Log.e(TAG, "onChanged: " + responseGetOrderData.getStatus());
                  //       Log.e(TAG, "onChanged: " + responseGetOrderData.getOutBound_delivery());
 
-                       // if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
+                        if (responseGetOrderData.getStatus().equalsIgnoreCase("closed")) {
                             if (responseGetOrderData.getOutBound_delivery() !=null) {
                                 ActionAfterGetData(responseGetOrderData);
                             }else {
                                 Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.outbounddeleveryequalnull), Toast.LENGTH_SHORT).show();
                             }
-//                        } else {
-//                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
-//                        }
+                        } else {
+                            Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -367,6 +367,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
 
     private void ActionAfterGetData(ResponseGetOrderData responseGetOrderData) {
+
+
 
         OrderDataModuleDBHeader orderDataModuleDBHeader = new OrderDataModuleDBHeader(
                 responseGetOrderData.getOrder_number().replace("-","*"),

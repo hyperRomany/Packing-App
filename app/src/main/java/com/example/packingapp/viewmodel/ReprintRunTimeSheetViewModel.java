@@ -24,7 +24,6 @@ public class ReprintRunTimeSheetViewModel extends ViewModel {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
-
         ApiClient.build().ReprintRunTimeSheet(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

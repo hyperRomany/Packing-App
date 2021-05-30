@@ -14,6 +14,14 @@ public class delivery {
     private String method;
 
     public String getMethod() {
+        if (method.equals("flatrate"))
+        {
+            return "الشحن المنزلي";
+        }
+        else if (method.equals("storepickup"))
+        {
+            return "استلام من المتجر";
+        }
         return method;
     }
 
