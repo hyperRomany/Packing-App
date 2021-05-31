@@ -370,7 +370,7 @@ private  String OrderNumber;
                                 "^FO600,230^CI28^AZN,20,15^FD "+validPaymentMethod(checkPaymentMethod(orderDataModuleDBHeader.getGrand_total()))+" ^FS" +
                                 "^FO400,230^CI28^AZN,20,15^FD (المطلوب تحصيله من العميل ^FS" +
                                 "^CF0,25" +
-                                "^FO250,230^FD (" + new DecimalFormat("##0.00").format(Double.valueOf(orderDataModuleDBHeader.getGrand_total() ) )+ " ^FS" +
+                                "^FO250,230^FD " + new DecimalFormat("##0.00").format(Double.valueOf(orderDataModuleDBHeader.getGrand_total() ) )+ " ^FS" +
                                 "^FO250,230^CI28^AZN,20,15^FD (  ^FS" +
                                 "^FO100,230^CI28^AZN,20,15^FD " + /*checkPaymentMethod(orderDataModuleDBHeader.getGrand_total())*/orderDataModuleDBHeader.getPayment_method() + " ^FS" +
                                 "^CF0,25" +
