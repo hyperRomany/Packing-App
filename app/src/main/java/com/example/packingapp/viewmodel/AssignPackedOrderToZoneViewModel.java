@@ -212,9 +212,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("Query", "select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
+                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE, Reedemed_Points_Amount,Payment_Method,Delivery_Method , ITEM_PRICE , TRACKING_NO\n" +
                         " from (select ORDER_NO as ORDER_NO_H , CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
+                        " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,Reedemed_Points_Amount,Payment_Method,Delivery_Method,CUSTOMER_PHONE \n" +
                         " from "+ApiClient.DataBasename+".HEADER group by ORDER_NO ) as h\n" +
                         " left outer join \n" +
                         " (SELECT ORDER_NO as ORDER_NO_D  , sum(ITEM_PRICE) ITEM_PRICE , TRACKING_NO from  "+ApiClient.DataBasename+".DETAILS group by TRACKING_NO) as d \n" +
@@ -222,9 +222,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                         "where  ORDER_NO_H in( "+ORDER_NOs +")");
 
         Log.e(TAG, "SheetData: "+"select ORDER_NO_H as ORDER_NO ,CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE  , ITEM_PRICE , TRACKING_NO\n" +
+                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS, NO_OF_PACKAGES , CUSTOMER_PHONE , Reedemed_Points_Amount ,Payment_Method,Delivery_Method,Payment_Method,Delivery_Method, ITEM_PRICE , TRACKING_NO\n" +
                 " from (select ORDER_NO as ORDER_NO_H , CUSTOMER_NAME , GRAND_TOTAL,\n" +
-                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES,CUSTOMER_PHONE \n" +
+                " ADDRESS_DETAILS  , OUTBOUND_DELIVERY , ZONE ,STATUS,NO_OF_PACKAGES , Reedemed_Points_Amount ,CUSTOMER_PHONE \n" +
                 " from "+ApiClient.DataBasename+".HEADER group by ORDER_NO ) as h\n" +
                 " left outer join \n" +
                 " (SELECT ORDER_NO as ORDER_NO_D  , sum(ITEM_PRICE) ITEM_PRICE , TRACKING_NO from  "+ApiClient.DataBasename+".DETAILS group by TRACKING_NO) as d \n" +

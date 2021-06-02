@@ -10,6 +10,24 @@ public class delivery {
     @SerializedName("time")
     private String time;
 
+    @SerializedName("method")
+    private String method;
+
+    public String getMethod() {
+        if (method.equals("flatrate"))
+        {
+            return "الشحن المنزلي";
+        }
+        else if (method.equals("storepickup"))
+        {
+            return "استلام من المتجر";
+        }
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
     public String getDate() {
         return date;

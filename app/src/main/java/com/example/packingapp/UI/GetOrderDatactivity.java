@@ -70,7 +70,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoadNewPurchaseOrder();
-
             }
         });
 
@@ -174,8 +173,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                                String Ordernumber=ordersnumberAdapter.ReturnListOfPackages().get(position);
                                                                ordernumberselected_ForDetails=Ordernumber;
                                                                UploadHeader(Ordernumber);
-
-                                                              // UploadDetails(Ordernumber);
+                                                               UploadDetails(Ordernumber);
 
                                                                alertDialog.dismiss();
 
@@ -183,7 +181,6 @@ public class GetOrderDatactivity extends AppCompatActivity {
                                                        });
                                                        // show it
                                                        alertDialog.show();
-
                                                    }
                                                }
         );
@@ -371,6 +368,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
 
     private void ActionAfterGetData(ResponseGetOrderData responseGetOrderData) {
 
+
+
         OrderDataModuleDBHeader orderDataModuleDBHeader = new OrderDataModuleDBHeader(
                 responseGetOrderData.getOrder_number().replace("-","*"),
                 responseGetOrderData.getOutBound_delivery(),
@@ -387,6 +386,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
                 responseGetOrderData.getShipping_fees(),
                 responseGetOrderData.getPicker_confirmation_time(),
                 responseGetOrderData.getCurrency(), responseGetOrderData.getOut_From_Loc()
+                ,responseGetOrderData.getReedemed_points_amount(),
+                responseGetOrderData.getPayment_method(),
+                responseGetOrderData.getDelivery().getMethod()
         );
 
         database.userDao().insertOrderHeader(orderDataModuleDBHeader);
@@ -498,6 +500,9 @@ public class GetOrderDatactivity extends AppCompatActivity {
                     String.valueOf(NO_OF_PACKAGES.size()),
                     orderDataModuleDBHeader.getOut_From_Loc()
                     ,database.userDao().getUserData_MU().getUser_id()
+                    ,orderDataModuleDBHeader.getReedemed_points_amount()
+                    ,orderDataModuleDBHeader.getDelivery_method()
+                    ,orderDataModuleDBHeader.getPayment_method()
             );
 
 

@@ -2,6 +2,7 @@ package com.example.packingapp.UI;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -32,6 +33,7 @@ import com.onbarcode.barcode.android.IBarcode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +46,7 @@ import java.util.stream.Collectors;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -293,11 +296,13 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
                     canvas.drawText(items.get(i).getADDRESS_DETAILS().substring((items.get(i).getADDRESS_DETAILS().length() / 3) * 2, items.get(i).getADDRESS_DETAILS().length()), 890.0f, 420 + pos, paint);
                     canvas.drawText(items.get(i).getCUSTOMER_NAME(), 1570.0f, 390 + pos, paint);
                     canvas.drawText(items.get(i).getCUSTOMER_PHONE(), 1200.0f, 390 + pos, paint);
-                    canvas.drawText("توصيل", 1750.0f, 390 + pos, paint);
-                    canvas.drawText(checkPaymentMethod(items.get(i).getITEM_PRICE()), 1880.0f, 390 + pos, paint);
+                    paint.setTextSize(22.0f);
+                    canvas.drawText(items.get(i).getDelivery_Method(), 1730.0f, 390 + pos, paint);
+                    canvas.drawText(items.get(i).getPayment_Method(), 1910.0f, 390 + pos, paint);
+                    paint.setTextSize(30.0f);
                     canvas.drawText(items.get(i).getOUTBOUND_DELIVERY(), 2850.0f, 390 + pos, paint);
                     canvas.drawText(String.valueOf(i + 1), 2910.0f, 390 + pos, paint);
-                    canvas.drawText(items.get(i).getITEM_PRICE(), 2090.0f, 390 + pos, paint);
+                    canvas.drawText(String.valueOf(new DecimalFormat("##.00").format(Float.valueOf(items.get(i).getITEM_PRICE()))), 2070.0f, 390 + pos, paint);
                     total += Float.valueOf(items.get(i).getITEM_PRICE());
                     try {
                         testCODE93(canvas, 2120.0f, 340 + pos, items.get(i).getTRACKING_NO());
@@ -307,8 +312,14 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
                     }
                     pos += 100;
                 }
-                canvas.drawText(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getGRAND_TOTAL(), 2090.0f, 420 + pos, paint);
-                canvas.drawLine(30.0f, 430.0f + pos, 2940.0f, 430.0f + pos, paint2);
+
+                canvas.drawText("اجمالي الطلب:", 2500.0f, 390 + pos, paint);
+                canvas.drawText(String.valueOf(new DecimalFormat("##.00").format(Float.valueOf(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getGRAND_TOTAL()) + Float.valueOf(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getReedemed_Points_Amount()))), 2070.0f, 390 + pos, paint);
+                canvas.drawText("قيمه النقاط المستبدلة:", 1550.0f, 390 + pos, paint);
+                canvas.drawText(String.valueOf(new DecimalFormat("##0.00").format(Float.valueOf(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getReedemed_Points_Amount()))), 1200.0f, 390 + pos, paint);
+                canvas.drawText("المطلوب تحصيله:", 890.0f, 390 + pos, paint);
+                canvas.drawText(String.valueOf(new DecimalFormat("##.00").format(Float.valueOf(Response_RecordsHeader_list_for_runtimesheet_Orders.get(x).getGRAND_TOTAL()))), 290.0f, 390 + pos, paint);
+                canvas.drawLine(30.0f, 400.0f + pos, 2940.0f, 400.0f + pos, paint2);
                 pos += 100;
             }
 

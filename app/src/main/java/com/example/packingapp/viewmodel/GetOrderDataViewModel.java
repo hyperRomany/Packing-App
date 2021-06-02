@@ -79,7 +79,7 @@ public class GetOrderDataViewModel extends ViewModel {
                                       String CUSTOMER_PHONE, String CUSTOMER_CODE, String ADDRESS_GOVERN, String ADDRESS_CITY,
                                       String ADDRESS_DISTRICT, String ADDRESS_DETAILS, String ORDER_DELIVERY_DATE, String ORDER_DELIVERY_TIME,
                                       String PICKER_CONFIMATION_TIME, String GRAND_TOTAL, String CURRENCY, float SHIPPING_FEES,String NO_OF_PACKAGES,
-                                      String STORAGE_LOCATION,String CreatedBy ) {
+                                      String STORAGE_LOCATION,String CreatedBy,String reedemed_point_amount ,String Delivery_method,String Payment_method) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("ORDER_NO", ORDER_NO);
@@ -102,6 +102,9 @@ public class GetOrderDataViewModel extends ViewModel {
         map.put("STORAGE_LOCATION", STORAGE_LOCATION);
         map.put("STATUS", "packed");
         map.put("CreatedBy", CreatedBy);
+        map.put("Reedemed_Points_Amount",reedemed_point_amount+".0");
+        map.put("Delivery_Method",Delivery_method);
+        map.put("Payment_Method",Payment_method);
 
         ApiClient.build().InsertOrderDataHeader(map)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -149,9 +152,9 @@ public class GetOrderDataViewModel extends ViewModel {
             }
            String name= itemsOrderDataDBDetailsList.get(i).getName();
 
-            String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"/"+name+"/"+itemsOrderDataDBDetailsList.get(i).getSku()
-                    +"/"+(TotalPriceForBarcode)+"/"+itemsOrderDataDBDetailsList.get(i).getQuantity()
-                    +"/"+itemsOrderDataDBDetailsList.get(i).getUnite();
+            String itemsOrder=itemsOrderDataDBDetailsList.get(i).getTrackingNumber()+"%"+name+"%"+itemsOrderDataDBDetailsList.get(i).getSku()
+                    +"%"+(TotalPriceForBarcode)+"%"+itemsOrderDataDBDetailsList.get(i).getQuantity()
+                    +"%"+itemsOrderDataDBDetailsList.get(i).getUnite();
 
 
 

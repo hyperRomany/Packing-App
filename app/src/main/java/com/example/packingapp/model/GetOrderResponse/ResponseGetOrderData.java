@@ -39,6 +39,41 @@ public class ResponseGetOrderData {
     @SerializedName("items")
     private List<ItemsOrderDataDBDetails> itemsOrderDataDBDetails;
 
+    @SerializedName("reedemed_points_amount")
+    private String reedemed_points_amount;
+
+    @SerializedName("payment_method")
+    private String payment_method;
+
+    public String getPayment_method() {
+
+        if (payment_method.equals("cashondelivery"))
+        {
+            return "الدفع عند الاستلام";
+        }
+        else if (payment_method.equals("cardondelivery"))
+        {
+            return "البطاقة عند الاستلام";
+        }
+        else if (payment_method.equals("robusta_accept_cc"))
+        {
+            return "بطاقة الإئتمان";
+        }
+        return payment_method;
+    }
+
+    public void setPayment_method(String payment_method) {
+        this.payment_method = payment_method;
+    }
+
+    public String getReedemed_points_amount() {
+        return reedemed_points_amount;
+    }
+
+    public void setReedemed_points_amount(String reedemed_points_amount) {
+        this.reedemed_points_amount = reedemed_points_amount;
+    }
+
     public String getOutBound_delivery() {
         return OutBound_delivery;
     }

@@ -22,6 +22,27 @@ public class RecordsItem {
 	@SerializedName("CUSTOMER_PHONE")
 	private String CUSTOMER_PHONE;
 
+	@SerializedName("Payment_Method")
+	private String Payment_Method;
+
+	@SerializedName("Delivery_Method")
+	private String Delivery_Method;
+
+	public String getPayment_Method() {
+		return Payment_Method;
+	}
+
+	public void setPayment_Method(String payment_Method) {
+		Payment_Method = payment_Method;
+	}
+
+	public String getDelivery_Method() {
+		return Delivery_Method;
+	}
+
+	public void setDelivery_Method(String delivery_Method) {
+		Delivery_Method = delivery_Method;
+	}
 
 
 
