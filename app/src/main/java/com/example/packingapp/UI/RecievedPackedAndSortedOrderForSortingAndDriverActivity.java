@@ -694,7 +694,6 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
         } else {
             Toast.makeText(context, getResources().getString(R.string.not_enter), Toast.LENGTH_SHORT).show();
 //            Constant.ToastDialoge(getResources().getString(R.string.not_enter) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
-
         }
 
 //        }else {
@@ -760,7 +759,6 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 } else {
                     Toast.makeText(context, getResources().getString(R.string.statusnotUpdate), Toast.LENGTH_SHORT).show();
 //                    Constant.ToastDialoge(getResources().getString(R.string.statusnotUpdate) , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
-
                 }
             }
         } else {
