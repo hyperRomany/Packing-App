@@ -312,7 +312,7 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
                 int NoOfItemsForPages=(personByAge.get(list.get(x)).size())/13 ;
                 Log.e(TAG, "createPdf:NoOfItemsForPages "+NoOfItemsForPages );
                 Log.e(TAG, "createPdf:NoOfItemsForPages "+NoOfItemsForPages );
-                if (NoOfItemsForPages %13 >0){
+                if (NoOfItemsForPages %14 >0){
                     NoOfItemsForPages++;
                 }
                 Log.e(TAG, "createPdf:NoOfItemsForPages "+NoOfItemsForPages );
@@ -320,12 +320,13 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
                // for (int k = 0; k < NoOfItemsForPages ; k++) {
 
                     for (int i = (j*14); i < (personByAge.get(list.get(x)).size()) ; i++) {
-                        if (i == 14 && j==0) {
+                       /* if (i == 14 && j==0) {
                             break;
                         }
-                        /*else if ((i *j ) ==(14 * j) && j !=0 ){
+                        else*/ if ( (i ) ==(14 +(14* j)) ){
+                            Log.e(TAG, "createPdf: else if"+ "i "+i +" j "+j);
                             break;
-                        }*/
+                        }
                         Log.e("out2  ", list.get(x));
                         canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(0, items.get(i).getADDRESS_DETAILS().length() / 3), 890.0f, 360 + pos, paint);
                         canvas.drawText(items.get(i).getADDRESS_DETAILS().substring(items.get(i).getADDRESS_DETAILS().length() / 3, (items.get(i).getADDRESS_DETAILS().length() / 3) * 2), 890.0f, 395 + pos, paint);
