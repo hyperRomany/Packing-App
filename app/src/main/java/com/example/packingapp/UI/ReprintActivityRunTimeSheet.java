@@ -200,13 +200,14 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         PdfDocument pdfDocument = new PdfDocument();
         int noOfPages=data.size() /17 ;
-        Log.e(TAG, "createPdf:noOfPagesBefore % "+noOfPages );
+        Log.e(TAG, "createPdf:noOfPagesBefore % "+noOfPages);
+        Log.e(TAG, "size "+data.size());
         if (noOfPages==0)
         {
             noOfPages=1;
         }
         if (data.size() %17 > 0){
-            Integer.valueOf(noOfPages);
+            noOfPages=Integer.valueOf(noOfPages)+1;
         }
         Log.e(TAG, "createPdf:noOfPages "+noOfPages );
 
@@ -214,7 +215,7 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
             Paint paint = new Paint();
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             paint.setTextSize(30.0f);
-            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2000, noOfPages).create());
+            PdfDocument.Page page = pdfDocument.startPage(new PdfDocument.PageInfo.Builder(3000, 2200, noOfPages).create());
             Canvas canvas = page.getCanvas();
             canvas.drawText("إقرار إستلام /Receiving Avowal" + " رقم  " + id, 1250.0f, 60.0f, paint);
 
@@ -235,26 +236,26 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
 
 
             //bottom potion of header liner
-            canvas.drawRect(30.0f, 1800.0f, 2940.0f, 280.0f, paint2);
+            canvas.drawRect(30.0f, 2000.0f, 2940.0f, 280.0f, paint2);
             paint.setTextAlign(Paint.Align.RIGHT);
             paint.setStyle(Paint.Style.FILL);
 
             canvas.drawText("S/م", 2925.0f, 310.0f, paint);
-            canvas.drawLine(2870.0f, 280.0f, 2870.0f, 1800.0f, paint2);
+            canvas.drawLine(2870.0f, 280.0f, 2870.0f, 2000.0f, paint2);
             canvas.drawText("outBound", 2852.0f, 310.0f, paint);
-            canvas.drawLine(2650.0f, 280.0f, 2650.0f, 1800.0f, paint2);
+            canvas.drawLine(2650.0f, 280.0f, 2650.0f, 2000.0f, paint2);
             canvas.drawText("رقم الشحنة", 2400.0f, 310.0f, paint);
-            canvas.drawLine(2100.0f, 280.0f, 2100.0f, 1800.0f, paint2);
+            canvas.drawLine(2100.0f, 280.0f, 2100.0f, 2000.0f, paint2);
             canvas.drawText("قيمة الشحنة", 2095.0f, 310.0f, paint);
-            canvas.drawLine(1920.0f, 280.0f, 1920.0f, 1800.0f, paint2);
+            canvas.drawLine(1920.0f, 280.0f, 1920.0f, 2000.0f, paint2);
             canvas.drawText("طريقة الدفع", 1905.0f, 310.0f, paint);
-            canvas.drawLine(1755.0f, 280.0f, 1755.0f, 1800.0f, paint2);
+            canvas.drawLine(1755.0f, 280.0f, 1755.0f, 2000.0f, paint2);
             canvas.drawText("نوع الشحنه", 1750.0f, 310.0f, paint);
-            canvas.drawLine(1610.0f, 280.0f, 1610.0f, 1800.0f, paint2);
+            canvas.drawLine(1610.0f, 280.0f, 1610.0f, 2000.0f, paint2);
             canvas.drawText("إسم العميل", 1500.0f, 310.0f, paint);
-            canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
+            canvas.drawLine(1260.0f, 280.0f, 1260.0f, 2000.0f, paint2);
             canvas.drawText("تلفون العميل", 1160.0f, 310.0f, paint);
-            canvas.drawLine(920.0f, 280.0f, 920.0f, 1800.0f, paint2);
+            canvas.drawLine(920.0f, 280.0f, 920.0f, 2000.0f, paint2);
             canvas.drawText("عنوان العميل", 740.0f, 310.0f, paint);
 
        /* canvas.drawLine(1260.0f, 280.0f, 1260.0f, 1800.0f, paint2);
@@ -263,16 +264,16 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
         canvas.drawText("تلفون العميل", 780.0f, 310.0f, paint);
 */
 
-            canvas.drawLine(430.0f, 280.0f, 430.0f, 1800.0f, paint2);
+            canvas.drawLine(430.0f, 280.0f, 430.0f, 2000.0f, paint2);
             canvas.drawText("ملاحظات", 290.0f, 310.0f, paint);
 
             //bottom of header row  line
             canvas.drawLine(30.0f, 330.0f, 2940.0f, 330.0f, paint2);
 
-            canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 1850.0f, paint);
-            canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 1850.0f, paint);
+            canvas.drawText("توقيع المستلم/Receiver sign", 2400.0f, 2050.0f, paint);
+            canvas.drawText("توقيع مسئول أمن المخزن", 1700.0f, 2050.0f, paint);
 
-            canvas.drawText("توقيع منسق التوصيل", 1000.0f, 1850.0f, paint);
+            canvas.drawText("توقيع منسق التوصيل", 1000.0f, 2050.0f, paint);
             int pos = 0;
 
 
@@ -283,10 +284,12 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
 
             }
             ArrayList<String> list = removeDuplicates(outBounds);
-            Log.e("out", list.toString());
+
             for (int x = 0; x < list.size(); x++) {
+                Log.e("x",""+x);
                 total = 0f;
                 Log.e("out4", personByAge.get(list.get(x)).toString());
+                Log.e("out4", ""+personByAge.get(list.get(x)).size());
                 items.clear();
                 items = personByAge.get(list.get(x));
                 for (int i = 0; i < personByAge.get(list.get(x)).size(); i++) {
@@ -310,7 +313,9 @@ public class ReprintActivityRunTimeSheet extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    pos += 100;
+
+                        pos += 100;
+
                 }
 
                 canvas.drawText("اجمالي الطلب:", 2500.0f, 390 + pos, paint);
