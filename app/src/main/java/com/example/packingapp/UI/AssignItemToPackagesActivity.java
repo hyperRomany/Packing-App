@@ -297,7 +297,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     List<ItemsOrderDataDBDetails_Scanned> itemsOrderDataDBDetailsList_scanned =new ArrayList<>();
                     itemsOrderDataDBDetailsList_scanned = database.userDao().getItem_scanned_scales(OrderNumber , BarcodeFor23 + "%");
                     float SumofScannedqty= database.userDao().getSumofScannedqty_scales(OrderNumber ,BarcodeFor23 + "%" );
-
+                    float TotalQTY_ALL=0f;
                     for (int i=0 ;i<Adapterlist.size() ;i++){
                         //matches("(?i)"+binding.editBarcode.getText().toString()+".*")
                         if (Adapterlist.get(i).getSku().toString().substring(0, 7)
@@ -308,7 +308,11 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                             Log.e(TAG, "SearchOfBarcode:adapterQTY "+adapterQTY );
                             // delete it from here
 //                        postion=i;
-                            if (itemsOrderDataDBDetailsList.get(0).getQuantity() > (SumofScannedqty+adapterQTY)){
+                            TotalQTY_ALL=Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23));
+                            TotalQTY_ALL=Float.valueOf(new DecimalFormat("##0.000").format(TotalQTY_ALL));
+                            Log.e(TAG, "SearchOfBarcode:summ+++TotalQTY_ALL  "+TotalQTY_ALL );
+
+                            if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= TotalQTY_ALL){
                                 Adapterlist.remove(i);
                             }
 
@@ -320,10 +324,17 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     Log.e(TAG, "SearchOfBarcode:adapterQTY " + adapterQTY);
                     Log.e(TAG, "SearchOfBarcode:summ "+SumofScannedqty );
                     Log.e(TAG, "SearchOfBarcode:summ+++  "+(SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23) ));
+                    Log.e(TAG, "SearchOfBarcode:summ+++TotalQTY_ALL  "+TotalQTY_ALL);
+                    Log.e(TAG, "SearchOfBarcode:summ+++getQuantity()  "+itemsOrderDataDBDetailsList.get(0).getQuantity());
 
-                  //  if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Double.valueOf(TotalQTYFor23))) {
+                    TotalQTY_ALL=Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23));
+                    TotalQTY_ALL=Float.valueOf(new DecimalFormat("##0.000").format(TotalQTY_ALL));
+                    Log.e(TAG, "SearchOfBarcode:summ+++TotalQTY_ALL_ag  "+TotalQTY_ALL);
+
+
+                    //  if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= (Double.valueOf(TotalQTYFor23))) {
                     //TODO for scales i think that there is will be issue for = this man that it can add more than for second time
-                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23))) {
+                        if (itemsOrderDataDBDetailsList.get(0).getQuantity() >= TotalQTY_ALL) {
 
                             float price=0;
                             QTY = adapterQTY+ Float.valueOf(TotalQTYFor23);  //.
@@ -360,7 +371,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         } else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < Float.valueOf(SumofScannedqty+adapterQTY +Float.valueOf(TotalQTYFor23))
                       //  || itemsOrderDataDBDetailsList.get(0).getQuantity() != (SumofScannedqty+adapterQTY +Double.valueOf(TotalQTYFor23))
                         ) {
-                            binding.editBarcode.setError("تم أضافه الكميه المطلبه او زياده عن المطلوب");
+                            binding.editBarcode.setError("تم أضافه الكميه المطلوبه او زياده عن المطلوب");
                             binding.editBarcode.setText("");
                             binding.editBarcode.requestFocus();
                             Log.e(TAG, "SearchOfBarcode: setError : this is more than required ");
@@ -449,7 +460,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                         binding.editBarcode.setText("");
                         binding.editBarcode.requestFocus();
                     }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() <= (SumofScannedqty+adapterQTY)){
-                        binding.editBarcode.setError("تم أضافه الكميه المطلبه");
+                        binding.editBarcode.setError("تم أضافه الكميه المطلوبه");
                         binding.editBarcode.setText("");
                         binding.editBarcode.requestFocus();
                         Log.e(TAG, "SearchOfBarcode: setError : this is more than required " );
@@ -724,7 +735,7 @@ public class AssignItemToPackagesActivity extends AppCompatActivity {
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
                 }else if (itemsOrderDataDBDetailsList.get(0).getQuantity() < (SumofScannedqty+Qty_add)){
-                    binding.editBarcode.setError("تم أضافه الكميه المطلبه أو تحاول أضافه أكثر من المطلوب");
+                    binding.editBarcode.setError("تم أضافه الكميه المطلوبه أو تحاول أضافه أكثر من المطلوب");
                     binding.editBarcode.setText("");
                     binding.editBarcode.requestFocus();
                     Log.e(TAG, "SearchOfBarcode: setError : this is more than required " );
