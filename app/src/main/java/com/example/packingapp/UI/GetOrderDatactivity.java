@@ -248,7 +248,7 @@ public class GetOrderDatactivity extends AppCompatActivity {
                             }else {
                                 Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.outbounddeleveryequalnull), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
+                        }else {
                             Toast.makeText(GetOrderDatactivity.this, getResources().getString(R.string.order_status) + responseGetOrderData.getStatus(), Toast.LENGTH_SHORT).show();
                         }
                     }

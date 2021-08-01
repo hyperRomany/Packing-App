@@ -22,7 +22,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder>{
         //this.dataList.clear();
         this.dataList.add(itemsOrderDataDBDetails_scanned);
         Log.e(TAG, "fillAdapterData:size "+  dataList.size());
-
         // this.dataList.add(dataList);
         notifyDataSetChanged();
     }
