@@ -357,8 +357,8 @@ private  String OrderNumber;
                                 "^FO590,65^CI28^AZN,0,25^FDهايبروان^FS" +
                                 "^FO515,105^CI28^AZN,17,17^FD" + orderDataModuleDBHeader.getCustomer_address_city() + "^FS" +
                                 "^FO515,160^CI28^AZN,0,25^FD" + orderDataModuleDBHeader.getCustomer_address_govern() + "^FS" +
-                                "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +
-                                "^FO450,270^CI28^AZN,0,25^FD" + database.userDao().getTrackingnumberDB(OrderNumber).size() + "^FS" +
+                                "^FO570,270^CI28^AZN,20,15^FDعدد الشحنات في الطلب^FS" +//TrackingnumberDB_list.size() //database.userDao().getTrackingnumberDB(OrderNumber).size()
+                                "^FO450,270^CI28^AZN,0,25^FD" + TrackingnumberDB_list.size() + "^FS" +
                                 "^CF0,25" +
                                 "^FO50,65^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_name() + "^FS" +
                                 "^FO50,90^CI28^AZN,20,15^FD" + orderDataModuleDBHeader.getCustomer_phone() + "^FS" +
