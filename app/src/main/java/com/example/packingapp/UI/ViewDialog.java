@@ -2,7 +2,6 @@ package com.example.packingapp.UI;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -52,6 +51,8 @@ private  String OrderNumber;
     private static final String tcpPortKey = "ZEBRA_DEMO_TCP_PORT";
     private static final String PREFS_NAME = "OurSavedAddress";
     AppDatabase database;
+
+    boolean printed = false;
 
     private Button testButton,closebutton;
     private ZebraPrinter printer;
@@ -114,8 +115,10 @@ private  String OrderNumber;
         closebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent GOBack=new Intent(activity,GetOrderDatactivity.class);
-                activity.startActivity(GOBack);
+                if (printed ==true) {
+                    activity.finish();
+                    printed =false;
+                }
             }
         });
         testButton.setOnClickListener(new View.OnClickListener() {
@@ -258,6 +261,7 @@ private  String OrderNumber;
                     configLabel = getConfigLabel(print);
                         Log.e("label", configLabel.toString());
                         connection.write(configLabel);
+                        printed=true;
                         setStatus("Sending Data", Color.BLUE);
 
                 }
@@ -270,10 +274,13 @@ private  String OrderNumber;
 
             } else if (printerStatus.isHeadOpen) {
                 setStatus("Printer Head Open", Color.RED);
+                printed=false;
             } else if (printerStatus.isPaused) {
                 setStatus("Printer is Paused", Color.RED);
+                printed=false;
             } else if (printerStatus.isPaperOut) {
                 setStatus("Printer Media Out", Color.RED);
+                printed=false;
             }
             DemoSleeper.sleep(1500);
             if (connection instanceof BluetoothConnection) {
@@ -283,10 +290,10 @@ private  String OrderNumber;
             }
         } catch (ConnectionException e) {
             setStatus(e.getMessage(), Color.RED);
+            printed=false;
         } finally {
             disconnect();
-            Intent GOBack=new Intent(activity,GetOrderDatactivity.class);
-            activity.startActivity(GOBack);
+            activity.finish();
 
         }
     }
