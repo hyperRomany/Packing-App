@@ -136,6 +136,7 @@
                 android:layout_marginLeft="@dimen/margin_default"
                 android:layout_marginBottom="@dimen/margin_default"
                 android:layout_marginRight="@dimen/margin_default"
+                android:orientation="horizontal"
                 android:elevation="@dimen/elevation_default">
 
                 <Button
@@ -145,6 +146,17 @@
                     android:layout_width="fill_parent"
                     android:textStyle="bold"
                     android:text="@string/print"
+                    android:textSize="@dimen/font_size_for_button_of_app"
+                    android:textColor="@color/zebra_blue"
+                    android:layout_height="40dp" />
+
+                <Button
+                    android:id="@+id/closeButton"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:layout_width="fill_parent"
+                    android:textStyle="bold"
+                    android:text="خروج"
                     android:textSize="@dimen/font_size_for_button_of_app"
                     android:textColor="@color/zebra_blue"
                     android:layout_height="40dp" />

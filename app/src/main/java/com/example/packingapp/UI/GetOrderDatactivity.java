@@ -306,8 +306,8 @@ public class GetOrderDatactivity extends AppCompatActivity {
             public void onChanged(Message message) {
                 Toast.makeText(GetOrderDatactivity.this, "" + message.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onChanged: " + message.getMessage());
-                ViewDialog alert = new ViewDialog();
-                alert.showDialog(GetOrderDatactivity.this, ordernumberselected_ForDetails);
+                    ViewDialog alert = new ViewDialog();
+                    alert.showDialog(GetOrderDatactivity.this, ordernumberselected_ForDetails);
 
             }
         });

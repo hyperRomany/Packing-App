@@ -2,6 +2,7 @@ package com.example.packingapp.UI;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -52,7 +53,7 @@ private  String OrderNumber;
     private static final String PREFS_NAME = "OurSavedAddress";
     AppDatabase database;
 
-    private Button testButton;
+    private Button testButton,closebutton;
     private ZebraPrinter printer;
     private TextView statusField;
     List<TrackingnumbersListDB> TrackingnumberDB_list;
@@ -109,6 +110,14 @@ private  String OrderNumber;
             }
         });
         testButton = (Button) dialog.findViewById(R.id.testButton);
+        closebutton = (Button) dialog.findViewById(R.id.closeButton);
+        closebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent GOBack=new Intent(activity,GetOrderDatactivity.class);
+                activity.startActivity(GOBack);
+            }
+        });
         testButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -123,7 +132,6 @@ private  String OrderNumber;
                 }).start();
             }
         });
-
 
         dialog.show();
     }
@@ -277,6 +285,9 @@ private  String OrderNumber;
             setStatus(e.getMessage(), Color.RED);
         } finally {
             disconnect();
+            Intent GOBack=new Intent(activity,GetOrderDatactivity.class);
+            activity.startActivity(GOBack);
+
         }
     }
 
