@@ -285,8 +285,7 @@ private  String OrderNumber;
             setStatus(e.getMessage(), Color.RED);
         } finally {
             disconnect();
-            Intent GOBack=new Intent(activity,GetOrderDatactivity.class);
-            activity.startActivity(GOBack);
+            activity.finish();
 
         }
     }
