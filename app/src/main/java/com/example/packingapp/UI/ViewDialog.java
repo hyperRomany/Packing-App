@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.packingapp.Database.AppDatabase;
 import com.example.packingapp.R;
@@ -66,7 +67,7 @@ private  String OrderNumber;
         this.OrderNumber=OrderNumber;
         dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_dialogbox_otp);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -118,6 +119,8 @@ private  String OrderNumber;
                 if (printed ==true) {
                     activity.finish();
                     printed =false;
+                }else {
+                    Toast.makeText(activity, "يجب الطباعه اولا", Toast.LENGTH_SHORT).show();
                 }
             }
         });
