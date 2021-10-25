@@ -92,6 +92,7 @@ public class RecievePackedOrderViewModel extends ViewModel {
 
                         }
                         ,throwable -> {
+                            mutableLiveDataError_rou.setValue(throwable.getMessage());
                             Log.d("Error_roub",throwable.getMessage());
 
                         });

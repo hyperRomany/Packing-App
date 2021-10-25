@@ -97,16 +97,16 @@
         android:background="@drawable/bg_layout_edit"
         android:textColorHint="@color/white">
 
-        <EditText
-            android:id="@+id/Status"
+        <Spinner
+            android:id="@+id/spinner_Status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:hint="@string/Status"
             android:inputType="textPersonName"
             android:textSize="@dimen/font_size_for_text_of_app"
-
             android:textColor="@color/white"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 

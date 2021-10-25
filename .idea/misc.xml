@@ -19,6 +19,16 @@
     <option name="pathToUserRulesConfiguration" value="" />
     <option name="pathToJarWithRules" value="" />
   </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/MustafaElsayed/Projects/Packing-App/app/src/main/res/layout/activity_assign_items_to_package.xml" value="0.22239583333333332" />
+        <entry key="..\:/MustafaElsayed/Projects/Packing-App/app/src/main/res/layout/activity_assign_packed_order_for_zone_driver.xml" value="0.22239583333333332" />
+        <entry key="..\:/MustafaElsayed/Projects/Packing-App/app/src/main/res/layout/activity_order_details_for_driver.xml" value="0.22239583333333332" />
+        <entry key="..\:/MustafaElsayed/Projects/Packing-App/app/src/main/res/layout/manage_driver.xml" value="0.22239583333333332" />
+      </map>
+    </option>
+  </component>
   <component name="FindBugsConfigurable">
     <option name="make" value="true" />
     <option name="effort" value="default" />

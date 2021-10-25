@@ -288,6 +288,9 @@ public class RecievedPackedAndSortedOrderForSortingAndDriverActivity extends App
                 Log.e(TAG, "onChanged: " + responseGetOrderData.getORDER_NO());
                 Log.e(TAG, "onChanged: " + responseGetOrderData.getNO_OF_PACKAGES());
                 Log.e(TAG, "onChanged:stat " + responseGetOrderData.getSTATUS());
+                Log.e(TAG, "onChanged: DriverID" + DriverID);
+                Log.e(TAG, "onChanged: getDRIVER_ID " + responseGetOrderData.getDRIVER_ID());
+
                 Log.e(TAG, "onChanged:packeOr " + RecievePackedOrConfirmForDriver);
                 if (RecievePackedOrConfirmForDriver.equalsIgnoreCase("ConfirmForDriver")) {
                     if (responseGetOrderData.getSTATUS().equalsIgnoreCase("ready_to_go")) {

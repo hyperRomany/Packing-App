@@ -51,6 +51,7 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
     public MutableLiveData<ResponseUpdateStatus> getmutableLiveData_UpdateStatus(){
         return mutableLiveData_UpdateStatus;
     }
+    public  MutableLiveData<String> mutableLiveDataError_rou = new MutableLiveData<>();
 
     public void UpdateStatus(String ORDER_NO, String Status) {
         ORDER_NO =ORDER_NO.replace("*","-");
@@ -69,9 +70,9 @@ public class AssignPackedOrderToZoneViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .subscribe(responseSms -> {
                             mutableLiveData_UpdateStatus.setValue(responseSms);
-
                         }
                         ,throwable -> {
+                            mutableLiveDataError_rou.setValue(throwable.getMessage());
                             Log.d("Error_roub",throwable.getMessage());
 
                         });

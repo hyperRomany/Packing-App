@@ -249,6 +249,17 @@ public class AssignPackedOrderForZoneAndDriverActivity extends AppCompatActivity
             }
         });
 
+        assignPackedOrderToZoneViewModel.mutableLiveDataError_rou.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.e(TAG, "onChanged: " + s);
+
+                Toast.makeText(AssignPackedOrderForZoneAndDriverActivity.this, "update order status roubsta error " + s, Toast.LENGTH_LONG).show();
+//                Constant.ToastDialoge("update order status roubsta error "+s , RecievedPackedAndSortedOrderForSortingAndDriverActivity.this);
+
+            }
+        });
+
         assignPackedOrderToZoneViewModel.getmutableLiveData_UpdateStatus().observe(AssignPackedOrderForZoneAndDriverActivity.this, new Observer<ResponseUpdateStatus>() {
             @Override
             public void onChanged(ResponseUpdateStatus message) {

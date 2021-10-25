@@ -8,17 +8,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.example.packingapp.R;
 import com.example.packingapp.databinding.ManageDriverBinding;
+import com.example.packingapp.model.Message;
 import com.example.packingapp.model.ResponseDriver;
 import com.example.packingapp.viewmodel.DriverViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class DriverManage extends Fragment {
     ManageDriverBinding binding;
@@ -42,11 +44,20 @@ public class DriverManage extends Fragment {
         driverViewModel = ViewModelProviders.of(this).get(DriverViewModel.class);
         driverViewModel.fetchDataVehicle();
         driverViewModel.fetchDataDriver();
+        List<String> Status_list = new ArrayList<String>();
         categories = new ArrayList<String>();
         List<String> driver = new ArrayList<String>();
 
+        Status_list.add("0");
+        Status_list.add("1");
 
-        ArrayAdapter spinnerAdapterDriver = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, driver);
+        ArrayAdapter spinnerAdapterStatus = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item,
+                Status_list);
+        spinnerAdapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerStatus.setAdapter(spinnerAdapterStatus);
+
+        ArrayAdapter spinnerAdapterDriver = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item,
+                driver);
         spinnerAdapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.DriverID.setAdapter(spinnerAdapterDriver);
 
@@ -71,7 +82,7 @@ public class DriverManage extends Fragment {
                 } else {
                     binding.NameArabic.setText(responseDriver.getRecords().get(position - 1).getNameArabic().toString());
                     binding.NameEnglish.setText(responseDriver.getRecords().get(position - 1).getNameEnglish().toString());
-                    binding.Status.setText(responseDriver.getRecords().get(position - 1).getStatus().toString());
+                    binding.spinnerStatus.setPrompt(responseDriver.getRecords().get(position - 1).getStatus().toString());
                     binding.Company.setText(responseDriver.getRecords().get(position - 1).getCompany().toString());
                     binding.Phone.setText(responseDriver.getRecords().get(position - 1).getPhone().toString());
                     binding.Address.setText(responseDriver.getRecords().get(position - 1).getAddress().toString());
@@ -88,7 +99,8 @@ public class DriverManage extends Fragment {
 
             }
         });
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item,
+                categories);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.VechileID.setAdapter(spinnerAdapter);
         driverViewModel.mutableLiveDataVehicle.observe(getViewLifecycleOwner(), responseVehicle -> {
@@ -119,17 +131,47 @@ public class DriverManage extends Fragment {
 
     public void create() {
         State = "create";
-        driverViewModel.fetchdata(binding.NameArabic.getText().toString(), binding.NameEnglish.getText().toString(), binding.Status.getText().toString(), binding.Company.getText().toString(), binding.Phone.getText().toString(), binding.Address.getText().toString(), binding.VechileID.getSelectedItem().toString(),binding.National.getText().toString(),binding.Employeeid.getText().toString());
-        driverViewModel.mutableLiveData.observe(getViewLifecycleOwner(), message -> Toast.makeText(getContext(), message.getMessage(), Toast.LENGTH_SHORT).show());
+        driverViewModel.fetchdata(binding.NameArabic.getText().toString(), binding.NameEnglish.getText().toString(),
+                binding.spinnerStatus.getSelectedItem().toString(), binding.Company.getText().toString(),
+                binding.Phone.getText().toString(), binding.Address.getText().toString(),
+                binding.VechileID.getSelectedItem().toString(),binding.National.getText().toString(),
+                binding.Employeeid.getText().toString());
+//        driverViewModel.mutableLiveData.observe(getViewLifecycleOwner(), message -> Toast.makeText(getContext(),
+//                message.getMessage(), Toast.LENGTH_SHORT).show());
+
+
+        driverViewModel.getDriverLiveData().observe(
+                getViewLifecycleOwner(),new Observer<Message>() {
+
+                    @Override
+                    public void onChanged(Message message) {
+                        Toast.makeText(getContext(), message.getMessage(), Toast.LENGTH_SHORT).show();
+                        clear();
+                    }
+                }
+        );
+        driverViewModel.getDriverLiveData_error().observe(
+                getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(String s) {
+                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+        );
         binding.create.setText("اضافه");
 
-        clear();
+//        clear();
     }
 
     public void update() {
         String currentString = binding.DriverID.getSelectedItem().toString();
         String[] separated = currentString.split("&");
-        driverViewModel.updateData(separated[0], binding.NameArabic.getText().toString(), binding.NameEnglish.getText().toString(), binding.Status.getText().toString(), binding.Company.getText().toString(), binding.Phone.getText().toString(), binding.Address.getText().toString(), binding.VechileID.getSelectedItem().toString(),binding.National.getText().toString(),binding.Employeeid.getText().toString());
+        driverViewModel.updateData(separated[0], binding.NameArabic.getText().toString(),
+                binding.NameEnglish.getText().toString(), binding.spinnerStatus.getSelectedItem().toString(),
+                binding.Company.getText().toString(), binding.Phone.getText().toString(),
+                binding.Address.getText().toString(), binding.VechileID.getSelectedItem().toString(),
+                binding.National.getText().toString(),binding.Employeeid.getText().toString());
         driverViewModel.mutableLiveData.observe(getViewLifecycleOwner(), message -> Toast.makeText(getContext(), message.getMessage(), Toast.LENGTH_SHORT).show());
         binding.create.setText("اضافه");
         State = "create";
@@ -139,7 +181,6 @@ public class DriverManage extends Fragment {
     public void clear() {
         binding.NameArabic.setText("");
         binding.NameEnglish.setText("");
-        binding.Status.setText("");
         binding.Company.setText("");
         binding.Phone.setText("");
         binding.Address.setText("");
