@@ -1,332 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|center_vertical"
-        android:background="@color/main_background_color"
-        tools:context=".UI.AssignPackedOrderForZoneAndDriverActivity"
-        android:layoutDirection="rtl">
-
-        <Button
-            android:id="@+id/btn_show_assign_orders_to_zone"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:text="@string/Show_Assign_Orders_To_Zone"
-            android:background="@drawable/bg_btn_show"
-            android:textColor="@color/textcolor_btns"
-            android:layout_marginTop="20dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:textSize="@dimen/font_size_for_button_of_app"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/linear_assign_order_to_zone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_layout_linear_assign_to_zone_or_driver"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:visibility="gone">
-
-
-           <!-- <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColorHint="@color/txt_color_hint"
-                >
-            <EditText
-                android:id="@+id/edit_zone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_zone_hint"
-                android:textColorHint="@color/txt_color_hint"
-                android:singleLine="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                />
-
-            </com.google.android.material.textfield.TextInputLayout>-->
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/txt_color"
-                android:text="@string/choice_zone"
-                android:gravity="center"
-                android:textSize="@dimen/font_size_for_text_of_app"
-                android:textStyle="bold"/>
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/spiner_zones"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:textSize="@dimen/font_size_for_text_of_app"
-                android:textDirection="rtl"
-                android:textColor="@color/third_white"
-                android:backgroundTint="@color/third_white"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                app:hintText="@string/choice_zone"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="4"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2.8"
-                    android:padding="2dp"
-                    android:textColorHint="@color/txt_color_hint"
-                    >
-                    <EditText
-                        android:id="@+id/edit_trackingnumber_zone"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:hint="@string/enter_tracking_number"
-                        android:textColor="@color/txt_color"
-                        android:textColorHint="@color/txt_color_hint"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        android:singleLine="true"
-
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-                <Button
-                    android:id="@+id/btn_loading_new_purchase_order_zone"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.2"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enter_zone"
-                    android:background="@drawable/buttonshap"
-                    android:textColor="@color/textcolor_btns"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:textSize="@dimen/font_size_for_text_of_app"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp" />
-            </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="horizontal"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp">
-
-                    <Button
-                        android:id="@+id/btn_show_last_trackingnumbers_zone"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/show_last_assign"
-                        android:background="@drawable/buttonshap"
-                        android:textColor="@color/textcolor_btns"
-                        android:layout_marginTop="20dp"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="20dp"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        />
-<!--
-                    <Button
-                        android:id="@+id/btn_delete_last_trackingnumbers_zone"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/delete_last_assign"
-                        android:background="@drawable/buttonshap"
-                        android:textColor="@color/textcolor_btns"
-                        android:layout_marginTop="20dp"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="20dp"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        />
--->
-
-                    <Button
-                        android:id="@+id/btn_confirm_assign_orders_to_zone"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/confirm_assign_orders_to_zone"
-                        android:background="@drawable/buttonshap"
-                        android:textColor="@color/textcolor_btns"
-                        android:layout_marginTop="20dp"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="20dp"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        />
-
-                </LinearLayout>
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:background="@color/main_background_color" android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button android:textSize="@dimen/font_size_for_button_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_show_assign_orders_to_zone" android:background="@drawable/bg_btn_show" android:layout_width="350dp" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/Show_Assign_Orders_To_Zone"/>
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@+id/linear_assign_order_to_zone" android:background="@drawable/bg_layout_linear_assign_to_zone_or_driver" android:paddingTop="5dp" android:paddingBottom="5dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:layout_marginBottom="15dp">
+        <TextView android:textSize="@dimen/font_size_for_text_of_app" android:textStyle="bold" android:textColor="@color/txt_color" android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/choice_zone"/>
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/third_white" android:id="@+id/spiner_zones" android:layout_width="match_parent" android:layout_height="35dp" android:layout_marginTop="20dp" app:hintText="@string/choice_zone"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="4">
+            <com.google.android.material.textfield.TextInputLayout android:textColorHint="@color/txt_color_hint" android:id="@+id/textInputLayout1" android:padding="2dp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.8">
+                <EditText android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/txt_color" android:textColorHint="@color/txt_color_hint" android:id="@+id/edit_trackingnumber_zone" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/enter_tracking_number" android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_loading_new_purchase_order_zone" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/enter_zone" android:layout_weight="1.2"/>
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/btn_show_assign_orders_to_driver"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:text="@string/show_assign_orders_to_driver"
-            android:background="@drawable/bg_btn_show"
-            android:textColor="@color/textcolor_btns"
-            android:layout_marginTop="20dp"
-            android:paddingEnd="18dp"
-            android:paddingStart="18dp"
-            android:textSize="@dimen/font_size_for_button_of_app"
-
-            />
-
-        <LinearLayout
-            android:id="@+id/linear_assign_order_to_driver"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_layout_linear_assign_to_zone_or_driver"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:visibility="visible"
-            >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/txt_color"
-                android:text="@string/choice_driver_id"
-                android:gravity="center"
-                android:textSize="@dimen/font_size_for_text_of_app"
-                android:textStyle="bold"/>
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/spiner_driver_id"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:textSize="@dimen/font_size_for_text_of_app"
-                android:textDirection="rtl"
-                android:textColor="@color/third_white"
-                android:backgroundTint="@color/third_white"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="4"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="5dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2.9"
-                    android:padding="2dp"
-                    android:textColorHint="@color/txt_color_hint"
-                    >
-                    <EditText
-                        android:id="@+id/edit_trackingnumber_driver"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enter_tracking_number"
-                        android:textColor="@color/txt_color"
-                        android:textColorHint="@color/txt_color_hint"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        android:singleLine="true"
-
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-                <Button
-                    android:id="@+id/btn_loading_new_purchase_order_driver"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enter"
-                    android:background="@drawable/buttonshap"
-                    android:textColor="@color/textcolor_btns"
-                    android:paddingEnd="15dp"
-                    android:paddingStart="15dp"
-                    android:textSize="@dimen/font_size_for_text_of_app"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp" />
-
-            </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp">
-
-                    <Button
-                        android:id="@+id/btn_show_last_trackingnumbers_driver"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/show_last_assign"
-                        android:background="@drawable/buttonshap"
-                        android:textColor="@color/textcolor_btns"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="20dp"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        />
-
-
-                    <Button
-                        android:id="@+id/btn_confirm_assign_orders_to_driver"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/confirm_assign_orders_to_driver"
-                        android:background="@drawable/buttonshap"
-                        android:textColor="@color/textcolor_btns"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="20dp"
-                        android:textSize="@dimen/font_size_for_text_of_app"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp" />
-
-                </LinearLayout>
-            <Button
-                android:id="@+id/btn_recall_runsheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/recall_assign_orders_to_driver"
-                android:background="@drawable/buttonshap"
-                android:textColor="@color/textcolor_btns"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
-                android:textSize="@dimen/font_size_for_text_of_app"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"/>
-
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="2">
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_show_last_trackingnumbers_zone" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/show_last_assign" android:layout_weight="1"/>
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_confirm_assign_orders_to_zone" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/confirm_assign_orders_to_zone" android:layout_weight="1"/>
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/prog_loading_magentoorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+    </LinearLayout>
+    <Button android:textSize="@dimen/font_size_for_button_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_show_assign_orders_to_driver" android:background="@drawable/bg_btn_show" android:layout_width="350dp" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/show_assign_orders_to_driver"/>
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@+id/linear_assign_order_to_driver" android:background="@drawable/bg_layout_linear_assign_to_zone_or_driver" android:paddingTop="5dp" android:paddingBottom="5dp" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:layout_marginBottom="15dp">
+        <TextView android:textSize="@dimen/font_size_for_text_of_app" android:textStyle="bold" android:textColor="@color/txt_color" android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/choice_driver_id"/>
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/third_white" android:id="@+id/spiner_driver_id" android:layout_width="match_parent" android:layout_height="35dp" android:layout_marginTop="20dp"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:weightSum="4">
+            <com.google.android.material.textfield.TextInputLayout android:textColorHint="@color/txt_color_hint" android:padding="2dp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.9">
+                <EditText android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/txt_color" android:textColorHint="@color/txt_color_hint" android:id="@+id/edit_trackingnumber_driver" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/enter_tracking_number" android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_loading_new_purchase_order_driver" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/enter" android:layout_weight="1.1"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:weightSum="2">
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_show_last_trackingnumbers_driver" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/show_last_assign" android:layout_weight="1"/>
+            <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_confirm_assign_orders_to_driver" android:background="@drawable/buttonshap" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="@string/confirm_assign_orders_to_driver" android:layout_weight="1"/>
+        </LinearLayout>
+        <Button android:textSize="@dimen/font_size_for_text_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_recall_runsheet" android:background="@drawable/buttonshap" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/recall_assign_orders_to_driver"/>
+    </LinearLayout>
+    <ProgressBar android:id="@+id/prog_loading_magentoorder" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    <Button android:textSize="@dimen/font_size_for_button_of_app" android:textColor="@color/textcolor_btns" android:id="@+id/btn_search_by_orderNumberForRunTimeSheet" android:background="@drawable/bg_btn_show" android:layout_width="350dp" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/retrive_runTime_Sheet" android:textAllCaps="false"/>
 </LinearLayout>
